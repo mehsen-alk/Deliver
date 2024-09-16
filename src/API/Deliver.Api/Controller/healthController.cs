@@ -1,3 +1,4 @@
+using Deliver.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Deliver.Api.Controllers
@@ -11,9 +12,10 @@ namespace Deliver.Api.Controllers
         }
 
         [HttpGet("")]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         public ActionResult CheckServerHealth()
         {
-            return Ok();
+            return Ok(BaseResponse.FetchSuccessfully());
         }
     }
 }

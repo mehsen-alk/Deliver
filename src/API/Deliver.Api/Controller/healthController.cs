@@ -15,7 +15,7 @@ namespace Deliver.Api.Controllers
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         public ActionResult CheckServerHealth()
         {
-            return Ok(BaseResponse.FetchSuccessfully());
+            return Ok(BaseResponse.FetchSuccessfully(data: "server is up and running"));
         }
     }
 }

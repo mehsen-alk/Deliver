@@ -6,6 +6,4 @@ var app = builder
     .ConfigureServices()
     .ConfigurePipeline();
 
-app.MapGet("/", () => "Welcome to Deliver!");
-
 app.Run();

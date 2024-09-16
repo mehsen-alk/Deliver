@@ -1,5 +1,10 @@
+using Deliver.Api;
+
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+
+var app = builder
+    .ConfigureServices()
+    .ConfigurePipeline();
 
 app.MapGet("/", () => "Welcome to Deliver!");
 

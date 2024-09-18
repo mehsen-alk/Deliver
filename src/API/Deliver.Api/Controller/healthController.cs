@@ -7,15 +7,16 @@ namespace Deliver.Api.Controllers
     [ApiController]
     public class HealthController : ControllerBase
     {
+
         public HealthController()
         {
         }
 
         [HttpGet("")]
-        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
-        public ActionResult CheckServerHealth()
+        [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
+    public ActionResult CheckServerHealth()
         {
-            return Ok(BaseResponse.FetchSuccessfully(data: "server is up and running"));
+            return Ok(BaseResponse<string>.FetchSuccessfully(data: "server is up and running"));
         }
     }
 }

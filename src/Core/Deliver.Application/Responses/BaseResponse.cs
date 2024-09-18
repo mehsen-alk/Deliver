@@ -1,7 +1,7 @@
 ﻿
 namespace Deliver.Application.Responses
 {
-    public class BaseResponse
+    public class BaseResponse<T> where T : class?
     {
         private BaseResponse()
         {
@@ -15,16 +15,16 @@ namespace Deliver.Application.Responses
             StatusCode = statusCode;
         }
 
-        public BaseResponse(int statusCode, string message, object data)
+        public BaseResponse(int statusCode, string message, T data)
         {
             Message = message;
             StatusCode = statusCode;
             Data = data;
         }
 
-        public static BaseResponse FetchSuccessfully(int statusCode = 200, string message = "fetched successfully", object? data = null)
+        public static BaseResponse<T> FetchSuccessfully(T? data, int statusCode = 200, string message = "fetched successfully")
         {
-            return new BaseResponse
+            return new BaseResponse<T>
             {
                 StatusCode = statusCode,
                 Message = message,
@@ -34,6 +34,6 @@ namespace Deliver.Application.Responses
 
         public int StatusCode { get; set; }
         public string Message { get; set; }
-        public object? Data { get; set; }
+        public T? Data { get; set; }
     }
 }

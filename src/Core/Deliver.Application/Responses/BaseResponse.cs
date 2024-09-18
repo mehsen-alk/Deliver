@@ -3,7 +3,7 @@ namespace Deliver.Application.Responses
 {
     public class BaseResponse<T> where T : class?
     {
-        private BaseResponse()
+        public BaseResponse()
         {
             Message = string.Empty;
             StatusCode = 0;
@@ -22,7 +22,17 @@ namespace Deliver.Application.Responses
             Data = data;
         }
 
-        public static BaseResponse<T> FetchSuccessfully(T? data, int statusCode = 200, string message = "fetched successfully")
+        public static BaseResponse<T> FetchSuccessfully(int statusCode = 200, string message = "fetched successfully", T? data = null)
+        {
+            return new BaseResponse<T>
+            {
+                StatusCode = statusCode,
+                Message = message,
+                Data = data,
+            };
+        }
+
+        public static BaseResponse<T> CreatedSuccessfully(int statusCode = 204, string message = "created successfully", T? data = null)
         {
             return new BaseResponse<T>
             {

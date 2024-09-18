@@ -1,4 +1,5 @@
 using System;
+using Deliver.Identity;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -13,6 +14,7 @@ namespace Deliver.Api
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllers();
+            builder.Services.AddIdentityServices(builder.Configuration);
 
             builder.Services.AddCors(
                 options =>

@@ -17,16 +17,16 @@ namespace Deliver.Api.Controller
             _authenticationService = authenticationService;
         }
 
-        [HttpPost("clientsignup")]
-        public async Task<ActionResult<SignInResponse>> ClientSignUpAsync(SignInRequest request)
-        {
-            return Ok(await _authenticationService.ClientSignUpAsync(request));
-        }
-
-        [HttpPost("clientdignin")]
-        public async Task<ActionResult<SignUpResponse>> ClientSignInAsync(SignUpRequest request)
+        [HttpPost("clientsignin")]
+        public async Task<ActionResult<SignInResponse>> ClientSignInAsync(SignInRequest request)
         {
             return Ok(await _authenticationService.ClientSignInAsync(request));
+        }
+
+        [HttpPost("clientdignup")]
+        public async Task<ActionResult<SignUpResponse>> ClientSignUpAsync(SignUpRequest request)
+        {
+            return Ok(await _authenticationService.ClientSignUpAsync(request));
         }
     }
 }

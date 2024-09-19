@@ -34,10 +34,6 @@ namespace Deliver.Identity.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -54,6 +50,22 @@ namespace Deliver.Identity.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "1657da87-249c-42ef-bcba-e83daeee3d02",
+                            Name = "Rider",
+                            NormalizedName = "RIDER"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "e508e21f-20db-4f43-a681-88cf2f6ef185",
+                            Name = "Driver",
+                            NormalizedName = "DRIVER"
+                        });
                 });
 
             modelBuilder.Entity("Deliver.Identity.Models.ApplicationUser", b =>
@@ -83,10 +95,6 @@ namespace Deliver.Identity.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -126,6 +134,36 @@ namespace Deliver.Identity.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "65cead37-18ed-4b10-9f8d-e892308f8854",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "221234",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGgrY0KSIVPMkpBlbbRMeipRXtFdMZDvy1606Ttzi5aiOElFIHVjcPdf+xj+3PruHA==",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "07f3153a-08be-4b2f-b4d6-139db2715b7b",
+                            TwoFactorEnabled = false,
+                            UserName = "221234"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "426a53b1-7bc7-4ca9-9154-679c768bdfe9",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "331234",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKWVcEvIPbH70PbmgRHgx3kahTa6y38VlEE7j9EkSkOQVxOhw9LhFMqU4UpKzeIeBQ==",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "075a3ada-f04a-413a-9872-86d181f600fd",
+                            TwoFactorEnabled = false,
+                            UserName = "331234"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -210,6 +248,18 @@ namespace Deliver.Identity.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 2
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>

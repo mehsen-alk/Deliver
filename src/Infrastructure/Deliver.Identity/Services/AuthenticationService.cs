@@ -29,7 +29,7 @@ namespace Deliver.Identity.Services
             _signInManager = signInManager;
         }
 
-        public async Task<SignInResponse> ClientSignUpAsync(SignInRequest request)
+        public async Task<SignInResponse> ClientSignInAsync(SignInRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
@@ -49,15 +49,14 @@ namespace Deliver.Identity.Services
 
             SignInResponse response = new SignInResponse
             {
-                StatusCode = 201,
-                Message = "created successfully",
+                StatusCode = 200,
+                Message = "fetched successfully",
                 Data = new SignInResponseData()
                 {
                     Id = user.Id,
                     Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                     Phone = user.PhoneNumber ?? "0",
                     UserName = user.UserName ?? "unknown",
-                    Name = user.Name ?? "unknown",
                     Role = "client",
                 },
             };
@@ -65,7 +64,7 @@ namespace Deliver.Identity.Services
             return response;
         }
 
-        public async Task<SignUpResponse> ClientSignInAsync(SignUpRequest request)
+        public async Task<SignUpResponse> ClientSignUpAsync(SignUpRequest request)
         {
             var existingUser = await _userManager.FindByNameAsync(request.Phone);
 
@@ -76,11 +75,10 @@ namespace Deliver.Identity.Services
 
             var user = new ApplicationUser
             {
-                Name = request.Name,
                 UserName = request.Phone,
                 PhoneNumber = request.Phone,
-            };
 
+            };
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
@@ -88,8 +86,8 @@ namespace Deliver.Identity.Services
             {
                 return new SignUpResponse()
                 {
-                    StatusCode = 200,
-                    Message = "fetched successfully",
+                    StatusCode = 201,
+                    Message = "created successfully",
                     Data = new SignUpResponseData() { UserId = user.Id }
                 };
             }

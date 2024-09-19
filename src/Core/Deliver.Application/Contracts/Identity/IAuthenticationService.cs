@@ -9,7 +9,7 @@ namespace Deliver.Application.Contracts.Identity
 {
     public interface IAuthenticationService
     {
-        Task<SignInResponse> ClientSignUpAsync(SignInRequest request);
-        Task<SignUpResponse> ClientSignInAsync(SignUpRequest request);
+        Task<SignInResponse> ClientSignInAsync(SignInRequest request);
+        Task<SignUpResponse> ClientSignUpAsync(SignUpRequest request);
     }
 }

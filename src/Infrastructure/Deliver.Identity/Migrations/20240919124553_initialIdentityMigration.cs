@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Deliver.Identity.Migrations
 {
     /// <inheritdoc />
@@ -17,7 +19,6 @@ namespace Deliver.Identity.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -33,7 +34,6 @@ namespace Deliver.Identity.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -158,6 +158,33 @@ namespace Deliver.Identity.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "1657da87-249c-42ef-bcba-e83daeee3d02", "Rider", "RIDER" },
+                    { 2, "e508e21f-20db-4f43-a681-88cf2f6ef185", "Driver", "DRIVER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, "65cead37-18ed-4b10-9f8d-e892308f8854", null, false, false, null, null, "221234", "AQAAAAIAAYagAAAAEGgrY0KSIVPMkpBlbbRMeipRXtFdMZDvy1606Ttzi5aiOElFIHVjcPdf+xj+3PruHA==", null, true, "07f3153a-08be-4b2f-b4d6-139db2715b7b", false, "221234" },
+                    { 2, 0, "426a53b1-7bc7-4ca9-9154-679c768bdfe9", null, false, false, null, null, "331234", "AQAAAAIAAYagAAAAEKWVcEvIPbH70PbmgRHgx3kahTa6y38VlEE7j9EkSkOQVxOhw9LhFMqU4UpKzeIeBQ==", null, true, "075a3ada-f04a-413a-9872-86d181f600fd", false, "331234" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 }
                 });
 
             migrationBuilder.CreateIndex(

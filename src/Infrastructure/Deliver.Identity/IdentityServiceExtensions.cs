@@ -25,6 +25,7 @@ namespace Deliver.Identity
             );
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<DeliverIdentityDbContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>

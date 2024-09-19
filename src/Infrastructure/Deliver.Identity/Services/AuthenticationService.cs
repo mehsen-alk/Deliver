@@ -1,4 +1,5 @@
 ﻿using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Exceptions;
 using Deliver.Application.Models.Authentication;
 using Deliver.Application.Models.Authentication.SignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response;
@@ -35,14 +36,14 @@ namespace Deliver.Identity.Services
 
             if (user == null)
             {
-                throw new Exception($"User with {request.UserName} not found.");
+                throw new CredentialNotValid($"incorrect user name or password 56");
             }
 
             var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
-                throw new Exception($"Credentials for '{request.UserName} aren't valid'.");
+                throw new CredentialNotValid($"incorrect user name or password: 43");
             }
 
             JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
@@ -70,7 +71,7 @@ namespace Deliver.Identity.Services
 
             if (existingUser != null)
             {
-                throw new Exception($"Username '{request.Phone}' already exists.");
+                throw new CredentialNotValid($"Username '{request.Phone}' already exists.");
             }
 
             var user = new ApplicationUser

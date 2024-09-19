@@ -48,6 +48,10 @@ namespace Deliver.Identity.Services
 
             JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
 
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var rolesString = roles.Aggregate("", (current, role) => current + role);
+
             SignInResponse response = new SignInResponse
             {
                 StatusCode = 200,
@@ -58,7 +62,7 @@ namespace Deliver.Identity.Services
                     Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                     Phone = user.PhoneNumber ?? "0",
                     UserName = user.UserName ?? "unknown",
-                    Role = "client",
+                    Role = rolesString,
                 },
             };
 

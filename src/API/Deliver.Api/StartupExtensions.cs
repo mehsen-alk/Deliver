@@ -1,4 +1,5 @@
 using System;
+using Deliver.Api.Middleware;
 using Deliver.Identity;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -41,6 +42,8 @@ namespace Deliver.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCustomExceptionHandler();
 
             app.UseCors("Open");
 

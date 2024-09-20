@@ -1,5 +1,6 @@
 ﻿using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Models.Authentication;
+using Deliver.Application.Responses;
 using Deliver.Identity.Models;
 using Deliver.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,22 +69,48 @@ namespace Deliver.Identity
                         {
                             c.NoResult();
                             c.Response.StatusCode = 500;
-                            c.Response.ContentType = "text/plain";
-                            return c.Response.WriteAsync(c.Exception.ToString());
+                            c.Response.ContentType = "application/json";
+
+                            var result = JsonConvert.SerializeObject(
+                                new BaseResponse<String>()
+                                {
+                                    StatusCode = 500,
+                                    Message = "An error occurred.",
+                                    Data = c.Exception.ToString(),
+                                }
+                            );
+
+                            return c.Response.WriteAsync(result);
                         },
                         OnChallenge = context =>
                         {
                             context.HandleResponse();
                             context.Response.StatusCode = 401;
                             context.Response.ContentType = "application/json";
-                            var result = JsonConvert.SerializeObject("401 Not authorized");
+
+                            var result = JsonConvert.SerializeObject(
+                                new BaseResponse<String>()
+                                {
+                                    StatusCode = 401,
+                                    Message = "401 Not authorized.",
+                                }
+                            );
+
                             return context.Response.WriteAsync(result);
                         },
                         OnForbidden = context =>
                         {
                             context.Response.StatusCode = 403;
                             context.Response.ContentType = "application/json";
-                            var result = JsonConvert.SerializeObject("403 Not authorized");
+
+                            var result = JsonConvert.SerializeObject(
+                                new BaseResponse<String>()
+                                {
+                                    StatusCode = 401,
+                                    Message = "403 Not authorized.",
+                                }
+                            );
+
                             return context.Response.WriteAsync(result);
                         },
                     };

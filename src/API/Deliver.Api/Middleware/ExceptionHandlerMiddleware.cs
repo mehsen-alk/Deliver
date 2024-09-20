@@ -1,4 +1,5 @@
 ﻿using Deliver.Application.Exceptions;
+using Deliver.Application.Responses;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -31,17 +32,13 @@ namespace Deliver.Api.Middleware
 
             context.Response.ContentType = "application/json";
 
-            var result = string.Empty;
-
             switch (exception)
             {
                 case ValidationException validationException:
                     httpStatusCode = HttpStatusCode.BadRequest;
-                    result = JsonConvert.SerializeObject(validationException.VallationErrors);
                     break;
                 case BadRequestException badRequestException:
                     httpStatusCode = HttpStatusCode.BadRequest;
-                    result = badRequestException.Message;
                     break;
                 case NotFoundException notFoundException:
                     httpStatusCode = HttpStatusCode.NotFound;
@@ -56,10 +53,15 @@ namespace Deliver.Api.Middleware
 
             context.Response.StatusCode = (int)httpStatusCode;
 
-            if (result == string.Empty)
-            {
-                result = JsonConvert.SerializeObject(new { error = exception.Message });
-            }
+
+            var result = JsonConvert.SerializeObject(
+                    new BaseResponse<String>()
+                    {
+                        StatusCode = (int)httpStatusCode,
+                        Message = exception.Message,
+                    }
+                    );
+
 
             return context.Response.WriteAsync(result);
         }

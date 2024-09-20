@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Deliver.Api.Controllers
 {
-    [Route("/health")]
+    [Route("v1/health")]
     [ApiController]
     public class HealthController : ControllerBase
     {

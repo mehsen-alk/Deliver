@@ -5,6 +5,7 @@ using Deliver.Application.Models.Authentication.SignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.response;
+using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -30,7 +31,7 @@ namespace Deliver.Identity.Services
             _signInManager = signInManager;
         }
 
-        public async Task<SignInResponse> ClientSignInAsync(SignInRequest request)
+        public async Task<SignInResponse> RiderSignInAsync(SignInRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
@@ -69,7 +70,7 @@ namespace Deliver.Identity.Services
             return response;
         }
 
-        public async Task<SignUpResponse> ClientSignUpAsync(SignUpRequest request)
+        public async Task<SignUpResponse> RiderSignUpAsync(SignUpRequest request)
         {
             var existingUser = await _userManager.FindByNameAsync(request.Phone);
 

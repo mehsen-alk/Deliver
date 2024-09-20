@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Deliver.Api.Controllers
 {
-    [Route("/")]
+    [Route("/health")]
     [ApiController]
     public class HealthController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace Deliver.Api.Controllers
             return Ok(BaseResponse<string>.FetchSuccessfully(data: "server is up and running"));
         }
 
-        [HttpGet("/driver")]
+        [HttpGet("driver")]
         [Authorize(Roles = "Driver")]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         public ActionResult CheckServerHealthDriver()
@@ -28,7 +28,7 @@ namespace Deliver.Api.Controllers
             return Ok(BaseResponse<string>.FetchSuccessfully(data: "server is up and running"));
         }
 
-        [HttpGet("/rider")]
+        [HttpGet("rider")]
         [Authorize(Roles = "Rider")]
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         public ActionResult CheckServerHealthRider()

@@ -1,8 +1,8 @@
-using System;
 using Deliver.Api.Middleware;
 using Deliver.Identity;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace Deliver.Api
 {
@@ -35,10 +35,12 @@ namespace Deliver.Api
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>
+                app.UseSwaggerUI(options =>
                 {
-                    c.SwaggerEndpoint("../swagger/v1/swagger.json", "GloboTicket Ticket Management API");
+                    options.SwaggerEndpoint("../swagger/v1/swagger.json", "Deliver API");
+                    options.RoutePrefix = string.Empty;
                 });
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
@@ -87,14 +89,18 @@ namespace Deliver.Api
                   c.SwaggerDoc("v1", new OpenApiInfo
                   {
                       Version = "v1",
-                      Title = "GloboTicket Ticket Management API",
+                      Title = "Deliver API",
 
                   });
 
                   c.OperationFilter<FileResultContentTypeOperationFilter>();
+
+                  // Set the comments path for the Swagger JSON and UI.
+                  var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                  var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                  c.IncludeXmlComments(xmlPath);
               });
         }
-
 
         /// <summary>
         /// Indicates swashbuckle should expose the result of the method as a file in open api (see https://swagger.io/docs/specification/describing-responses/)

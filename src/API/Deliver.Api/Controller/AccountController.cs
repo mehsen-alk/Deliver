@@ -23,10 +23,27 @@ namespace Deliver.Api.Controller
             return Ok(await _authenticationService.ClientSignInAsync(request));
         }
 
+        /// <summary>
+        /// Create new Rider.
+        /// </summary>
+        /// <returns>the user id of the created rider</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "name": "Mohsen",
+        ///        "phone": "931464912",
+        ///        "password": "123456"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">If the Rider was created</response>
+        /// <response code="400">If the request is missing required parameters</response>
         [HttpPost("clientdignup")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<SignUpResponse>> ClientSignUpAsync(SignUpRequest request)
         {
-            return Ok(await _authenticationService.ClientSignUpAsync(request));
+            return Created("", await _authenticationService.ClientSignUpAsync(request));
         }
     }
 }

@@ -51,7 +51,9 @@ namespace Deliver.Identity.Services
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            var rolesString = roles.Aggregate("", (current, role) => current + role);
+            if(!roles.Contains("Rider")){
+                throw new CredentialNotValid($"incorrect user name or password 55");
+            }
 
             SignInResponse response = new SignInResponse
             {
@@ -63,7 +65,6 @@ namespace Deliver.Identity.Services
                     Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                     Phone = user.PhoneNumber ?? "0",
                     UserName = user.UserName ?? "unknown",
-                    Role = rolesString,
                 },
             };
 

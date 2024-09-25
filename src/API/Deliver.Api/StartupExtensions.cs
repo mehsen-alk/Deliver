@@ -1,5 +1,6 @@
 using Deliver.Api.Middleware;
 using Deliver.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
@@ -14,7 +15,32 @@ namespace Deliver.Api
             AddSwagger(builder.Services);
 
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddControllers();
+
+            builder.Services.AddControllers().ConfigureApiBehaviorOptions(
+                   options =>
+                {
+                    options.InvalidModelStateResponseFactory = context =>
+                    {
+                        var errors = context.ModelState
+                            .Where(x => x.Value?.Errors.Count > 0)
+                            .ToDictionary(
+                                kvp => kvp.Key,
+                                kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+                            );
+
+                        var errorResponse = new
+                        {
+                            statusCode = 400,
+                            message = "There are validation errors.",
+                            data = errors,
+                            traceId = context.HttpContext.TraceIdentifier
+                        };
+
+                        return new BadRequestObjectResult(errorResponse);
+                    };
+                }
+            );
+
             builder.Services.AddIdentityServices(builder.Configuration);
 
             builder.Services.AddCors(

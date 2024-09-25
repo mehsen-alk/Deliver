@@ -156,5 +156,38 @@ namespace Deliver.Identity.Services
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
         }
+
+        public async Task<SignInResponse> DriverSignInAsync(SignInRequest request)
+        {
+            var user = await SignInAsync(request, "Driver");
+
+            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
+
+            SignInResponse response = new SignInResponse
+            {
+                StatusCode = 200,
+                Message = "fetched successfully",
+                Data = new SignInResponseData()
+                {
+                    Id = user.Id,
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                    IsPhoneNumberVerified = user.PhoneNumberConfirmed,
+                },
+            };
+
+            return response;
+        }
+
+        public async Task<SignUpResponse> DriverSignUpAsync(SignUpRequest request)
+        {
+            var user = await SignUpAsync(request, "Driver");
+
+            return new SignUpResponse()
+            {
+                StatusCode = 201,
+                Message = "created successfully",
+                Data = new SignUpResponseData() { UserId = user.Id }
+            };
+        }
     }
 }

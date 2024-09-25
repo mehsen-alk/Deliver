@@ -11,5 +11,7 @@ namespace Deliver.Application.Contracts.Identity
     {
         Task<SignInResponse> RiderSignInAsync(SignInRequest request);
         Task<SignUpResponse> RiderSignUpAsync(SignUpRequest request);
+        Task<SignInResponse> DriverSignInAsync(SignInRequest request);
+        Task<SignUpResponse> DriverSignUpAsync(SignUpRequest request);
     }
 }

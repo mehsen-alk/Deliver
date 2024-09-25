@@ -31,7 +31,7 @@ namespace Deliver.Identity.Services
             _signInManager = signInManager;
         }
 
-        public async Task<SignInResponse> RiderSignInAsync(SignInRequest request)
+        private async Task<ApplicationUser> SignInAsync(SignInRequest request, string role)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
@@ -47,31 +47,18 @@ namespace Deliver.Identity.Services
                 throw new CredentialNotValid($"incorrect user name or password: 43");
             }
 
-            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            if(!roles.Contains("Rider")){
+            if (!roles.Contains(role))
+            {
                 throw new CredentialNotValid($"incorrect user name or password 55");
             }
 
-            SignInResponse response = new SignInResponse
-            {
-                StatusCode = 200,
-                Message = "fetched successfully",
-                Data = new SignInResponseData()
-                {
-                    Id = user.Id,
-                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                    Phone = user.PhoneNumber ?? "0",
-                    UserName = user.UserName ?? "unknown",
-                },
-            };
-
-            return response;
+            return user;
         }
 
-        public async Task<SignUpResponse> RiderSignUpAsync(SignUpRequest request)
+        private async Task<ApplicationUser> SignUpAsync(SignUpRequest request, string role)
         {
             var existingUser = await _userManager.FindByNameAsync(request.Phone);
 
@@ -84,26 +71,59 @@ namespace Deliver.Identity.Services
             {
                 UserName = request.Phone,
                 PhoneNumber = request.Phone,
-
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return new SignUpResponse()
-                {
-                    StatusCode = 201,
-                    Message = "created successfully",
-                    Data = new SignUpResponseData() { UserId = user.Id }
-                };
+
+                throw new Exception($"{result.Errors}");
             }
-            else
+
+            await _userManager.AddToRoleAsync(user, role);
+
+            if (!result.Succeeded)
             {
                 throw new Exception($"{result.Errors}");
             }
 
+            return user;
 
+        }
+
+
+        public async Task<SignInResponse> RiderSignInAsync(SignInRequest request)
+        {
+            var user = await SignInAsync(request, "Rider");
+
+            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
+
+            SignInResponse response = new SignInResponse
+            {
+                StatusCode = 200,
+                Message = "fetched successfully",
+                Data = new SignInResponseData()
+                {
+                    Id = user.Id,
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                    IsPhoneNumberVerified = user.PhoneNumberConfirmed,
+                },
+            };
+
+            return response;
+        }
+
+        public async Task<SignUpResponse> RiderSignUpAsync(SignUpRequest request)
+        {
+            var user = await SignUpAsync(request, "Rider");
+
+            return new SignUpResponse()
+            {
+                StatusCode = 201,
+                Message = "created successfully",
+                Data = new SignUpResponseData() { UserId = user.Id }
+            };
         }
 
         private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)

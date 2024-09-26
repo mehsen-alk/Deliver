@@ -47,7 +47,7 @@ namespace Deliver.Api.Middleware
                     httpStatusCode = HttpStatusCode.Unauthorized;
                     break;
                 case Exception ex:
-                    httpStatusCode = HttpStatusCode.BadRequest;
+                    httpStatusCode = HttpStatusCode.InternalServerError;
                     break;
             }
 
@@ -59,8 +59,9 @@ namespace Deliver.Api.Middleware
                     {
                         StatusCode = (int)httpStatusCode,
                         Message = exception.Message,
+                        Data = exception.StackTrace,
                     }
-                    );
+                );
 
 
             return context.Response.WriteAsync(result);

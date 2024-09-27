@@ -124,11 +124,17 @@ namespace Deliver.Identity.Services
         {
             var user = await SignUpAsync(request, "Rider");
 
+            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
+
             return new SignUpResponse()
             {
                 StatusCode = 201,
                 Message = "created successfully",
-                Data = new SignUpResponseData() { UserId = user.Id }
+                Data = new SignUpResponseData()
+                {
+                    UserId = user.Id,
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                }
             };
         }
 
@@ -190,11 +196,17 @@ namespace Deliver.Identity.Services
         {
             var user = await SignUpAsync(request, "Driver");
 
+            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
+
             return new SignUpResponse()
             {
                 StatusCode = 201,
                 Message = "created successfully",
-                Data = new SignUpResponseData() { UserId = user.Id }
+                Data = new SignUpResponseData()
+                {
+                    UserId = user.Id,
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                }
             };
         }
 
@@ -204,7 +216,7 @@ namespace Deliver.Identity.Services
             {
                 StatusCode = 201,
                 Message = "created successfully",
-                Data =  "",
+                Data = "",
             };
 
             return v;

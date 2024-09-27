@@ -4,5 +4,6 @@ namespace Deliver.Application.Models.Authentication.SignUp.response
     {
         public required int UserId { get; set; }
 
+        public required string Token { get; set; }
     }
 }

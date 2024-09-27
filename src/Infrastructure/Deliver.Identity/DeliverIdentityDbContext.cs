@@ -41,7 +41,9 @@ namespace Deliver.Identity
             var user1 = new ApplicationUser()
             {
                 Id = 1,
+                Name = "Mohsen",
                 UserName = "221234",
+                PhoneNumber = "221234",
                 NormalizedUserName = "221234",
                 PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString(),
@@ -49,7 +51,9 @@ namespace Deliver.Identity
             var user2 = new ApplicationUser()
             {
                 Id = 2,
+                Name = "Mohammed",
                 UserName = "331234",
+                PhoneNumber = "331234",
                 NormalizedUserName = "331234",
                 PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString()

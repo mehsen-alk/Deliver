@@ -1,6 +1,7 @@
 ﻿using Deliver.Application.Exceptions;
 using Deliver.Application.Responses;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Net;
 
 namespace Deliver.Api.Middleware
@@ -60,6 +61,10 @@ namespace Deliver.Api.Middleware
                         StatusCode = (int)httpStatusCode,
                         Message = exception.Message,
                         Data = exception.StackTrace,
+                    },
+                    new JsonSerializerSettings
+                    {
+                        ContractResolver = new CamelCasePropertyNamesContractResolver()
                     }
                 );
 

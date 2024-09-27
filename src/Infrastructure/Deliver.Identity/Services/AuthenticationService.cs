@@ -6,6 +6,7 @@ using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.response;
 using Deliver.Application.Models.Authentication.SignUp.Response;
+using Deliver.Application.Responses;
 using Deliver.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -21,14 +22,18 @@ namespace Deliver.Identity.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly IUserContextService _userContextService;
+
 
         public AuthenticationService(UserManager<ApplicationUser> userManager,
             IOptions<JwtSettings> jwtSettings,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IUserContextService userContextService)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
+            _userContextService = userContextService;
         }
 
         private async Task<ApplicationUser> SignInAsync(SignInRequest request, string role)
@@ -191,6 +196,18 @@ namespace Deliver.Identity.Services
                 Message = "created successfully",
                 Data = new SignUpResponseData() { UserId = user.Id }
             };
+        }
+
+        public async Task<BaseResponse<string>> GenerateActivationCodeAsync()
+        {
+            var v = new BaseResponse<string>()
+            {
+                StatusCode = 201,
+                Message = "created successfully",
+                Data =  "",
+            };
+
+            return v;
         }
     }
 }

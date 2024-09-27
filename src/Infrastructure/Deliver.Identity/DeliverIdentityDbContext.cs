@@ -11,6 +11,8 @@ namespace Deliver.Identity
         {
         }
 
+        public DbSet<VerificationCode> VerificationCodes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityDbContext).Assembly);

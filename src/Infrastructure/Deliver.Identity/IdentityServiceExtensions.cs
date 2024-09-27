@@ -2,6 +2,7 @@
 using Deliver.Application.Models.Authentication;
 using Deliver.Application.Responses;
 using Deliver.Identity.Models;
+using Deliver.Identity.Repositories;
 using Deliver.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -100,6 +101,7 @@ namespace Deliver.Identity
                 });
 
             services.AddScoped<IUserContextService, UserContextService>();
+            services.AddScoped<IdentityRepository>();
         }
     }
 }

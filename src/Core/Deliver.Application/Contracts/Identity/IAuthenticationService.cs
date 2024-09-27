@@ -13,6 +13,6 @@ namespace Deliver.Application.Contracts.Identity
         Task<SignUpResponse> RiderSignUpAsync(SignUpRequest request);
         Task<SignInResponse> DriverSignInAsync(SignInRequest request);
         Task<SignUpResponse> DriverSignUpAsync(SignUpRequest request);
-        Task<BaseResponse<string>> GenerateActivationCodeAsync();
+        Task<string> GenerateActivationCodeAsync();
     }
 }

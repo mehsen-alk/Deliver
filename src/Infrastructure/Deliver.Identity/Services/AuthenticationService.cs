@@ -6,8 +6,8 @@ using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.response;
 using Deliver.Application.Models.Authentication.SignUp.Response;
-using Deliver.Application.Responses;
 using Deliver.Identity.Models;
+using Deliver.Identity.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -23,17 +23,19 @@ namespace Deliver.Identity.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
         private readonly IUserContextService _userContextService;
-
+        private readonly IdentityRepository _identityRepository;
 
         public AuthenticationService(UserManager<ApplicationUser> userManager,
             IOptions<JwtSettings> jwtSettings,
             SignInManager<ApplicationUser> signInManager,
-            IUserContextService userContextService)
+            IUserContextService userContextService,
+            IdentityRepository identityRepository)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
             _userContextService = userContextService;
+            _identityRepository = identityRepository;
         }
 
         private async Task<ApplicationUser> SignInAsync(SignInRequest request, string role)
@@ -97,7 +99,6 @@ namespace Deliver.Identity.Services
             return user;
 
         }
-
 
         public async Task<SignInResponse> RiderSignInAsync(SignInRequest request)
         {
@@ -210,16 +211,26 @@ namespace Deliver.Identity.Services
             };
         }
 
-        public async Task<BaseResponse<string>> GenerateActivationCodeAsync()
+        public async Task<string> GenerateActivationCodeAsync()
         {
-            var v = new BaseResponse<string>()
+
+            var code = new Random().Next(100000, 999999).ToString();
+
+            var expirationDate = DateTime.UtcNow.AddMinutes(10);
+
+            var userId = _userContextService.GetUserId();
+
+            var verificationCode = new VerificationCode
             {
-                StatusCode = 201,
-                Message = "created successfully",
-                Data = "",
+                UserId = userId,
+                Code = code,
+                ExpirationDate = expirationDate,
+                IsUsed = false,
             };
 
-            return v;
+            await _identityRepository.AddVerificationToken(verificationCode);
+
+            return code;
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Deliver.Identity.Migrations
 {
     [DbContext(typeof(DeliverIdentityDbContext))]
-    [Migration("20240919124553_initialIdentityMigration")]
+    [Migration("20240927164658_initialIdentityMigration")]
     partial class initialIdentityMigration
     {
         /// <inheritdoc />
@@ -58,14 +58,14 @@ namespace Deliver.Identity.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "1657da87-249c-42ef-bcba-e83daeee3d02",
+                            ConcurrencyStamp = "4aa24ce1-4536-4c02-8913-2b571c1bf1ff",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "e508e21f-20db-4f43-a681-88cf2f6ef185",
+                            ConcurrencyStamp = "45debd8c-184c-4ca6-bde3-5a14954fcb87",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
@@ -98,6 +98,10 @@ namespace Deliver.Identity.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -143,13 +147,15 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "65cead37-18ed-4b10-9f8d-e892308f8854",
+                            ConcurrencyStamp = "c28724eb-daf0-457c-bdf0-fab3d524b58f",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
+                            Name = "Mohsen",
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGgrY0KSIVPMkpBlbbRMeipRXtFdMZDvy1606Ttzi5aiOElFIHVjcPdf+xj+3PruHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENCN3IlItIcJbaQCWjIQ6gaBb5+RrB8yVymUBWYsj52en40RbgwQTGx2AKObLNbI0w==",
+                            PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "07f3153a-08be-4b2f-b4d6-139db2715b7b",
+                            SecurityStamp = "f6988391-a69f-4cad-abfe-b5311fb522bc",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -157,16 +163,46 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "426a53b1-7bc7-4ca9-9154-679c768bdfe9",
+                            ConcurrencyStamp = "95104801-3674-4cae-bb91-2afaafeb099c",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
+                            Name = "Mohammed",
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKWVcEvIPbH70PbmgRHgx3kahTa6y38VlEE7j9EkSkOQVxOhw9LhFMqU4UpKzeIeBQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEInArDg+VSSs0f5ZvAhvRqq1txgLD3QtNOdMC895HGDlicWzMCPjCKE/drepQ4ouXw==",
+                            PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "075a3ada-f04a-413a-9872-86d181f600fd",
+                            SecurityStamp = "01a0196c-5585-47e5-842b-28c2c3af0167",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });
+                });
+
+            modelBuilder.Entity("Deliver.Identity.Models.VerificationCode", b =>
+                {
+                    b.Property<int>("VerificationCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VerificationCodeId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VerificationCodeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("VerificationCodes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -282,6 +318,17 @@ namespace Deliver.Identity.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Deliver.Identity.Models.VerificationCode", b =>
+                {
+                    b.HasOne("Deliver.Identity.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

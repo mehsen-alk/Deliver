@@ -6,10 +6,11 @@ namespace Deliver.Identity.Models
     public class VerificationCode
     {
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int VerificationCodeId { get; set; }
 
         [Required]
-        public required string UserId { get; set; }
+        public required int UserId { get; set; }
 
         [Required]
         public required string Code { get; set; }
@@ -20,7 +21,7 @@ namespace Deliver.Identity.Models
         [Required]
         public bool IsUsed { get; set; }
 
-        [ForeignKey("Id")]
-        public virtual required ApplicationUser User { get; set; }
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser? User { get; set; }
     }
 }

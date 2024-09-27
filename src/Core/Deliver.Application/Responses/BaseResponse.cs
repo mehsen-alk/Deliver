@@ -22,7 +22,7 @@ namespace Deliver.Application.Responses
             Data = data;
         }
 
-        public static BaseResponse<T> FetchSuccessfully(int statusCode = 200, string message = "fetched successfully", T? data = null)
+        public static BaseResponse<T> FetchedSuccessfully(int statusCode = 200, string message = "fetched successfully", T? data = null)
         {
             return new BaseResponse<T>
             {

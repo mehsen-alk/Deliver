@@ -153,9 +153,9 @@ namespace Deliver.Identity.Services
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName ?? ""),
-                new Claim(JwtRegisteredClaimNames.Name, user.Name ?? ""),
+                new Claim("id", user.Id.ToString()),
+                new Claim("userName", user.UserName ?? ""),
+                new Claim("name", user.Name ?? ""),
             }
             .Union(userClaims)
             .Union(roleClaims);

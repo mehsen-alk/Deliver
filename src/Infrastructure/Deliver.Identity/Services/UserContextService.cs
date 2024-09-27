@@ -19,7 +19,7 @@ namespace Deliver.Identity.Services
         {
             var user = GetUserClaims();
 
-            var idAsString = user?.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var idAsString = user?.FindFirstValue("id");
 
             if (idAsString == null)
             {
@@ -34,7 +34,7 @@ namespace Deliver.Identity.Services
         {
             var user = GetUserClaims();
 
-            var userName = user?.FindFirstValue(JwtRegisteredClaimNames.NameId);
+            var userName = user?.FindFirstValue("userName");
 
             if (userName == null || userName.Length == 0)
             {
@@ -48,7 +48,7 @@ namespace Deliver.Identity.Services
         {
             var user = GetUserClaims();
 
-            var userName = user?.FindFirstValue(JwtRegisteredClaimNames.Name);
+            var userName = user?.FindFirstValue("name");
 
             if (userName == null)
             {

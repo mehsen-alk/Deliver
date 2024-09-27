@@ -65,23 +65,6 @@ namespace Deliver.Identity
 
                     o.Events = new JwtBearerEvents()
                     {
-                        OnAuthenticationFailed = c =>
-                        {
-                            c.NoResult();
-                            c.Response.StatusCode = 500;
-                            c.Response.ContentType = "application/json";
-
-                            var result = JsonConvert.SerializeObject(
-                                new BaseResponse<String>()
-                                {
-                                    StatusCode = 500,
-                                    Message = "An error occurred.",
-                                    Data = c.Exception.ToString(),
-                                }
-                            );
-
-                            return c.Response.WriteAsync(result);
-                        },
                         OnChallenge = context =>
                         {
                             context.HandleResponse();

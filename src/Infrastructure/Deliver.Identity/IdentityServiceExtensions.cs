@@ -98,6 +98,8 @@ namespace Deliver.Identity
                         },
                     };
                 });
+
+            services.AddScoped<IUserContextService, UserContextService>();
         }
     }
 }

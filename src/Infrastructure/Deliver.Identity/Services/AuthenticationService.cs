@@ -1,4 +1,4 @@
-﻿using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Exceptions;
 using Deliver.Application.Models.Authentication;
 using Deliver.Application.Models.Authentication.SignIn;
@@ -69,6 +69,7 @@ namespace Deliver.Identity.Services
 
             var user = new ApplicationUser
             {
+                Name = request.Name,
                 UserName = request.Phone,
                 PhoneNumber = request.Phone,
             };
@@ -140,7 +141,9 @@ namespace Deliver.Identity.Services
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.PhoneNumber, user.PhoneNumber ?? "0"),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.NameId, user.UserName ?? ""),
+                new Claim(JwtRegisteredClaimNames.Name, user.Name ?? ""),
             }
             .Union(userClaims)
             .Union(roleClaims);

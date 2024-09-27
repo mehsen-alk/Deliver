@@ -22,19 +22,16 @@ namespace Deliver.Identity.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
-        private readonly IUserContextService _userContextService;
         private readonly IdentityRepository _identityRepository;
 
         public AuthenticationService(UserManager<ApplicationUser> userManager,
             IOptions<JwtSettings> jwtSettings,
             SignInManager<ApplicationUser> signInManager,
-            IUserContextService userContextService,
             IdentityRepository identityRepository)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
-            _userContextService = userContextService;
             _identityRepository = identityRepository;
         }
 
@@ -211,14 +208,11 @@ namespace Deliver.Identity.Services
             };
         }
 
-        public async Task<string> GenerateActivationCodeAsync()
+        public async Task GenerateVerificationCodeAsync(int userId)
         {
-
             var code = new Random().Next(100000, 999999).ToString();
 
             var expirationDate = DateTime.UtcNow.AddMinutes(10);
-
-            var userId = _userContextService.GetUserId();
 
             var verificationCode = new VerificationCode
             {
@@ -228,9 +222,45 @@ namespace Deliver.Identity.Services
                 IsUsed = false,
             };
 
-            await _identityRepository.AddVerificationToken(verificationCode);
+            await _identityRepository.AddVerificationCodeAsync(verificationCode);
 
-            return code;
+            return;
+        }
+
+        public async Task<string> GetVerificationCodeAsync(int userId)
+        {
+            var verificationCode = await _identityRepository.GetVerificationCodeAsync(userId);
+
+            if (verificationCode == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return verificationCode.Code;
+        }
+
+        public async Task VerifyPhoneAsync(int userId, string code)
+        {
+            var verificationCode = await _identityRepository.GetVerificationCodeAsync(userId, code);
+
+            if (verificationCode == null)
+            {
+                throw new NotFoundException("code not found");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                throw new NotFoundException("user not found");
+            }
+
+            user.PhoneNumberConfirmed = true;
+            verificationCode.IsUsed = true;
+
+            await _identityRepository.UpdateVerificationCodeAsync(verificationCode);
+
+            return;
         }
     }
 }

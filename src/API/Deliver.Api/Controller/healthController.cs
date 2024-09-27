@@ -17,7 +17,7 @@ namespace Deliver.Api.Controllers
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         public ActionResult CheckServerHealth()
         {
-            return Ok(BaseResponse<string>.FetchSuccessfully(data: "server is up and running"));
+            return Ok(BaseResponse<string>.FetchedSuccessfully(data: "server is up and running"));
         }
 
         [HttpGet("driver")]
@@ -25,7 +25,7 @@ namespace Deliver.Api.Controllers
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         public ActionResult CheckServerHealthDriver()
         {
-            return Ok(BaseResponse<string>.FetchSuccessfully(data: "server is up and running"));
+            return Ok(BaseResponse<string>.FetchedSuccessfully(data: "server is up and running"));
         }
 
         [HttpGet("rider")]
@@ -33,7 +33,7 @@ namespace Deliver.Api.Controllers
         [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
         public ActionResult CheckServerHealthRider()
         {
-            return Ok(BaseResponse<string>.FetchSuccessfully(data: "server is up and running"));
+            return Ok(BaseResponse<string>.FetchedSuccessfully(data: "server is up and running"));
         }
     }
 }

@@ -32,7 +32,17 @@ namespace Deliver.Application.Responses
             };
         }
 
-        public static BaseResponse<T> CreatedSuccessfully(int statusCode = 204, string message = "created successfully", T? data = null)
+        public static BaseResponse<T> CreatedSuccessfully(int statusCode = 201, string message = "created successfully", T? data = null)
+        {
+            return new BaseResponse<T>
+            {
+                StatusCode = statusCode,
+                Message = message,
+                Data = data,
+            };
+        }
+
+        public static BaseResponse<T> UpdatedSuccessfully(int statusCode = 204, string message = "updated successfully", T? data = null)
         {
             return new BaseResponse<T>
             {

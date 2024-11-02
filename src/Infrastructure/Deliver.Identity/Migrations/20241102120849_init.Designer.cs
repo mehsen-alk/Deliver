@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Deliver.Identity.Migrations
 {
     [DbContext(typeof(DeliverIdentityDbContext))]
-    [Migration("20240927164658_initialIdentityMigration")]
-    partial class initialIdentityMigration
+    [Migration("20241102120849_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,14 +58,14 @@ namespace Deliver.Identity.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "4aa24ce1-4536-4c02-8913-2b571c1bf1ff",
+                            ConcurrencyStamp = "6f765046-cae4-4415-86ff-5ba9f3c8a288",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "45debd8c-184c-4ca6-bde3-5a14954fcb87",
+                            ConcurrencyStamp = "1124b8a0-a76e-431e-a4e1-866aa63721ee",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
@@ -147,15 +147,15 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c28724eb-daf0-457c-bdf0-fab3d524b58f",
+                            ConcurrencyStamp = "2732b41c-62c8-428e-b67f-6361d664030b",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohsen",
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAENCN3IlItIcJbaQCWjIQ6gaBb5+RrB8yVymUBWYsj52en40RbgwQTGx2AKObLNbI0w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECAPn+I624YgpwND0+XzrawxI05o7082t71Or0HtVDxJ14MPaSqbMI1BeUDmAZnA6g==",
                             PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "f6988391-a69f-4cad-abfe-b5311fb522bc",
+                            SecurityStamp = "ccdcfbb9-19f7-429d-a417-a4e1aa2ae1b6",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -163,15 +163,15 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "95104801-3674-4cae-bb91-2afaafeb099c",
+                            ConcurrencyStamp = "1015cd91-baff-47ea-b1df-18d79706355e",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohammed",
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEInArDg+VSSs0f5ZvAhvRqq1txgLD3QtNOdMC895HGDlicWzMCPjCKE/drepQ4ouXw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOrZrr+H4OmOnBFEUQgMGsUTdj+tyXhGii6KmWqy1lCDIAuJkp339AW/1TT2Qg5hrA==",
                             PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "01a0196c-5585-47e5-842b-28c2c3af0167",
+                            SecurityStamp = "1d9dc932-3bd6-457c-9215-d526b9cd8ff0",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });
@@ -179,11 +179,11 @@ namespace Deliver.Identity.Migrations
 
             modelBuilder.Entity("Deliver.Identity.Models.VerificationCode", b =>
                 {
-                    b.Property<int>("VerificationCodeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VerificationCodeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -198,7 +198,7 @@ namespace Deliver.Identity.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("VerificationCodeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 

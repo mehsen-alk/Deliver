@@ -55,14 +55,14 @@ namespace Deliver.Identity.Migrations
                         new
                         {
                             Id = 1,
-a                            ConcurrencyStamp = "e0b2a670-3408-46cf-b000-f5fc13989121",
+                            ConcurrencyStamp = "6f765046-cae4-4415-86ff-5ba9f3c8a288",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "825e6517-49e1-4077-b4e2-107998aed102",
+                            ConcurrencyStamp = "1124b8a0-a76e-431e-a4e1-866aa63721ee",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
@@ -144,15 +144,15 @@ a                            ConcurrencyStamp = "e0b2a670-3408-46cf-b000-f5fc139
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cc22ddde-b266-4e3a-95de-d20bbff91b2d",
+                            ConcurrencyStamp = "2732b41c-62c8-428e-b67f-6361d664030b",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohsen",
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL0c7P0gwDT9Yfq0pLlDMKz26oxtnh7rAiuaV/38mK3/NOKqJXBOzPiK3PopAYsWMQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECAPn+I624YgpwND0+XzrawxI05o7082t71Or0HtVDxJ14MPaSqbMI1BeUDmAZnA6g==",
                             PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "db6e5c8a-5e54-4319-bf36-d698c9aeafd5",
+                            SecurityStamp = "ccdcfbb9-19f7-429d-a417-a4e1aa2ae1b6",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -160,15 +160,15 @@ a                            ConcurrencyStamp = "e0b2a670-3408-46cf-b000-f5fc139
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd857e41-8999-4636-a8d7-4e895f54012a",
+                            ConcurrencyStamp = "1015cd91-baff-47ea-b1df-18d79706355e",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohammed",
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGhpf+bsvTnTST+bajwyevNZwc8IOwTY4It8Vn549l22e9OAD1bcLvQtj0jlPiYDCQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOrZrr+H4OmOnBFEUQgMGsUTdj+tyXhGii6KmWqy1lCDIAuJkp339AW/1TT2Qg5hrA==",
                             PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "06618c31-eeb1-4ca7-beda-3041effa3eec",
+                            SecurityStamp = "1d9dc932-3bd6-457c-9215-d526b9cd8ff0",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });

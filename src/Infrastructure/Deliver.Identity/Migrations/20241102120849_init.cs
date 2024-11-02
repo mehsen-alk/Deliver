@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Deliver.Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class initialIdentityMigration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -165,7 +165,7 @@ namespace Deliver.Identity.Migrations
                 name: "VerificationCodes",
                 columns: table => new
                 {
-                    VerificationCodeId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -174,7 +174,7 @@ namespace Deliver.Identity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VerificationCodes", x => x.VerificationCodeId);
+                    table.PrimaryKey("PK_VerificationCodes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_VerificationCodes_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -188,8 +188,8 @@ namespace Deliver.Identity.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "4aa24ce1-4536-4c02-8913-2b571c1bf1ff", "Rider", "RIDER" },
-                    { 2, "45debd8c-184c-4ca6-bde3-5a14954fcb87", "Driver", "DRIVER" }
+                    { 1, "6f765046-cae4-4415-86ff-5ba9f3c8a288", "Rider", "RIDER" },
+                    { 2, "1124b8a0-a76e-431e-a4e1-866aa63721ee", "Driver", "DRIVER" }
                 });
 
             migrationBuilder.InsertData(
@@ -197,8 +197,8 @@ namespace Deliver.Identity.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "c28724eb-daf0-457c-bdf0-fab3d524b58f", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAENCN3IlItIcJbaQCWjIQ6gaBb5+RrB8yVymUBWYsj52en40RbgwQTGx2AKObLNbI0w==", "221234", true, "f6988391-a69f-4cad-abfe-b5311fb522bc", false, "221234" },
-                    { 2, 0, "95104801-3674-4cae-bb91-2afaafeb099c", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAEInArDg+VSSs0f5ZvAhvRqq1txgLD3QtNOdMC895HGDlicWzMCPjCKE/drepQ4ouXw==", "331234", true, "01a0196c-5585-47e5-842b-28c2c3af0167", false, "331234" }
+                    { 1, 0, "2732b41c-62c8-428e-b67f-6361d664030b", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAECAPn+I624YgpwND0+XzrawxI05o7082t71Or0HtVDxJ14MPaSqbMI1BeUDmAZnA6g==", "221234", true, "ccdcfbb9-19f7-429d-a417-a4e1aa2ae1b6", false, "221234" },
+                    { 2, 0, "1015cd91-baff-47ea-b1df-18d79706355e", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAEOrZrr+H4OmOnBFEUQgMGsUTdj+tyXhGii6KmWqy1lCDIAuJkp339AW/1TT2Qg5hrA==", "331234", true, "1d9dc932-3bd6-457c-9215-d526b9cd8ff0", false, "331234" }
                 });
 
             migrationBuilder.InsertData(

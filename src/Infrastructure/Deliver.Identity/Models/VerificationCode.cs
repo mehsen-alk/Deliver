@@ -7,7 +7,7 @@ namespace Deliver.Identity.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int VerificationCodeId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public required int UserId { get; set; }

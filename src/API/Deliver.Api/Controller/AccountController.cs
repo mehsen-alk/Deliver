@@ -49,14 +49,14 @@ namespace Deliver.Api.Controller
 
         [HttpPut("verifyPhone")]
         [ProducesDefaultResponseType]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         public async Task<ActionResult<BaseResponse<string>>> GrtVerificationToken(VerifyPhoneRequest verifyPhoneRequest)
         {
             var userId = _userContextService.GetUserId();
 
             await _authenticationService.VerifyPhoneAsync(userId, verifyPhoneRequest.Code);
 
-            return StatusCode(StatusCodes.Status200OK, BaseResponse<string>.UpdatedSuccessfully());
+            return StatusCode(StatusCodes.Status202Accepted, BaseResponse<string>.UpdatedSuccessfully());
         }
 
     }

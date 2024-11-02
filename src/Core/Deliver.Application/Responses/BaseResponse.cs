@@ -42,7 +42,7 @@ namespace Deliver.Application.Responses
             };
         }
 
-        public static BaseResponse<T> UpdatedSuccessfully(int statusCode = 204, string message = "updated successfully", T? data = null)
+        public static BaseResponse<T> UpdatedSuccessfully(int statusCode = 202, string message = "updated successfully", T? data = null)
         {
             return new BaseResponse<T>
             {

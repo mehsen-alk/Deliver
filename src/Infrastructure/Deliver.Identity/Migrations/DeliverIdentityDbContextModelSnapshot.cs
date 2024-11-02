@@ -55,14 +55,14 @@ namespace Deliver.Identity.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "4aa24ce1-4536-4c02-8913-2b571c1bf1ff",
+a                            ConcurrencyStamp = "e0b2a670-3408-46cf-b000-f5fc13989121",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "45debd8c-184c-4ca6-bde3-5a14954fcb87",
+                            ConcurrencyStamp = "825e6517-49e1-4077-b4e2-107998aed102",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
@@ -144,15 +144,15 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c28724eb-daf0-457c-bdf0-fab3d524b58f",
+                            ConcurrencyStamp = "cc22ddde-b266-4e3a-95de-d20bbff91b2d",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohsen",
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAENCN3IlItIcJbaQCWjIQ6gaBb5+RrB8yVymUBWYsj52en40RbgwQTGx2AKObLNbI0w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL0c7P0gwDT9Yfq0pLlDMKz26oxtnh7rAiuaV/38mK3/NOKqJXBOzPiK3PopAYsWMQ==",
                             PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "f6988391-a69f-4cad-abfe-b5311fb522bc",
+                            SecurityStamp = "db6e5c8a-5e54-4319-bf36-d698c9aeafd5",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -160,15 +160,15 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "95104801-3674-4cae-bb91-2afaafeb099c",
+                            ConcurrencyStamp = "fd857e41-8999-4636-a8d7-4e895f54012a",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohammed",
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEInArDg+VSSs0f5ZvAhvRqq1txgLD3QtNOdMC895HGDlicWzMCPjCKE/drepQ4ouXw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGhpf+bsvTnTST+bajwyevNZwc8IOwTY4It8Vn549l22e9OAD1bcLvQtj0jlPiYDCQ==",
                             PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "01a0196c-5585-47e5-842b-28c2c3af0167",
+                            SecurityStamp = "06618c31-eeb1-4ca7-beda-3041effa3eec",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });
@@ -176,11 +176,11 @@ namespace Deliver.Identity.Migrations
 
             modelBuilder.Entity("Deliver.Identity.Models.VerificationCode", b =>
                 {
-                    b.Property<int>("VerificationCodeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VerificationCodeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -195,7 +195,7 @@ namespace Deliver.Identity.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("VerificationCodeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 

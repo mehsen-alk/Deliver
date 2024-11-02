@@ -1,6 +1,9 @@
-using System;
+using Deliver.Api.Middleware;
+using Deliver.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace Deliver.Api
 {
@@ -12,7 +15,33 @@ namespace Deliver.Api
             AddSwagger(builder.Services);
 
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddControllers();
+
+            builder.Services.AddControllers().ConfigureApiBehaviorOptions(
+                   options =>
+                {
+                    options.InvalidModelStateResponseFactory = context =>
+                    {
+                        var errors = context.ModelState
+                            .Where(x => x.Value?.Errors.Count > 0)
+                            .ToDictionary(
+                                kvp => kvp.Key,
+                                kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
+                            );
+
+                        var errorResponse = new
+                        {
+                            statusCode = 400,
+                            message = "There are validation errors.",
+                            data = errors,
+                            traceId = context.HttpContext.TraceIdentifier
+                        };
+
+                        return new BadRequestObjectResult(errorResponse);
+                    };
+                }
+            );
+
+            builder.Services.AddIdentityServices(builder.Configuration);
 
             builder.Services.AddCors(
                 options =>
@@ -32,13 +61,17 @@ namespace Deliver.Api
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>
+                app.UseSwaggerUI(options =>
                 {
-                    c.SwaggerEndpoint("../swagger/v1/swagger.json", "GloboTicket Ticket Management API");
+                    options.SwaggerEndpoint("../swagger/v1/swagger.json", "Deliver API");
+                    options.RoutePrefix = string.Empty;
                 });
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCustomExceptionHandler();
 
             app.UseCors("Open");
 
@@ -82,14 +115,18 @@ namespace Deliver.Api
                   c.SwaggerDoc("v1", new OpenApiInfo
                   {
                       Version = "v1",
-                      Title = "GloboTicket Ticket Management API",
+                      Title = "Deliver API",
 
                   });
 
                   c.OperationFilter<FileResultContentTypeOperationFilter>();
+
+                  // Set the comments path for the Swagger JSON and UI.
+                  var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                  var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                  c.IncludeXmlComments(xmlPath);
               });
         }
-
 
         /// <summary>
         /// Indicates swashbuckle should expose the result of the method as a file in open api (see https://swagger.io/docs/specification/describing-responses/)

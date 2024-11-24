@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using Persistence;
 
 namespace Deliver.Api
 {
@@ -42,6 +43,7 @@ namespace Deliver.Api
             );
 
             builder.Services.AddIdentityServices(builder.Configuration);
+            builder.Services.AddPersistenceServices(builder.Configuration);
 
             builder.Services.AddCors(
                 options =>

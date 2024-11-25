@@ -20,6 +20,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Deliver.Application\Deliver.Application.csproj" />
+    <ProjectReference Include="..\..\Core\Deliver.Domain\Deliver.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

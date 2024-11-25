@@ -6,7 +6,6 @@ using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.response;
 using Deliver.Application.Models.Authentication.SignUp.Response;
-using Deliver.Identity.Models;
 using Deliver.Identity.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -14,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Deliver.Domain.Entities.Auth;
 
 namespace Deliver.Identity.Services
 {

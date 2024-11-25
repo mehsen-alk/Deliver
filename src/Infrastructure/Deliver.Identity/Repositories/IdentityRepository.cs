@@ -1,4 +1,4 @@
-﻿using Deliver.Identity.Models;
+﻿using Deliver.Domain.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace Deliver.Identity.Repositories

@@ -1,7 +1,6 @@
 ﻿using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Models.Authentication;
 using Deliver.Application.Responses;
-using Deliver.Identity.Models;
 using Deliver.Identity.Repositories;
 using Deliver.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Text;
+using Deliver.Domain.Entities.Auth;
 
 namespace Deliver.Identity
 {

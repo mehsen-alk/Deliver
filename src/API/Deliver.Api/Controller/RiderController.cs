@@ -2,6 +2,7 @@
 using Deliver.Application.Models.Authentication.SignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
+using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 

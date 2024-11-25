@@ -7,6 +7,7 @@ using Deliver.Application.Models.Authentication;
 using Deliver.Application.Models.Authentication.SignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
+using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Domain.Entities.Auth;
 using Deliver.Identity.Repositories;
 using Microsoft.AspNetCore.Identity;

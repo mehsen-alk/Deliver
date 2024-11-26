@@ -28,13 +28,13 @@ public class ClientTripController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<ClientCreateTripResponse>> CreateTrip([FromBody] ClientCreateTripCommand request)
+    public async Task<ActionResult<ClientCreateTripResponse>> CreateTrip([FromBody] ClientCreateTripRequest request)
     {
         var command = _mapper.Map<ClientCreateTripCommand>(request);
 
         command.ClientId = _userContextService.GetUserId();
 
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(command);
 
         return CreatedAtAction(nameof(CreateTrip), response);
     }

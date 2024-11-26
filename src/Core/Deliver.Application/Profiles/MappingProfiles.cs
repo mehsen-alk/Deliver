@@ -13,5 +13,6 @@ public class MappingProfile : Profile
 
         CreateMap<Trip, ClientCreateTripDto>();
         CreateMap<Trip, ClientCreateTripCommand>();
+        CreateMap<ClientCreateTripCommand, ClientCreateTripRequest>().ReverseMap();
     }
 }

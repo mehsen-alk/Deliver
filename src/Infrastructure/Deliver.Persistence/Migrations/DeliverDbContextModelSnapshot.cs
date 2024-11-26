@@ -255,7 +255,7 @@ namespace Persistence.Migrations
                     b.Property<double>("CalculatedDuration")
                         .HasColumnType("float");
 
-                    b.Property<int>("ClientId")
+                    b.Property<int>("RiderId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CreatedBy")
@@ -284,7 +284,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("RiderId");
 
                     b.HasIndex("DriverId");
 
@@ -473,9 +473,9 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Deliver.Domain.Entities.Trip", b =>
                 {
-                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", "Client")
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", "Rider")
                         .WithMany()
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("RiderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -495,7 +495,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("Rider");
 
                     b.Navigation("Driver");
 

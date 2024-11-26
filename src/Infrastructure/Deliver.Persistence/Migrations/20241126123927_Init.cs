@@ -215,7 +215,7 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    RiderId = table.Column<int>(type: "int", nullable: false),
                     DriverId = table.Column<int>(type: "int", nullable: true),
                     PickUpAddressId = table.Column<int>(type: "int", nullable: false),
                     DropOfAddressId = table.Column<int>(type: "int", nullable: false),
@@ -242,7 +242,7 @@ namespace Persistence.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Trips_AspNetUsers_ClientId",
-                        column: x => x.ClientId,
+                        column: x => x.RiderId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -358,7 +358,7 @@ namespace Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_ClientId",
                 table: "Trips",
-                column: "ClientId");
+                column: "RiderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_DriverId",

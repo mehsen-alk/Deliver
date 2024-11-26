@@ -1,23 +1,23 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
-using Deliver.Application.Features.Trips.CreateTrip.Commands.ClientCreateTrip;
+using Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Deliver.Api.Controller.Client;
+namespace Deliver.Api.Controller.Rider;
 
-[Route("api/client/trip")]
+[Route("api/rider/trip")]
 [ApiController]
 [Authorize(Roles = "Rider")]
-public class ClientTripController : ControllerBase
+public class RiderTripController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IUserContextService _userContextService;
 
-    public ClientTripController(
+    public RiderTripController(
         IMediator mediator,
         IMapper mapper,
         IUserContextService userContextService
@@ -35,13 +35,13 @@ public class ClientTripController : ControllerBase
         typeof(BaseResponse<string>),
         StatusCodes.Status401Unauthorized
     )]
-    public async Task<ActionResult<ClientCreateTripResponse>> CreateTrip(
-        [FromBody] ClientCreateTripRequest request
+    public async Task<ActionResult<RiderCreateTripResponse>> CreateTrip(
+        [FromBody] RiderCreateTripRequest request
     )
     {
-        var command = _mapper.Map<ClientCreateTripCommand>(request);
+        var command = _mapper.Map<RiderCreateTripCommand>(request);
 
-        command.ClientId = _userContextService.GetUserId();
+        command.RiderId = _userContextService.GetUserId();
 
         var response = await _mediator.Send(command);
 

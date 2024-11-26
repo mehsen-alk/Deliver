@@ -1,11 +1,11 @@
 using Deliver.Application.Features.Trips.Common.AddressRequest;
 using FluentValidation;
 
-namespace Deliver.Application.Features.Trips.CreateTrip.Commands.ClientCreateTrip;
+namespace Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
 
-public class ClientCreateTripValidator : AbstractValidator<ClientCreateTripCommand>
+public class RiderCreateTripValidator : AbstractValidator<RiderCreateTripCommand>
 {
-    public ClientCreateTripValidator()
+    public RiderCreateTripValidator()
     {
         RuleFor(t => t.Distance).GreaterThan(0);
 

@@ -9,15 +9,15 @@ public class Trip : AuditableEntity
 {
     public int Id { get; set; }
     public TripStatus Status { get; set; }
-    public int ClientId { get; set; }
+    public int RiderId { get; set; }
     public int? DriverId { get; set; }
     public int PickUpAddressId { get; set; }
     public int DropOfAddressId { get; set; }
     public double CalculatedDistance { get; set; }
     public double CalculatedDuration { get; set; }
 
-    [ForeignKey("ClientId")]
-    public virtual ApplicationUser Client { get; set; } = default!;
+    [ForeignKey("RiderId")]
+    public virtual ApplicationUser Rider { get; set; } = default!;
 
     [ForeignKey("DriverId")]
     public virtual ApplicationUser Driver { get; set; } = default!;

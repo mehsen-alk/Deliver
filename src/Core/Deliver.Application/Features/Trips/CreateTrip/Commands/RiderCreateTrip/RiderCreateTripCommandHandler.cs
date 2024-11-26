@@ -5,17 +5,17 @@ using Deliver.Domain.Entities;
 using Deliver.Domain.Enums;
 using MediatR;
 
-namespace Deliver.Application.Features.Trips.CreateTrip.Commands.ClientCreateTrip;
+namespace Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
 
 public class
-    ClientCreateTripCommandHandler : IRequestHandler<ClientCreateTripCommand,
-    ClientCreateTripResponse>
+    RiderCreateTripCommandHandler : IRequestHandler<RiderCreateTripCommand,
+    RiderCreateTripResponse>
 {
     private readonly IAsyncRepository<Address> _addressRepository;
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Trip> _tripRepository;
 
-    public ClientCreateTripCommandHandler(
+    public RiderCreateTripCommandHandler(
         IAsyncRepository<Trip> tripRepository,
         IMapper mapper,
         IAsyncRepository<Address> addressRepository
@@ -26,14 +26,14 @@ public class
         _addressRepository = addressRepository;
     }
 
-    public async Task<ClientCreateTripResponse> Handle(
-        ClientCreateTripCommand command,
+    public async Task<RiderCreateTripResponse> Handle(
+        RiderCreateTripCommand command,
         CancellationToken cancellationToken
     )
     {
-        var response = new ClientCreateTripResponse();
+        var response = new RiderCreateTripResponse();
 
-        var validator = new ClientCreateTripValidator();
+        var validator = new RiderCreateTripValidator();
         var validationResult = await validator.ValidateAsync(command);
 
         if (!validationResult.IsValid)
@@ -44,7 +44,7 @@ public class
             Type = AddressType.PickUp,
             Longitude = command.PickUpAddress.Longitude,
             Latitude = command.PickUpAddress.Latitude,
-            UserId = command.ClientId
+            UserId = command.RiderId
         };
 
         pickUp = await _addressRepository.AddAsync(pickUp);
@@ -54,14 +54,14 @@ public class
             Type = AddressType.PickUp,
             Longitude = command.PickUpAddress.Longitude,
             Latitude = command.PickUpAddress.Latitude,
-            UserId = command.ClientId
+            UserId = command.RiderId
         };
 
         dropOff = await _addressRepository.AddAsync(dropOff);
 
         var trip = new Trip
         {
-            ClientId = 1,
+            RiderId = 1,
             CalculatedDuration = command.Duration,
             CalculatedDistance = command.Distance,
             Status = TripStatus.Waiting,
@@ -70,7 +70,7 @@ public class
         };
 
         trip = await _tripRepository.AddAsync(trip);
-        response.Data = _mapper.Map<ClientCreateTripDto>(trip);
+        response.Data = _mapper.Map<RiderCreateTripDto>(trip);
 
         return response;
     }

@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DeliverDbContext))]
-    [Migration("20241126123927_Init")]
+    [Migration("20241126161926_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -97,14 +97,14 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "9256a195-7b23-4546-b739-926aae10509f",
+                            ConcurrencyStamp = "f99afb8d-84ed-488e-99c3-2ca95217b509",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "aaf55eb8-8c9f-4d22-b64c-b06c920fed07",
+                            ConcurrencyStamp = "4e7b7d68-d8e2-4687-b151-301654ccb176",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
@@ -186,15 +186,15 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "abde41b6-07f8-440b-a994-1177c0460d93",
+                            ConcurrencyStamp = "fd4120f5-4eed-4104-b061-e94e542e3a12",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohsen",
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAAkzx0POS5LHGjaI/j30xmritRXZOJKP+L0ylIf48q9Oi5LKB4HOlNf5h8FF7x8Ew==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDOgtTBqINPQOXbEjsC2SNg30JDby6ROw+16S2gtueDxWiIYm1lHO7y6P7v3QjOVYw==",
                             PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "04d681be-3237-41d2-882b-5d46595cbd5c",
+                            SecurityStamp = "eec2627f-dfda-4c25-9aed-f1c1136a3c31",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -202,15 +202,15 @@ namespace Persistence.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a37cfde4-90bc-435c-83d6-5e8eb0a6fc88",
+                            ConcurrencyStamp = "ea0b094e-4316-42c4-96c1-d36058995c0f",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohammed",
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJitd4K8fSM6CwikXzuoPoCxaaPNOT1ZQq8yBqbM14bGKO3kk33rFGYNx++564DgrQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENOIrPznzmLBmFJzG7jW9AEjw/D7akdITNi64cUmJKZGXYp7Jn1CpVUwzCzPf176/A==",
                             PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "7014ddb4-44de-4a36-a9c7-8badfe52dc65",
+                            SecurityStamp = "a2028685-2098-4e6e-b518-522b265c5d29",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });
@@ -258,9 +258,6 @@ namespace Persistence.Migrations
                     b.Property<double>("CalculatedDuration")
                         .HasColumnType("float");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
@@ -282,18 +279,21 @@ namespace Persistence.Migrations
                     b.Property<int>("PickUpAddressId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RiderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
 
                     b.HasIndex("DriverId");
 
                     b.HasIndex("DropOfAddressId");
 
                     b.HasIndex("PickUpAddressId");
+
+                    b.HasIndex("RiderId");
 
                     b.ToTable("Trips");
                 });
@@ -476,12 +476,6 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Deliver.Domain.Entities.Trip", b =>
                 {
-                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", "Driver")
                         .WithMany()
                         .HasForeignKey("DriverId");
@@ -498,13 +492,19 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", "Rider")
+                        .WithMany()
+                        .HasForeignKey("RiderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Driver");
 
                     b.Navigation("DropOfAddress");
 
                     b.Navigation("PickUpAddress");
+
+                    b.Navigation("Rider");
                 });
 
             modelBuilder.Entity("Deliver.Domain.Entities.TripLog", b =>

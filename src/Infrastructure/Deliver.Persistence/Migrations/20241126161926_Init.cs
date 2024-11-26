@@ -241,16 +241,16 @@ namespace Persistence.Migrations
                         principalTable: "Addresses",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Trips_AspNetUsers_ClientId",
-                        column: x => x.RiderId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Trips_AspNetUsers_DriverId",
                         column: x => x.DriverId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Trips_AspNetUsers_RiderId",
+                        column: x => x.RiderId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -284,8 +284,8 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "9256a195-7b23-4546-b739-926aae10509f", "Rider", "RIDER" },
-                    { 2, "aaf55eb8-8c9f-4d22-b64c-b06c920fed07", "Driver", "DRIVER" }
+                    { 1, "f99afb8d-84ed-488e-99c3-2ca95217b509", "Rider", "RIDER" },
+                    { 2, "4e7b7d68-d8e2-4687-b151-301654ccb176", "Driver", "DRIVER" }
                 });
 
             migrationBuilder.InsertData(
@@ -293,8 +293,8 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "abde41b6-07f8-440b-a994-1177c0460d93", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAEAAkzx0POS5LHGjaI/j30xmritRXZOJKP+L0ylIf48q9Oi5LKB4HOlNf5h8FF7x8Ew==", "221234", true, "04d681be-3237-41d2-882b-5d46595cbd5c", false, "221234" },
-                    { 2, 0, "a37cfde4-90bc-435c-83d6-5e8eb0a6fc88", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAEJitd4K8fSM6CwikXzuoPoCxaaPNOT1ZQq8yBqbM14bGKO3kk33rFGYNx++564DgrQ==", "331234", true, "7014ddb4-44de-4a36-a9c7-8badfe52dc65", false, "331234" }
+                    { 1, 0, "fd4120f5-4eed-4104-b061-e94e542e3a12", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAEDOgtTBqINPQOXbEjsC2SNg30JDby6ROw+16S2gtueDxWiIYm1lHO7y6P7v3QjOVYw==", "221234", true, "eec2627f-dfda-4c25-9aed-f1c1136a3c31", false, "221234" },
+                    { 2, 0, "ea0b094e-4316-42c4-96c1-d36058995c0f", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAENOIrPznzmLBmFJzG7jW9AEjw/D7akdITNi64cUmJKZGXYp7Jn1CpVUwzCzPf176/A==", "331234", true, "a2028685-2098-4e6e-b518-522b265c5d29", false, "331234" }
                 });
 
             migrationBuilder.InsertData(
@@ -356,11 +356,6 @@ namespace Persistence.Migrations
                 column: "TripId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_ClientId",
-                table: "Trips",
-                column: "RiderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Trips_DriverId",
                 table: "Trips",
                 column: "DriverId");
@@ -374,6 +369,11 @@ namespace Persistence.Migrations
                 name: "IX_Trips_PickUpAddressId",
                 table: "Trips",
                 column: "PickUpAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trips_RiderId",
+                table: "Trips",
+                column: "RiderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VerificationCodes_UserId",

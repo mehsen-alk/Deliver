@@ -1,74 +1,75 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Exceptions;
+using Deliver.Domain.Entities.Auth;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
-namespace Deliver.Identity.Services
+namespace Deliver.Identity.Services;
+
+public class UserContextService : IUserContextService
 {
-    public class UserContextService : IUserContextService
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly UserManager<ApplicationUser> _userManager;
+
+
+    public UserContextService(IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        _httpContextAccessor = httpContextAccessor;
+        _userManager = userManager;
+    }
 
-        public UserContextService(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
+    public int GetUserId()
+    {
+        var user = GetUserClaims();
 
-        public int GetUserId()
-        {
-            var user = GetUserClaims();
+        var idAsString = user?.FindFirstValue("id");
 
-            var idAsString = user?.FindFirstValue("id");
+        if (idAsString == null) throw new BadRequestException("the token dose not have the user id.");
 
-            if (idAsString == null)
-            {
-                throw new BadRequestException("the token dose not have the user id.");
-            }
+        return int.Parse(idAsString);
+    }
 
-            return int.Parse(idAsString);
+    public string GetUserNameIdentifier()
+    {
+        var user = GetUserClaims();
 
-        }
+        var userName = user?.FindFirstValue("userName");
 
-        public string GetUserNameIdentifier()
-        {
-            var user = GetUserClaims();
+        if (string.IsNullOrEmpty(userName))
+            throw new BadRequestException("the token dose not have the user name identifier.");
 
-            var userName = user?.FindFirstValue("userName");
+        return userName;
+    }
 
-            if (userName == null || userName.Length == 0)
-            {
-                throw new BadRequestException("the token dose not have the user name identifier.");
-            }
+    public string GetUserName()
+    {
+        var user = GetUserClaims();
 
-            return userName;
-        }
+        var userName = user?.FindFirstValue("name");
 
-        public string GetUserName()
-        {
-            var user = GetUserClaims();
+        if (userName == null) throw new BadRequestException("the token dose not have the user name identifier.");
 
-            var userName = user?.FindFirstValue("name");
+        return userName;
+    }
 
-            if (userName == null)
-            {
-                throw new BadRequestException("the token dose not have the user name identifier.");
-            }
+    public ApplicationUser GetUser()
+    {
+        var userId = GetUserId();
 
-            return userName;
-        }
+        var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
 
-        private ClaimsPrincipal GetUserClaims()
-        {
-            var user = _httpContextAccessor.HttpContext?.User;
+        if (user == null) throw new BadRequestException("user not found.");
 
-            if (user == null)
-            {
-                throw new BadRequestException("the token is in bad shape.");
-            }
+        return user;
+    }
 
-            return user;
-        }
+    private ClaimsPrincipal GetUserClaims()
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
 
+        if (user == null) throw new BadRequestException("the token is in bad shape.");
+
+        return user;
     }
 }

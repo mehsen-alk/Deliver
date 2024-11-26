@@ -1,9 +1,11 @@
-namespace Deliver.Application.Contracts.Identity
+using Deliver.Domain.Entities.Auth;
+
+namespace Deliver.Application.Contracts.Identity;
+
+public interface IUserContextService
 {
-    public interface IUserContextService
-    {
-        int GetUserId();
-        string GetUserNameIdentifier();
-        string GetUserName();
-    }
+    int GetUserId();
+    ApplicationUser GetUser();
+    string GetUserNameIdentifier();
+    string GetUserName();
 }

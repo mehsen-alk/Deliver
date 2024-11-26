@@ -22,7 +22,7 @@ namespace Deliver.Identity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Deliver.Identity.Models.ApplicationRole", b =>
+            modelBuilder.Entity("Deliver.Domain.Entities.Auth.ApplicationRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,20 +55,20 @@ namespace Deliver.Identity.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "6f765046-cae4-4415-86ff-5ba9f3c8a288",
+                            ConcurrencyStamp = "9d83cd90-5db1-48ef-8a95-84addaf32b40",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "1124b8a0-a76e-431e-a4e1-866aa63721ee",
+                            ConcurrencyStamp = "01082922-f508-433c-9e5e-c3a3f7940a21",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
                 });
 
-            modelBuilder.Entity("Deliver.Identity.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Deliver.Domain.Entities.Auth.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,15 +144,15 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2732b41c-62c8-428e-b67f-6361d664030b",
+                            ConcurrencyStamp = "00f81e90-307b-46f7-bf5e-3b307187b8d5",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohsen",
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAECAPn+I624YgpwND0+XzrawxI05o7082t71Or0HtVDxJ14MPaSqbMI1BeUDmAZnA6g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDj1cbY0PTEJIUIKbKkU5F01lk0udP4CoNUG/iD8izct0ovD/5PBz5DcEu/w975LQQ==",
                             PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "ccdcfbb9-19f7-429d-a417-a4e1aa2ae1b6",
+                            SecurityStamp = "c45c2f05-6d22-4d24-827d-575337add7b1",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -160,21 +160,21 @@ namespace Deliver.Identity.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1015cd91-baff-47ea-b1df-18d79706355e",
+                            ConcurrencyStamp = "1d17b482-357e-495e-8204-b10e5f5866ce",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohammed",
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOrZrr+H4OmOnBFEUQgMGsUTdj+tyXhGii6KmWqy1lCDIAuJkp339AW/1TT2Qg5hrA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEMmgOTxV3VFGXo6GmAFRcYLoq19Q7SHy6YtVpPyIHC3gnuUuVUAz0IoGjx8LTbujw==",
                             PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "1d9dc932-3bd6-457c-9215-d526b9cd8ff0",
+                            SecurityStamp = "82978785-af5d-4f3c-b521-624b23205c7e",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });
                 });
 
-            modelBuilder.Entity("Deliver.Identity.Models.VerificationCode", b =>
+            modelBuilder.Entity("Deliver.Domain.Entities.Auth.VerificationCode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -317,9 +317,9 @@ namespace Deliver.Identity.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Deliver.Identity.Models.VerificationCode", b =>
+            modelBuilder.Entity("Deliver.Domain.Entities.Auth.VerificationCode", b =>
                 {
-                    b.HasOne("Deliver.Identity.Models.ApplicationUser", "User")
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -330,7 +330,7 @@ namespace Deliver.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Deliver.Identity.Models.ApplicationRole", null)
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -339,7 +339,7 @@ namespace Deliver.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Deliver.Identity.Models.ApplicationUser", null)
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -348,7 +348,7 @@ namespace Deliver.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Deliver.Identity.Models.ApplicationUser", null)
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -357,13 +357,13 @@ namespace Deliver.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Deliver.Identity.Models.ApplicationRole", null)
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Deliver.Identity.Models.ApplicationUser", null)
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -372,7 +372,7 @@ namespace Deliver.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Deliver.Identity.Models.ApplicationUser", null)
+                    b.HasOne("Deliver.Domain.Entities.Auth.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

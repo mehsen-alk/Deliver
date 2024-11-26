@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Deliver.Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -188,8 +188,8 @@ namespace Deliver.Identity.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "6f765046-cae4-4415-86ff-5ba9f3c8a288", "Rider", "RIDER" },
-                    { 2, "1124b8a0-a76e-431e-a4e1-866aa63721ee", "Driver", "DRIVER" }
+                    { 1, "9d83cd90-5db1-48ef-8a95-84addaf32b40", "Rider", "RIDER" },
+                    { 2, "01082922-f508-433c-9e5e-c3a3f7940a21", "Driver", "DRIVER" }
                 });
 
             migrationBuilder.InsertData(
@@ -197,8 +197,8 @@ namespace Deliver.Identity.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "2732b41c-62c8-428e-b67f-6361d664030b", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAECAPn+I624YgpwND0+XzrawxI05o7082t71Or0HtVDxJ14MPaSqbMI1BeUDmAZnA6g==", "221234", true, "ccdcfbb9-19f7-429d-a417-a4e1aa2ae1b6", false, "221234" },
-                    { 2, 0, "1015cd91-baff-47ea-b1df-18d79706355e", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAEOrZrr+H4OmOnBFEUQgMGsUTdj+tyXhGii6KmWqy1lCDIAuJkp339AW/1TT2Qg5hrA==", "331234", true, "1d9dc932-3bd6-457c-9215-d526b9cd8ff0", false, "331234" }
+                    { 1, 0, "00f81e90-307b-46f7-bf5e-3b307187b8d5", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAEDj1cbY0PTEJIUIKbKkU5F01lk0udP4CoNUG/iD8izct0ovD/5PBz5DcEu/w975LQQ==", "221234", true, "c45c2f05-6d22-4d24-827d-575337add7b1", false, "221234" },
+                    { 2, 0, "1d17b482-357e-495e-8204-b10e5f5866ce", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAEEMmgOTxV3VFGXo6GmAFRcYLoq19Q7SHy6YtVpPyIHC3gnuUuVUAz0IoGjx8LTbujw==", "331234", true, "82978785-af5d-4f3c-b521-624b23205c7e", false, "331234" }
                 });
 
             migrationBuilder.InsertData(

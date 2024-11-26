@@ -26,10 +26,4 @@
         <ProjectReference Include="..\..\Infrastructure\Deliver.Persistence\Deliver.Persistence.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="Deliver.Persistence">
-            <HintPath>bin\Debug\net8.0\Deliver.Persistence.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
 </Project>

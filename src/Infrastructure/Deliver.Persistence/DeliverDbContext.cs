@@ -1,5 +1,6 @@
 using Deliver.Application.Contracts;
 using Deliver.Domain.common;
+using Deliver.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence;
@@ -12,12 +13,15 @@ public class DeliverDbContext : DbContext
     {
     }
 
-    public DeliverDbContext(DbContextOptions<DeliverDbContext> options, ILoggedInUserService loggedInUserService) : base(options)
+    public DeliverDbContext(DbContextOptions<DeliverDbContext> options, ILoggedInUserService loggedInUserService) :
+        base(options)
     {
         _loggedInUserService = loggedInUserService;
     }
 
-    // public DbSet<Event> Events { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<Trip> Trips { get; set; }
+    public DbSet<TripLog> TripLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,14 +34,31 @@ public class DeliverDbContext : DbContext
         //     CategoryId = concertGuid,
         //     Name = "Concerts"
         // });
-        
+
+
+        modelBuilder.Entity<Trip>()
+            .HasOne(t => t.PickUpAddress)
+            .WithMany()
+            .HasForeignKey(t => t.PickUpAddressId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Trip>()
+            .HasOne(t => t.PickUpAddress)
+            .WithMany()
+            .HasForeignKey(t => t.PickUpAddressId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Address>()
+            .HasOne(t => t.User)
+            .WithMany()
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
-        {
-            switch (entry.State) 
+            switch (entry.State)
             {
                 case EntityState.Added:
                     entry.Entity.CreatedDate = DateTime.Now;
@@ -48,8 +69,7 @@ public class DeliverDbContext : DbContext
                     entry.Entity.LastModifiedBy = _loggedInUserService?.UserId;
                     break;
             }
-        }
+
         return base.SaveChangesAsync(cancellationToken);
     }
 }
-

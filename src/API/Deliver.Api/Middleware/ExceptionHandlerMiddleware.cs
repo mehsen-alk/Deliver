@@ -1,75 +1,86 @@
-﻿using Deliver.Application.Exceptions;
+﻿using System.Net;
+using Deliver.Application.Exceptions;
 using Deliver.Application.Responses;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Net;
 
-namespace Deliver.Api.Middleware
+namespace Deliver.Api.Middleware;
+
+public class ExceptionHandlerMiddleware
 {
-    public class ExceptionHandlerMiddleware
+    private readonly RequestDelegate _next;
+
+    public ExceptionHandlerMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public ExceptionHandlerMiddleware(RequestDelegate next)
+    public async Task Invoke(HttpContext context)
+    {
+        try
         {
-            _next = next;
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            await ConvertException(context, ex);
+        }
+    }
+
+    private Task ConvertException(HttpContext context, Exception exception)
+    {
+        var response = new ErrorResponse<object>
+        {
+            StatusCode = (int)HttpStatusCode.InternalServerError,
+            Message = "Internal Server Error",
+            Err = exception.StackTrace,
+            Data = null
+        };
+
+        context.Response.ContentType = "application/json";
+
+        switch (exception)
+        {
+            case ValidationException validationException:
+                response = new ValidationErrorResponse<object>
+                {
+                    ValidationErrors = validationException.ValidationErrors,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Message = validationException.ValidationErrors.First(),
+                    Data = response.Data,
+                    Err = "One or more validation errors occurred."
+                };
+                break;
+            case BadRequestException badRequestException:
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                break;
+            case NotFoundException notFoundException:
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                break;
+            case CredentialNotValid:
+                response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                break;
+            case Exception ex:
+                response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                break;
         }
 
-        public async Task Invoke(HttpContext context)
-        {
-            try
+        context.Response.StatusCode = response.StatusCode;
+
+        return ReturnException(context, response);
+    }
+
+    private Task ReturnException(HttpContext context, object response)
+    {
+        var result = JsonConvert.SerializeObject(
+            response,
+            new JsonSerializerSettings
             {
-                await _next(context);
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
             }
-            catch (Exception ex)
-            {
-                await ConvertException(context, ex);
-            }
-        }
-
-        private Task ConvertException(HttpContext context, Exception exception)
-        {
-            HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
-
-            context.Response.ContentType = "application/json";
-
-            switch (exception)
-            {
-                case ValidationException validationException:
-                    httpStatusCode = HttpStatusCode.BadRequest;
-                    break;
-                case BadRequestException badRequestException:
-                    httpStatusCode = HttpStatusCode.BadRequest;
-                    break;
-                case NotFoundException notFoundException:
-                    httpStatusCode = HttpStatusCode.NotFound;
-                    break;
-                case CredentialNotValid:
-                    httpStatusCode = HttpStatusCode.Unauthorized;
-                    break;
-                case Exception ex:
-                    httpStatusCode = HttpStatusCode.InternalServerError;
-                    break;
-            }
-
-            context.Response.StatusCode = (int)httpStatusCode;
+        );
 
 
-            var result = JsonConvert.SerializeObject(
-                    new BaseResponse<String>()
-                    {
-                        StatusCode = (int)httpStatusCode,
-                        Message = exception.Message,
-                        Data = exception.StackTrace,
-                    },
-                    new JsonSerializerSettings
-                    {
-                        ContractResolver = new CamelCasePropertyNamesContractResolver()
-                    }
-                );
-
-
-            return context.Response.WriteAsync(result);
-        }
+        return context.Response.WriteAsync(result);
     }
 }

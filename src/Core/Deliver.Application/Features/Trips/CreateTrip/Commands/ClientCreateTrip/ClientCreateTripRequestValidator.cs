@@ -7,18 +7,18 @@ public class ClientCreateTripValidator : AbstractValidator<ClientCreateTripComma
 {
     public ClientCreateTripValidator()
     {
-        RuleFor(t => t.Distance)
-            .GreaterThan(0);
+        RuleFor(t => t.Distance).GreaterThan(0);
 
-        RuleFor(t => t.Duration)
-            .NotEmpty();
+        RuleFor(t => t.Duration).NotEmpty();
 
         RuleFor(t => t.PickUpAddress)
-            .NotEmpty().WithMessage("Please specify a valid Pick Up Address")
+            .NotEmpty()
+            .WithMessage("Please specify a valid Pick Up Address")
             .SetValidator(new AddressRequestValidator());
 
         RuleFor(t => t.DropOfAddress)
-            .NotEmpty().WithMessage("Please specify a valid Drop Of Address")
+            .NotEmpty()
+            .WithMessage("Please specify a valid Drop Of Address")
             .SetValidator(new AddressRequestValidator());
     }
 }

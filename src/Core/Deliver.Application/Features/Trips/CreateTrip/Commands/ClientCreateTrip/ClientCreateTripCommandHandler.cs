@@ -7,29 +7,37 @@ using MediatR;
 
 namespace Deliver.Application.Features.Trips.CreateTrip.Commands.ClientCreateTrip;
 
-public class ClientCreateTripCommandHandler : IRequestHandler<ClientCreateTripCommand, ClientCreateTripResponse>
+public class
+    ClientCreateTripCommandHandler : IRequestHandler<ClientCreateTripCommand,
+    ClientCreateTripResponse>
 {
     private readonly IAsyncRepository<Address> _addressRepository;
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Trip> _tripRepository;
 
-    public ClientCreateTripCommandHandler(IAsyncRepository<Trip> tripRepository, IMapper mapper,
-        IAsyncRepository<Address> addressRepository)
+    public ClientCreateTripCommandHandler(
+        IAsyncRepository<Trip> tripRepository,
+        IMapper mapper,
+        IAsyncRepository<Address> addressRepository
+    )
     {
         _tripRepository = tripRepository;
         _mapper = mapper;
         _addressRepository = addressRepository;
     }
 
-    public async Task<ClientCreateTripResponse> Handle(ClientCreateTripCommand command,
-        CancellationToken cancellationToken)
+    public async Task<ClientCreateTripResponse> Handle(
+        ClientCreateTripCommand command,
+        CancellationToken cancellationToken
+    )
     {
         var response = new ClientCreateTripResponse();
 
         var validator = new ClientCreateTripValidator();
         var validationResult = await validator.ValidateAsync(command);
 
-        if (!validationResult.IsValid) throw new ValidationException(validationResult);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult);
 
         var pickUp = new Address
         {

@@ -25,8 +25,11 @@ public class BaseResponse<T> where T : class?
     public string Message { get; set; }
     public T? Data { get; set; }
 
-    public static BaseResponse<T> FetchedSuccessfully(int statusCode = 200, string message = "fetched successfully",
-        T? data = null)
+    public static BaseResponse<T> FetchedSuccessfully(
+        int statusCode = 200,
+        string message = "fetched successfully",
+        T? data = null
+    )
     {
         return new BaseResponse<T>
         {
@@ -36,8 +39,11 @@ public class BaseResponse<T> where T : class?
         };
     }
 
-    public static BaseResponse<T> CreatedSuccessfully(int statusCode = 201, string message = "created successfully",
-        T? data = null)
+    public static BaseResponse<T> CreatedSuccessfully(
+        int statusCode = 201,
+        string message = "created successfully",
+        T? data = null
+    )
     {
         return new BaseResponse<T>
         {
@@ -47,8 +53,11 @@ public class BaseResponse<T> where T : class?
         };
     }
 
-    public static BaseResponse<T> UpdatedSuccessfully(int statusCode = 202, string message = "updated successfully",
-        T? data = null)
+    public static BaseResponse<T> UpdatedSuccessfully(
+        int statusCode = 202,
+        string message = "updated successfully",
+        T? data = null
+    )
     {
         return new BaseResponse<T>
         {

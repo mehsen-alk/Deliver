@@ -46,6 +46,11 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
 
     public virtual async Task<IReadOnlyList<T>> GetPagedResponseAsync(int page, int size)
     {
-        return await _dbContext.Set<T>().Skip((page - 1) * size).Take(size).AsNoTracking().ToListAsync();
+        return await _dbContext
+            .Set<T>()
+            .Skip((page - 1) * size)
+            .Take(size)
+            .AsNoTracking()
+            .ToListAsync();
     }
 }

@@ -8,7 +8,8 @@ public class ValidationException : ApplicationException
     {
         ValidationErrors = new List<string>();
 
-        foreach (var validationError in validationResult.Errors) ValidationErrors.Add(validationError.ErrorMessage);
+        foreach (var validationError in validationResult.Errors)
+            ValidationErrors.Add(validationError.ErrorMessage);
     }
 
     public List<string> ValidationErrors { get; set; }

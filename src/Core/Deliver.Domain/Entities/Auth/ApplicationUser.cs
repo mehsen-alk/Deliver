@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Deliver.Domain.Entities.Auth
+namespace Deliver.Domain.Entities.Auth;
+
+public class ApplicationUser : IdentityUser<int>
 {
-    public class ApplicationUser : IdentityUser<int>
-    {
-        public required string Name { get; set; }
-    }
+    public required string Name { get; set; }
 }

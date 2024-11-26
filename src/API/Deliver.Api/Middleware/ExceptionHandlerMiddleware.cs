@@ -86,7 +86,6 @@ public class ExceptionHandlerMiddleware
             }
         );
 
-
         return context.Response.WriteAsync(result);
     }
 }

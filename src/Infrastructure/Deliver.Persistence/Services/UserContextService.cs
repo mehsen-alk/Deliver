@@ -12,7 +12,10 @@ public class UserContextService : IUserContextService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public UserContextService(IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
+    public UserContextService(
+        IHttpContextAccessor httpContextAccessor,
+        UserManager<ApplicationUser> userManager
+    )
     {
         _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
@@ -24,7 +27,8 @@ public class UserContextService : IUserContextService
 
         var idAsString = user?.FindFirstValue("id");
 
-        if (idAsString == null) throw new BadRequestException("the token dose not have the user id.");
+        if (idAsString == null)
+            throw new BadRequestException("the token dose not have the user id.");
 
         return int.Parse(idAsString);
     }
@@ -36,7 +40,9 @@ public class UserContextService : IUserContextService
         var userName = user?.FindFirstValue("userName");
 
         if (string.IsNullOrEmpty(userName))
-            throw new BadRequestException("the token dose not have the user name identifier.");
+            throw new BadRequestException(
+                "the token dose not have the user name identifier."
+            );
 
         return userName;
     }
@@ -47,7 +53,10 @@ public class UserContextService : IUserContextService
 
         var userName = user?.FindFirstValue("name");
 
-        if (userName == null) throw new BadRequestException("the token dose not have the user name identifier.");
+        if (userName == null)
+            throw new BadRequestException(
+                "the token dose not have the user name identifier."
+            );
 
         return userName;
     }
@@ -58,7 +67,8 @@ public class UserContextService : IUserContextService
 
         var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
 
-        if (user == null) throw new BadRequestException("user not found.");
+        if (user == null)
+            throw new BadRequestException("user not found.");
 
         return user;
     }
@@ -67,7 +77,8 @@ public class UserContextService : IUserContextService
     {
         var user = _httpContextAccessor.HttpContext?.User;
 
-        if (user == null) throw new BadRequestException("the token is in bad shape.");
+        if (user == null)
+            throw new BadRequestException("the token is in bad shape.");
 
         return user;
     }

@@ -18,30 +18,34 @@ public static class StartupExtensions
 
         builder.Services.AddApplicationServices();
 
-        builder.Services.AddControllers().ConfigureApiBehaviorOptions(
-            options =>
-            {
-                options.InvalidModelStateResponseFactory = context =>
+        builder
+            .Services.AddControllers()
+            .ConfigureApiBehaviorOptions(
+                options =>
                 {
-                    var errors = context.ModelState
-                        .Where(x => x.Value?.Errors.Count > 0)
-                        .ToDictionary(
-                            kvp => kvp.Key,
-                            kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
-                        );
-
-                    var errorResponse = new
+                    options.InvalidModelStateResponseFactory = context =>
                     {
-                        statusCode = 400,
-                        message = "There are validation errors.",
-                        data = errors,
-                        traceId = context.HttpContext.TraceIdentifier
-                    };
+                        var errors = context
+                            .ModelState.Where(x => x.Value?.Errors.Count > 0)
+                            .ToDictionary(
+                                kvp => kvp.Key,
+                                kvp => kvp
+                                    .Value?.Errors.Select(e => e.ErrorMessage)
+                                    .ToArray()
+                            );
 
-                    return new BadRequestObjectResult(errorResponse);
-                };
-            }
-        );
+                        var errorResponse = new
+                        {
+                            statusCode = 400,
+                            message = "There are validation errors.",
+                            data = errors,
+                            traceId = context.HttpContext.TraceIdentifier
+                        };
+
+                        return new BadRequestObjectResult(errorResponse);
+                    };
+                }
+            );
 
         builder.Services.AddIdentityServices(builder.Configuration);
         builder.Services.AddPersistenceServices(builder.Configuration);
@@ -49,7 +53,13 @@ public static class StartupExtensions
         builder.Services.AddCors(
             options =>
             {
-                options.AddPolicy("Open", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
+                options.AddPolicy(
+                    "Open",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    }
+                );
             }
         );
 
@@ -61,11 +71,13 @@ public static class StartupExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("../swagger/v1/swagger.json", "Deliver API");
-                options.RoutePrefix = string.Empty;
-            });
+            app.UseSwaggerUI(
+                options =>
+                {
+                    options.SwaggerEndpoint("../swagger/v1/swagger.json", "Deliver API");
+                    options.RoutePrefix = string.Empty;
+                }
+            );
             app.UseDeveloperExceptionPage();
         }
 
@@ -82,52 +94,64 @@ public static class StartupExtensions
 
     public static void AddSwagger(this IServiceCollection services)
     {
-        services.AddSwaggerGen(c =>
-        {
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        services.AddSwaggerGen(
+            c =>
             {
-                Description = @"JWT Authorization header using the Bearer scheme.",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
-            });
-
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
+                c.AddSecurityDefinition(
+                    "Bearer",
                     new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        Description =
+                            @"JWT Authorization header using the Bearer scheme.",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer"
+                    }
+                );
+
+                c.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement
+                    {
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header
-                    },
-                    new List<string>()
-                }
-            });
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                },
+                                Scheme = "oauth2",
+                                Name = "Bearer",
+                                In = ParameterLocation.Header
+                            },
+                            new List<string>()
+                        }
+                    }
+                );
 
-            c.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Version = "v1",
-                Title = "Deliver API"
-            });
+                c.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Deliver API"
+                    }
+                );
 
-            c.OperationFilter<FileResultContentTypeOperationFilter>();
+                c.OperationFilter<FileResultContentTypeOperationFilter>();
 
-            // Set the comments path for the Swagger JSON and UI.
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
-        });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            }
+        );
     }
 
     /// <summary>
-    ///     Indicates swashbuckle should expose the result of the method as a file in open api (see
+    ///     Indicates swashbuckle should expose the result of the method as a file in open api
+    ///     (see
     ///     https://swagger.io/docs/specification/describing-responses/)
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
@@ -148,29 +172,37 @@ public static class StartupExtensions
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            var requestAttribute = context.MethodInfo.GetCustomAttributes(typeof(FileResultContentTypeAttribute), false)
+            var requestAttribute = context
+                .MethodInfo.GetCustomAttributes(
+                    typeof(FileResultContentTypeAttribute),
+                    false
+                )
                 .Cast<FileResultContentTypeAttribute>()
                 .FirstOrDefault();
 
             if (requestAttribute == null) return;
 
             operation.Responses.Clear();
-            operation.Responses.Add("200", new OpenApiResponse
-            {
-                Content = new Dictionary<string, OpenApiMediaType>
+            operation.Responses.Add(
+                "200",
+                new OpenApiResponse
                 {
+                    Content = new Dictionary<string, OpenApiMediaType>
                     {
-                        requestAttribute.ContentType, new OpenApiMediaType
                         {
-                            Schema = new OpenApiSchema
+                            requestAttribute.ContentType,
+                            new OpenApiMediaType
                             {
-                                Type = "string",
-                                Format = "binary"
+                                Schema = new OpenApiSchema
+                                {
+                                    Type = "string",
+                                    Format = "binary"
+                                }
                             }
                         }
                     }
                 }
-            });
+            );
         }
     }
 }

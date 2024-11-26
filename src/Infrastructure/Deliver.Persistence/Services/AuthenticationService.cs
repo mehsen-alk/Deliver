@@ -23,8 +23,12 @@ public class AuthenticationService : IAuthenticationService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public AuthenticationService(UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings,
-        SignInManager<ApplicationUser> signInManager, IdentityRepository identityRepository)
+    public AuthenticationService(
+        UserManager<ApplicationUser> userManager,
+        IOptions<JwtSettings> jwtSettings,
+        SignInManager<ApplicationUser> signInManager,
+        IdentityRepository identityRepository
+    )
     {
         _userManager = userManager;
         _jwtSettings = jwtSettings.Value;
@@ -102,13 +106,18 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task VerifyPhoneAsync(int userId, string code)
     {
-        var verificationCode = await _identityRepository.GetVerificationCodeAsync(userId, code);
+        var verificationCode = await _identityRepository.GetVerificationCodeAsync(
+            userId,
+            code
+        );
 
-        if (verificationCode == null) throw new NotFoundException("code not found");
+        if (verificationCode == null)
+            throw new NotFoundException("code not found");
 
         var user = await _userManager.FindByIdAsync(userId.ToString());
 
-        if (user == null) throw new NotFoundException("user not found");
+        if (user == null)
+            throw new NotFoundException("user not found");
 
         user.PhoneNumberConfirmed = true;
         verificationCode.IsUsed = true;
@@ -156,15 +165,23 @@ public class AuthenticationService : IAuthenticationService
     {
         var user = await _userManager.FindByNameAsync(request.UserName);
 
-        if (user == null) throw new CredentialNotValid("incorrect user name or password 56");
+        if (user == null)
+            throw new CredentialNotValid("incorrect user name or password 56");
 
-        var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
+        var result = await _signInManager.PasswordSignInAsync(
+            request.UserName,
+            request.Password,
+            false,
+            false
+        );
 
-        if (!result.Succeeded) throw new CredentialNotValid("incorrect user name or password: 43");
+        if (!result.Succeeded)
+            throw new CredentialNotValid("incorrect user name or password: 43");
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        if (!roles.Contains(role)) throw new CredentialNotValid("incorrect user name or password 55");
+        if (!roles.Contains(role))
+            throw new CredentialNotValid("incorrect user name or password 55");
 
         return user;
     }
@@ -173,7 +190,8 @@ public class AuthenticationService : IAuthenticationService
     {
         var existingUser = await _userManager.FindByNameAsync(request.Phone);
 
-        if (existingUser != null) throw new CredentialNotValid($"Username '{request.Phone}' already exists.");
+        if (existingUser != null)
+            throw new CredentialNotValid($"Username '{request.Phone}' already exists.");
 
         var user = new ApplicationUser
         {
@@ -184,11 +202,13 @@ public class AuthenticationService : IAuthenticationService
 
         var result = await _userManager.CreateAsync(user, request.Password);
 
-        if (!result.Succeeded) throw new Exception($"{result.Errors}");
+        if (!result.Succeeded)
+            throw new Exception($"{result.Errors}");
 
         await _userManager.AddToRoleAsync(user, role);
 
-        if (!result.Succeeded) throw new Exception($"{result.Errors}");
+        if (!result.Succeeded)
+            throw new Exception($"{result.Errors}");
 
         return user;
     }
@@ -200,21 +220,33 @@ public class AuthenticationService : IAuthenticationService
 
         var roleClaims = new List<Claim>();
 
-        for (var i = 0; i < roles.Count; i++) roleClaims.Add(new Claim("roles", roles[i]));
+        for (var i = 0; i < roles.Count; i++)
+            roleClaims.Add(new Claim("roles", roles[i]));
 
         var claims = new[]
-        {
-            new Claim("id", user.Id.ToString()),
-            new Claim("userName", user.UserName ?? ""),
-            new Claim("name", user.Name ?? "")
-        }.Union(userClaims).Union(roleClaims);
+            {
+                new Claim("id", user.Id.ToString()),
+                new Claim("userName", user.UserName ?? ""),
+                new Claim("name", user.Name ?? "")
+            }
+            .Union(userClaims)
+            .Union(roleClaims);
 
-        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-        var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+        var symmetricSecurityKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(_jwtSettings.Key)
+        );
+        var signingCredentials = new SigningCredentials(
+            symmetricSecurityKey,
+            SecurityAlgorithms.HmacSha256
+        );
 
-        var jwtSecurityToken = new JwtSecurityToken(_jwtSettings.Issuer, _jwtSettings.Audience, claims,
+        var jwtSecurityToken = new JwtSecurityToken(
+            _jwtSettings.Issuer,
+            _jwtSettings.Audience,
+            claims,
             expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-            signingCredentials: signingCredentials);
+            signingCredentials: signingCredentials
+        );
         return jwtSecurityToken;
     }
 }

@@ -1,7 +1,8 @@
-namespace Deliver.Application.Exceptions
+namespace Deliver.Application.Exceptions;
+
+public class CredentialNotValid : ApplicationException
 {
-    public class CredentialNotValid : ApplicationException
+    public CredentialNotValid(string message) : base(message)
     {
-        public CredentialNotValid(string message) : base(message) { }
     }
 }

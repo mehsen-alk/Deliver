@@ -12,7 +12,9 @@ public class HealthController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     public ActionResult CheckServerHealth()
     {
-        return Ok(BaseResponse<string>.FetchedSuccessfully(data: "server is up and running"));
+        return Ok(
+            BaseResponse<string>.FetchedSuccessfully(data: "server is up and running")
+        );
     }
 
     [HttpGet("driver")]
@@ -20,7 +22,9 @@ public class HealthController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     public ActionResult CheckServerHealthDriver()
     {
-        return Ok(BaseResponse<string>.FetchedSuccessfully(data: "server is up and running"));
+        return Ok(
+            BaseResponse<string>.FetchedSuccessfully(data: "server is up and running")
+        );
     }
 
     [HttpGet("rider")]
@@ -28,6 +32,8 @@ public class HealthController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     public ActionResult CheckServerHealthRider()
     {
-        return Ok(BaseResponse<string>.FetchedSuccessfully(data: "server is up and running"));
+        return Ok(
+            BaseResponse<string>.FetchedSuccessfully(data: "server is up and running")
+        );
     }
 }

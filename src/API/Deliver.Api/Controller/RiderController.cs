@@ -35,7 +35,10 @@ public class RiderController : ControllerBase
     [HttpPost("signin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+        typeof(BaseResponse<string>),
+        StatusCodes.Status401Unauthorized
+    )]
     public async Task<ActionResult<SignInResponse>> SignInAsync(SignInRequest request)
     {
         return Ok(await _authenticationService.RiderSignInAsync(request));

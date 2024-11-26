@@ -16,8 +16,10 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
     {
     }
 
-    public DeliverDbContext(DbContextOptions<DeliverDbContext> options, ILoggedInUserService loggedInUserService) :
-        base(options)
+    public DeliverDbContext(
+        DbContextOptions<DeliverDbContext> options,
+        ILoggedInUserService loggedInUserService
+    ) : base(options)
     {
         _loggedInUserService = loggedInUserService;
     }
@@ -36,19 +38,24 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         //seed data, added through migrations
 
         // seed roles
-        modelBuilder.Entity<ApplicationRole>().HasData(new ApplicationRole
-        {
-            Id = 1,
-            Name = "Rider",
-            NormalizedName = "RIDER",
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        }, new ApplicationRole
-        {
-            Id = 2,
-            Name = "Driver",
-            NormalizedName = "DRIVER",
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
+        modelBuilder
+        .Entity<ApplicationRole>()
+        .HasData(
+            new ApplicationRole
+            {
+                Id = 1,
+                Name = "Rider",
+                NormalizedName = "RIDER",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+            new ApplicationRole
+            {
+                Id = 2,
+                Name = "Driver",
+                NormalizedName = "DRIVER",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            }
+        );
 
         // seed users
         // a hasher to hash the password before seeding the user to the db
@@ -81,20 +88,46 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         modelBuilder.Entity<ApplicationUser>().HasData(user1, user2);
 
         // seed users role
-        modelBuilder.Entity<IdentityUserRole<int>>().HasData(new IdentityUserRole<int> { RoleId = 1, UserId = 1 },
-            new IdentityUserRole<int> { RoleId = 2, UserId = 2 });
+        modelBuilder
+            .Entity<IdentityUserRole<int>>()
+            .HasData(
+                new IdentityUserRole<int>
+                {
+                    RoleId = 1,
+                    UserId = 1
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 2,
+                    UserId = 2
+                }
+            );
 
-        modelBuilder.Entity<Trip>().HasOne(t => t.PickUpAddress).WithMany().HasForeignKey(t => t.PickUpAddressId)
+        modelBuilder
+            .Entity<Trip>()
+            .HasOne(t => t.PickUpAddress)
+            .WithMany()
+            .HasForeignKey(t => t.PickUpAddressId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<Trip>().HasOne(t => t.PickUpAddress).WithMany().HasForeignKey(t => t.PickUpAddressId)
+        modelBuilder
+            .Entity<Trip>()
+            .HasOne(t => t.PickUpAddress)
+            .WithMany()
+            .HasForeignKey(t => t.PickUpAddressId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<Address>().HasOne(t => t.User).WithMany().HasForeignKey(t => t.UserId)
+        modelBuilder
+            .Entity<Address>()
+            .HasOne(t => t.User)
+            .WithMany()
+            .HasForeignKey(t => t.UserId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+    public override Task<int> SaveChangesAsync(
+        CancellationToken cancellationToken = new()
+    )
     {
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             switch (entry.State)

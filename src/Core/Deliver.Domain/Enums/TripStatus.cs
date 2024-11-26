@@ -7,5 +7,5 @@ public enum TripStatus
     DriverArrivedToPickupClient,
     Delivering,
     Delivered,
-    Cancelled,
+    Cancelled
 }

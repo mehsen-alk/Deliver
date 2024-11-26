@@ -17,7 +17,11 @@ public class ClientTripController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IUserContextService _userContextService;
 
-    public ClientTripController(IMediator mediator, IMapper mapper, IUserContextService userContextService)
+    public ClientTripController(
+        IMediator mediator,
+        IMapper mapper,
+        IUserContextService userContextService
+    )
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -27,8 +31,13 @@ public class ClientTripController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<ClientCreateTripResponse>> CreateTrip([FromBody] ClientCreateTripRequest request)
+    [ProducesResponseType(
+        typeof(BaseResponse<string>),
+        StatusCodes.Status401Unauthorized
+    )]
+    public async Task<ActionResult<ClientCreateTripResponse>> CreateTrip(
+        [FromBody] ClientCreateTripRequest request
+    )
     {
         var command = _mapper.Map<ClientCreateTripCommand>(request);
 

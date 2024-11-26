@@ -5,13 +5,12 @@ using Deliver.Domain.Entities.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
-namespace Deliver.Identity.Services;
+namespace Persistence.Services;
 
 public class UserContextService : IUserContextService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly UserManager<ApplicationUser> _userManager;
-
 
     public UserContextService(IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
     {

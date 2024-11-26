@@ -1,7 +1,6 @@
 using System.Reflection;
 using Deliver.Api.Middleware;
 using Deliver.Application;
-using Deliver.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Persistence;

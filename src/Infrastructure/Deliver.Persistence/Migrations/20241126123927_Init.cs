@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Deliver.Identity.Migrations
+namespace Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -74,6 +74,31 @@ namespace Deliver.Identity.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -183,13 +208,84 @@ namespace Deliver.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Trips",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    DriverId = table.Column<int>(type: "int", nullable: true),
+                    PickUpAddressId = table.Column<int>(type: "int", nullable: false),
+                    DropOfAddressId = table.Column<int>(type: "int", nullable: false),
+                    CalculatedDistance = table.Column<double>(type: "float", nullable: false),
+                    CalculatedDuration = table.Column<double>(type: "float", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trips_Addresses_DropOfAddressId",
+                        column: x => x.DropOfAddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Trips_Addresses_PickUpAddressId",
+                        column: x => x.PickUpAddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Trips_AspNetUsers_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Trips_AspNetUsers_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TripLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TripId = table.Column<int>(type: "int", nullable: false),
+                    DriverLocation = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<int>(type: "int", nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TripLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TripLogs_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "9d83cd90-5db1-48ef-8a95-84addaf32b40", "Rider", "RIDER" },
-                    { 2, "01082922-f508-433c-9e5e-c3a3f7940a21", "Driver", "DRIVER" }
+                    { 1, "9256a195-7b23-4546-b739-926aae10509f", "Rider", "RIDER" },
+                    { 2, "aaf55eb8-8c9f-4d22-b64c-b06c920fed07", "Driver", "DRIVER" }
                 });
 
             migrationBuilder.InsertData(
@@ -197,8 +293,8 @@ namespace Deliver.Identity.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "00f81e90-307b-46f7-bf5e-3b307187b8d5", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAEDj1cbY0PTEJIUIKbKkU5F01lk0udP4CoNUG/iD8izct0ovD/5PBz5DcEu/w975LQQ==", "221234", true, "c45c2f05-6d22-4d24-827d-575337add7b1", false, "221234" },
-                    { 2, 0, "1d17b482-357e-495e-8204-b10e5f5866ce", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAEEMmgOTxV3VFGXo6GmAFRcYLoq19Q7SHy6YtVpPyIHC3gnuUuVUAz0IoGjx8LTbujw==", "331234", true, "82978785-af5d-4f3c-b521-624b23205c7e", false, "331234" }
+                    { 1, 0, "abde41b6-07f8-440b-a994-1177c0460d93", null, false, false, null, "Mohsen", null, "221234", "AQAAAAIAAYagAAAAEAAkzx0POS5LHGjaI/j30xmritRXZOJKP+L0ylIf48q9Oi5LKB4HOlNf5h8FF7x8Ew==", "221234", true, "04d681be-3237-41d2-882b-5d46595cbd5c", false, "221234" },
+                    { 2, 0, "a37cfde4-90bc-435c-83d6-5e8eb0a6fc88", null, false, false, null, "Mohammed", null, "331234", "AQAAAAIAAYagAAAAEJitd4K8fSM6CwikXzuoPoCxaaPNOT1ZQq8yBqbM14bGKO3kk33rFGYNx++564DgrQ==", "331234", true, "7014ddb4-44de-4a36-a9c7-8badfe52dc65", false, "331234" }
                 });
 
             migrationBuilder.InsertData(
@@ -209,6 +305,11 @@ namespace Deliver.Identity.Migrations
                     { 1, 1 },
                     { 2, 2 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_UserId",
+                table: "Addresses",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -250,6 +351,31 @@ namespace Deliver.Identity.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TripLogs_TripId",
+                table: "TripLogs",
+                column: "TripId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trips_ClientId",
+                table: "Trips",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trips_DriverId",
+                table: "Trips",
+                column: "DriverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trips_DropOfAddressId",
+                table: "Trips",
+                column: "DropOfAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trips_PickUpAddressId",
+                table: "Trips",
+                column: "PickUpAddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VerificationCodes_UserId",
                 table: "VerificationCodes",
                 column: "UserId");
@@ -274,10 +400,19 @@ namespace Deliver.Identity.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "TripLogs");
+
+            migrationBuilder.DropTable(
                 name: "VerificationCodes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Trips");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

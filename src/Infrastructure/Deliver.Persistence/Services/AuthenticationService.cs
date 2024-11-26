@@ -9,12 +9,12 @@ using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Domain.Entities.Auth;
-using Deliver.Identity.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Persistence.Repositories;
 
-namespace Deliver.Identity.Services;
+namespace Persistence.Services;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -23,10 +23,8 @@ public class AuthenticationService : IAuthenticationService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public AuthenticationService(UserManager<ApplicationUser> userManager,
-        IOptions<JwtSettings> jwtSettings,
-        SignInManager<ApplicationUser> signInManager,
-        IdentityRepository identityRepository)
+    public AuthenticationService(UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtSettings,
+        SignInManager<ApplicationUser> signInManager, IdentityRepository identityRepository)
     {
         _userManager = userManager;
         _jwtSettings = jwtSettings.Value;
@@ -118,6 +116,42 @@ public class AuthenticationService : IAuthenticationService
         await _identityRepository.UpdateVerificationCodeAsync(verificationCode);
     }
 
+    public async Task<SignUpResponse> RiderSignUpAsync(SignUpRequest request)
+    {
+        var user = await SignUpAsync(request, "Rider");
+
+        var jwtSecurityToken = await GenerateToken(user);
+
+        return new SignUpResponse
+        {
+            StatusCode = 201,
+            Message = "created successfully",
+            Data = new SignUpResponseData
+            {
+                UserId = user.Id,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
+            }
+        };
+    }
+
+    public async Task<SignUpResponse> DriverSignUpAsync(SignUpRequest request)
+    {
+        var user = await SignUpAsync(request, "Driver");
+
+        var jwtSecurityToken = await GenerateToken(user);
+
+        return new SignUpResponse
+        {
+            StatusCode = 201,
+            Message = "created successfully",
+            Data = new SignUpResponseData
+            {
+                UserId = user.Id,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
+            }
+        };
+    }
+
     private async Task<ApplicationUser> SignInAsync(SignInRequest request, string role)
     {
         var user = await _userManager.FindByNameAsync(request.UserName);
@@ -127,7 +161,6 @@ public class AuthenticationService : IAuthenticationService
         var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
 
         if (!result.Succeeded) throw new CredentialNotValid("incorrect user name or password: 43");
-
 
         var roles = await _userManager.GetRolesAsync(user);
 
@@ -160,24 +193,6 @@ public class AuthenticationService : IAuthenticationService
         return user;
     }
 
-    public async Task<SignUpResponse> RiderSignUpAsync(SignUpRequest request)
-    {
-        var user = await SignUpAsync(request, "Rider");
-
-        var jwtSecurityToken = await GenerateToken(user);
-
-        return new SignUpResponse
-        {
-            StatusCode = 201,
-            Message = "created successfully",
-            Data = new SignUpResponseData
-            {
-                UserId = user.Id,
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
-            }
-        };
-    }
-
     private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
     {
         var userClaims = await _userManager.GetClaimsAsync(user);
@@ -188,41 +203,18 @@ public class AuthenticationService : IAuthenticationService
         for (var i = 0; i < roles.Count; i++) roleClaims.Add(new Claim("roles", roles[i]));
 
         var claims = new[]
-            {
-                new Claim("id", user.Id.ToString()),
-                new Claim("userName", user.UserName ?? ""),
-                new Claim("name", user.Name ?? "")
-            }
-            .Union(userClaims)
-            .Union(roleClaims);
+        {
+            new Claim("id", user.Id.ToString()),
+            new Claim("userName", user.UserName ?? ""),
+            new Claim("name", user.Name ?? "")
+        }.Union(userClaims).Union(roleClaims);
 
         var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
-        var jwtSecurityToken = new JwtSecurityToken(
-            _jwtSettings.Issuer,
-            _jwtSettings.Audience,
-            claims,
+        var jwtSecurityToken = new JwtSecurityToken(_jwtSettings.Issuer, _jwtSettings.Audience, claims,
             expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
             signingCredentials: signingCredentials);
         return jwtSecurityToken;
-    }
-
-    public async Task<SignUpResponse> DriverSignUpAsync(SignUpRequest request)
-    {
-        var user = await SignUpAsync(request, "Driver");
-
-        var jwtSecurityToken = await GenerateToken(user);
-
-        return new SignUpResponse
-        {
-            StatusCode = 201,
-            Message = "created successfully",
-            Data = new SignUpResponseData
-            {
-                UserId = user.Id,
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
-            }
-        };
     }
 }

@@ -33,8 +33,11 @@ public class ExceptionHandlerMiddleware
         {
             StatusCode = (int)HttpStatusCode.InternalServerError,
             Message = "Internal Server Error",
-            Err = exception.StackTrace,
-            Data = null
+            Err = exception.Message,
+            Data = null,
+            Link = exception.HelpLink,
+            InnerException = exception.InnerException?.Message,
+            StackTrace = exception.StackTrace
         };
 
         context.Response.ContentType = "application/json";
@@ -48,7 +51,10 @@ public class ExceptionHandlerMiddleware
                     StatusCode = (int)HttpStatusCode.BadRequest,
                     Message = validationException.ValidationErrors.First(),
                     Data = response.Data,
-                    Err = "One or more validation errors occurred."
+                    Err = "One or more validation errors occurred.",
+                    Link = exception.HelpLink,
+                    InnerException = exception.InnerException?.Message,
+                    StackTrace = exception.StackTrace
                 };
                 break;
             case BadRequestException badRequestException:

@@ -44,6 +44,9 @@ public class RiderTripController : ControllerBase
         command.RiderId = _userContextService.GetUserId();
 
         var response = await _mediator.Send(command);
+        
+        response.StatusCode = StatusCodes.Status201Created;
+        response.Message = "Trip created";
 
         return CreatedAtAction(nameof(CreateTrip), response);
     }

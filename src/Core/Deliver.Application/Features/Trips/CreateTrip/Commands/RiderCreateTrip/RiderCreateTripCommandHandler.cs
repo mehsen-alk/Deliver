@@ -52,8 +52,8 @@ public class
         var dropOff = new Address
         {
             Type = AddressType.PickUp,
-            Longitude = command.PickUpAddress.Longitude,
-            Latitude = command.PickUpAddress.Latitude,
+            Longitude = command.DropOfAddress.Longitude,
+            Latitude = command.DropOfAddress.Latitude,
             UserId = command.RiderId
         };
 
@@ -61,7 +61,6 @@ public class
 
         var trip = new Trip
         {
-            RiderId = 1,
             CalculatedDuration = command.Duration,
             CalculatedDistance = command.Distance,
             Status = TripStatus.Waiting,

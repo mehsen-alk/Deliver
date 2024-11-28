@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Deliver.Api.Controller.Rider;
 
-[Route("api/rider/trip")]
+[Route("v1/rider/trip")]
 [ApiController]
 [Authorize(Roles = "Rider")]
 public class RiderTripController : ControllerBase

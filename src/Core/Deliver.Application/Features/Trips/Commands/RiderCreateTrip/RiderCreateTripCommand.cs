@@ -1,7 +1,7 @@
 using Deliver.Application.Features.Trips.Common.AddressRequest;
 using MediatR;
 
-namespace Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
+namespace Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 
 public class RiderCreateTripCommand : IRequest<RiderCreateTripResponse>
 {

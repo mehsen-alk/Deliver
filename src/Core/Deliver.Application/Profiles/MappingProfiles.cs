@@ -1,6 +1,6 @@
 using AutoMapper;
+using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 using Deliver.Application.Features.Trips.Common.AddressRequest;
-using Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
 using Deliver.Domain.Entities;
 
 namespace Deliver.Application.Profiles;

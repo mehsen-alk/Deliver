@@ -1,6 +1,6 @@
 using Deliver.Application.Features.Trips.Common.AddressRequest;
 
-namespace Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
+namespace Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 
 public class RiderCreateTripRequest
 {

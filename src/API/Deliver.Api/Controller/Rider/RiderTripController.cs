@@ -1,6 +1,6 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
-using Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
+using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

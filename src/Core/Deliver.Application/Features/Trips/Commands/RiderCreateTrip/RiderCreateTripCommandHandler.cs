@@ -5,7 +5,7 @@ using Deliver.Domain.Entities;
 using Deliver.Domain.Enums;
 using MediatR;
 
-namespace Deliver.Application.Features.Trips.CreateTrip.Commands.RiderCreateTrip;
+namespace Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 
 public class
     RiderCreateTripCommandHandler : IRequestHandler<RiderCreateTripCommand,

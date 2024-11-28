@@ -6,15 +6,15 @@ using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Deliver.Api.Controller;
+namespace Deliver.Api.Controller.Driver;
 
-[Route("v1/[controller]")]
+[Route("v1/driver")]
 [ApiController]
-public class DriverController : ControllerBase
+public class DriverAccountController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
 
-    public DriverController(IAuthenticationService authenticationService)
+    public DriverAccountController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }

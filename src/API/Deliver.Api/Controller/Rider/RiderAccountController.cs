@@ -6,15 +6,15 @@ using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Deliver.Api.Controller;
+namespace Deliver.Api.Controller.Rider;
 
-[Route("v1/[controller]")]
+[Route("v1/rider")]
 [ApiController]
-public class RiderController : ControllerBase
+public class RiderAccountController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
 
-    public RiderController(IAuthenticationService authenticationService)
+    public RiderAccountController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }

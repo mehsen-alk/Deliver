@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 
-public class RiderCreateTripCommand : IRequest<RiderCreateTripResponse>
+public class RiderCreateTripCommand : IRequest<RiderCreateTripDto>
 {
     public int RiderId { get; set; }
     public AddressRequest PickUpAddress { get; set; } = default!;

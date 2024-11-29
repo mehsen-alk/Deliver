@@ -35,7 +35,7 @@ public class RiderTripController : ControllerBase
         typeof(BaseResponse<string>),
         StatusCodes.Status401Unauthorized
     )]
-    public async Task<ActionResult<RiderCreateTripResponse>> CreateTrip(
+    public async Task<ActionResult<RiderCreateTripDto>> CreateTrip(
         [FromBody] RiderCreateTripRequest request
     )
     {
@@ -43,10 +43,12 @@ public class RiderTripController : ControllerBase
 
         command.RiderId = _userContextService.GetUserId();
 
-        var response = await _mediator.Send(command);
-        
-        response.StatusCode = StatusCodes.Status201Created;
-        response.Message = "Trip created";
+        var data = await _mediator.Send(command);
+
+        var response = BaseResponse<RiderCreateTripDto>.CreatedSuccessfully(
+            data: data,
+            message: "Trip created."
+        );
 
         return CreatedAtAction(nameof(CreateTrip), response);
     }

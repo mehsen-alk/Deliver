@@ -9,7 +9,7 @@ namespace Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 
 public class
     RiderCreateTripCommandHandler : IRequestHandler<RiderCreateTripCommand,
-    RiderCreateTripResponse>
+    RiderCreateTripDto>
 {
     private readonly IAsyncRepository<Address> _addressRepository;
     private readonly IMapper _mapper;
@@ -26,12 +26,12 @@ public class
         _addressRepository = addressRepository;
     }
 
-    public async Task<RiderCreateTripResponse> Handle(
+    public async Task<RiderCreateTripDto> Handle(
         RiderCreateTripCommand command,
         CancellationToken cancellationToken
     )
     {
-        var response = new RiderCreateTripResponse();
+        var response = new RiderCreateTripDto();
 
         var validator = new RiderCreateTripValidator();
         var validationResult = await validator.ValidateAsync(command);
@@ -61,6 +61,7 @@ public class
 
         var trip = new Trip
         {
+            RiderId = command.RiderId,
             CalculatedDuration = command.Duration,
             CalculatedDistance = command.Distance,
             Status = TripStatus.Waiting,
@@ -69,7 +70,7 @@ public class
         };
 
         trip = await _tripRepository.AddAsync(trip);
-        response.Data = _mapper.Map<RiderCreateTripDto>(trip);
+        response = _mapper.Map<RiderCreateTripDto>(trip);
 
         return response;
     }

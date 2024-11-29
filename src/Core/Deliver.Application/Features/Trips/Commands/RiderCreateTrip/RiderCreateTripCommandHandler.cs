@@ -7,9 +7,8 @@ using MediatR;
 
 namespace Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 
-public class
-    RiderCreateTripCommandHandler : IRequestHandler<RiderCreateTripCommand,
-    RiderCreateTripDto>
+public class RiderCreateTripCommandHandler
+    : IRequestHandler<RiderCreateTripCommand, RiderCreateTripDto>
 {
     private readonly IAsyncRepository<Address> _addressRepository;
     private readonly IMapper _mapper;
@@ -31,13 +30,13 @@ public class
         CancellationToken cancellationToken
     )
     {
-        var response = new RiderCreateTripDto();
-
         var validator = new RiderCreateTripValidator();
-        var validationResult = await validator.ValidateAsync(command);
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult);
+
+        await using var transaction = await _addressRepository.BeginTransactionAsync();
 
         var pickUp = new Address
         {
@@ -70,7 +69,10 @@ public class
         };
 
         trip = await _tripRepository.AddAsync(trip);
-        response = _mapper.Map<RiderCreateTripDto>(trip);
+
+        await transaction.CommitAsync(cancellationToken);
+
+        var response = _mapper.Map<RiderCreateTripDto>(trip);
 
         return response;
     }

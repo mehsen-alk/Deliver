@@ -1,5 +1,6 @@
 using Deliver.Application.Contracts.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Persistence.Repositories;
 
@@ -42,6 +43,11 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
         _dbContext.Set<T>().Remove(entity);
         await _dbContext.SaveChangesAsync();
         return entity;
+    }
+
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await _dbContext.Database.BeginTransactionAsync();
     }
 
     public virtual async Task<IReadOnlyList<T>> GetPagedResponseAsync(int page, int size)

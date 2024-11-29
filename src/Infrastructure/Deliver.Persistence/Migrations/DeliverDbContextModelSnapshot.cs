@@ -94,14 +94,14 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "f99afb8d-84ed-488e-99c3-2ca95217b509",
+                            ConcurrencyStamp = "cbaea4d4-0d07-42cb-9e65-0319801a5962",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "4e7b7d68-d8e2-4687-b151-301654ccb176",
+                            ConcurrencyStamp = "b3c1409b-31e8-4e58-924f-04e78b7406f8",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
@@ -183,15 +183,15 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd4120f5-4eed-4104-b061-e94e542e3a12",
+                            ConcurrencyStamp = "d719b042-3e97-411f-a96f-8e751c520fd4",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohsen",
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDOgtTBqINPQOXbEjsC2SNg30JDby6ROw+16S2gtueDxWiIYm1lHO7y6P7v3QjOVYw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEISuDeW6iBFRkaD94PenBS30ynKwwMPROU8wtWIzqzPdcQm1J22LbXAuH3u49uHaLw==",
                             PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "eec2627f-dfda-4c25-9aed-f1c1136a3c31",
+                            SecurityStamp = "b22d5249-165f-4846-a84a-e3ebb2e03144",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -199,15 +199,15 @@ namespace Persistence.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ea0b094e-4316-42c4-96c1-d36058995c0f",
+                            ConcurrencyStamp = "953af534-7712-4391-9273-1e4d6bb963cd",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Mohammed",
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAENOIrPznzmLBmFJzG7jW9AEjw/D7akdITNi64cUmJKZGXYp7Jn1CpVUwzCzPf176/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM8k3V+Xsy8pJ5ePiYtyDRFKq1ANywJ2AFEc8K6AyB7Y3ol8ln48Or2FXIIopgkzLA==",
                             PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "a2028685-2098-4e6e-b518-522b265c5d29",
+                            SecurityStamp = "3a97a27a-9fa2-4f3b-8fda-bd4544977e07",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });
@@ -309,7 +309,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DriverLocation")
+                    b.Property<int?>("DriverLocationId")
                         .HasColumnType("int");
 
                     b.Property<int?>("LastModifiedBy")
@@ -328,6 +328,8 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DriverLocationId");
 
                     b.HasIndex("TripId");
 
@@ -506,11 +508,17 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Deliver.Domain.Entities.TripLog", b =>
                 {
+                    b.HasOne("Deliver.Domain.Entities.Address", "DriverLocation")
+                        .WithMany()
+                        .HasForeignKey("DriverLocationId");
+
                     b.HasOne("Deliver.Domain.Entities.Trip", "Trip")
                         .WithMany()
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DriverLocation");
 
                     b.Navigation("Trip");
                 });

@@ -1,6 +1,8 @@
 using System.Reflection;
 using Deliver.Api.Middleware;
+using Deliver.Api.Service;
 using Deliver.Application;
+using Deliver.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Persistence;
@@ -14,6 +16,7 @@ public static class StartupExtensions
     {
         AddSwagger(builder.Services);
 
+        builder.Services.AddScoped<ILoggedInUserService, LoggedInUserService>();
         builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddApplicationServices();

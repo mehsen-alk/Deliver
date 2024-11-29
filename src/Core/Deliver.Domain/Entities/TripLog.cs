@@ -10,6 +10,7 @@ public class TripLog : AuditableEntity
     public int TripId { get; set; }
     public int? DriverLocationId { get; set; }
     public TripStatus Status { get; set; }
+    public TripLogType Type { get; set; }
     public string? Note { get; set; }
 
     [ForeignKey("TripId")]

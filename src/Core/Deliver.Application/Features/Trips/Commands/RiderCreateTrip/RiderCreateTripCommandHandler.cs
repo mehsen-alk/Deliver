@@ -51,7 +51,7 @@ public class
 
         var dropOff = new Address
         {
-            Type = AddressType.PickUp,
+            Type = AddressType.DropOff,
             Longitude = command.DropOfAddress.Longitude,
             Latitude = command.DropOfAddress.Latitude,
             UserId = command.RiderId

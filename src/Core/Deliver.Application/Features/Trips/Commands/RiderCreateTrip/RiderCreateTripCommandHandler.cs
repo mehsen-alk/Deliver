@@ -12,17 +12,20 @@ public class RiderCreateTripCommandHandler
 {
     private readonly IAsyncRepository<Address> _addressRepository;
     private readonly IMapper _mapper;
+    private readonly IAsyncRepository<TripLog> _tripLogRepository;
     private readonly IAsyncRepository<Trip> _tripRepository;
 
     public RiderCreateTripCommandHandler(
         IAsyncRepository<Trip> tripRepository,
         IMapper mapper,
-        IAsyncRepository<Address> addressRepository
+        IAsyncRepository<Address> addressRepository,
+        IAsyncRepository<TripLog> tripLogRepository
     )
     {
         _tripRepository = tripRepository;
         _mapper = mapper;
         _addressRepository = addressRepository;
+        _tripLogRepository = tripLogRepository;
     }
 
     public async Task<RiderCreateTripDto> Handle(
@@ -69,6 +72,16 @@ public class RiderCreateTripCommandHandler
         };
 
         trip = await _tripRepository.AddAsync(trip);
+
+        var tripLog = new TripLog
+        {
+            TripId = trip.Id,
+            Status = TripStatus.Waiting,
+            Note = "trip created by rider.",
+            Type = TripLogType.TripCreatedByRider
+        };
+
+        await _tripLogRepository.AddAsync(tripLog);
 
         await transaction.CommitAsync(cancellationToken);
 

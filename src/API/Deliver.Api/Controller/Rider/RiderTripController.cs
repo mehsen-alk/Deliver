@@ -51,13 +51,10 @@ public class RiderTripController : ControllerBase
         return CreatedAtAction(nameof(CreateTrip), response);
     }
 
+    /// <response code="404">There is no Current Trip</response>
     [HttpGet("current")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(
-        typeof(BaseResponse<string>),
-        StatusCodes.Status401Unauthorized
-    )]
     public async Task<ActionResult<BaseResponse<RiderCurrentTripVm>>> GetCurrentTrip()
     {
         var query =

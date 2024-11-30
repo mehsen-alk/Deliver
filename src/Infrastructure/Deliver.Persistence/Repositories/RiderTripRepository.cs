@@ -1,11 +1,29 @@
 using Deliver.Application.Contracts.Persistence;
 using Deliver.Domain.Entities;
+using Deliver.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
 
-public class RiderTripRepository : BaseRepository<Trip>, IRiderTripRepository
+public class RiderTripRepository : IRiderTripRepository
 {
-    public RiderTripRepository(DeliverDbContext dbContext) : base(dbContext)
+    private readonly DeliverDbContext _dbContext;
+
+    public RiderTripRepository(DeliverDbContext dbContext)
     {
+        _dbContext = dbContext;
+    }
+
+    public async Task<Trip?> GetCurrentTripAsync(int userId)
+    {
+        var activeTripStatus = TripStatusExtensions.GetActiveStatuses();
+
+        return await _dbContext
+            .Trips.Include(t => t.PickUpAddress)
+            .Include(t => t.DropOfAddress)
+            .FirstOrDefaultAsync(
+                t => t.RiderId == userId
+                     && TripStatusExtensions.GetActiveStatuses().Contains(t.Status)
+            );
     }
 }

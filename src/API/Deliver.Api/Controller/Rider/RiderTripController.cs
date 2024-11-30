@@ -1,6 +1,7 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
+using Deliver.Application.Features.Trips.Query.GetRiderCurrentTrip;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -51,5 +52,35 @@ public class RiderTripController : ControllerBase
         );
 
         return CreatedAtAction(nameof(CreateTrip), response);
+    }
+
+    [HttpGet("current")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(
+        typeof(BaseResponse<string>),
+        StatusCodes.Status401Unauthorized
+    )]
+    public async Task<ActionResult<BaseResponse<RiderCurrentTripVm>>> GetCurrentTrip()
+    {
+        var query =
+            new GetRiderCurrentTripQuery { RiderId = _userContextService.GetUserId() };
+
+        var data = await _mediator.Send(query);
+
+        if (data == null)
+        {
+            var notFoundResponse = new BaseResponse<string>
+            {
+                Message = "no current trip.",
+                StatusCode = StatusCodes.Status404NotFound
+            };
+
+            return NotFound(notFoundResponse);
+        }
+
+        var response = BaseResponse<RiderCurrentTripVm>.FetchedSuccessfully(data: data);
+
+        return Ok(response);
     }
 }

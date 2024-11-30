@@ -6,6 +6,7 @@ using Deliver.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Persistence;
+using Persistence.Converters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Deliver.Api;
@@ -23,6 +24,14 @@ public static class StartupExtensions
 
         builder
             .Services.AddControllers()
+            .AddJsonOptions(
+                options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(
+                        new DateTimeToTimestampConverter()
+                    );
+                }
+            )
             .ConfigureApiBehaviorOptions(
                 options =>
                 {

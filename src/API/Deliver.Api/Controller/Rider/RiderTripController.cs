@@ -29,14 +29,11 @@ public class RiderTripController : ControllerBase
         _userContextService = userContextService;
     }
 
+    /// <response code="1001">Current Trip Exist</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(
-        typeof(BaseResponse<string>),
-        StatusCodes.Status401Unauthorized
-    )]
-    public async Task<ActionResult<RiderCreateTripDto>> CreateTrip(
+    [ProducesResponseType(1001)]
+    public async Task<ActionResult<BaseResponse<RiderCreateTripDto>>> CreateTrip(
         [FromBody] RiderCreateTripRequest request
     )
     {

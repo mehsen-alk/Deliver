@@ -12,6 +12,7 @@ public class RiderCreateTripCommandHandler
 {
     private readonly IAsyncRepository<Address> _addressRepository;
     private readonly IMapper _mapper;
+    private readonly IRiderTripRepository _riderTripRepository;
     private readonly IAsyncRepository<TripLog> _tripLogRepository;
     private readonly IAsyncRepository<Trip> _tripRepository;
 
@@ -19,13 +20,15 @@ public class RiderCreateTripCommandHandler
         IAsyncRepository<Trip> tripRepository,
         IMapper mapper,
         IAsyncRepository<Address> addressRepository,
-        IAsyncRepository<TripLog> tripLogRepository
+        IAsyncRepository<TripLog> tripLogRepository,
+        IRiderTripRepository riderTripRepository
     )
     {
         _tripRepository = tripRepository;
         _mapper = mapper;
         _addressRepository = addressRepository;
         _tripLogRepository = tripLogRepository;
+        _riderTripRepository = riderTripRepository;
     }
 
     public async Task<RiderCreateTripDto> Handle(
@@ -38,6 +41,11 @@ public class RiderCreateTripCommandHandler
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult);
+
+        var currentTrip = await _riderTripRepository.GetCurrentTripAsync(command.RiderId);
+
+        if (currentTrip != null)
+            throw new DeliverException(DeliverErrorCodes.ActiveTripExists);
 
         await using var transaction = await _addressRepository.BeginTransactionAsync();
 

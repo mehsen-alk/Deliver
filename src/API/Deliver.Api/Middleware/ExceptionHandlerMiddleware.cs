@@ -29,7 +29,7 @@ public class ExceptionHandlerMiddleware
 
     private Task ConvertException(HttpContext context, Exception exception)
     {
-        var response = new ErrorResponse<object>
+        BaseResponse<object> response = new ErrorResponse<object>
         {
             StatusCode = (int)HttpStatusCode.InternalServerError,
             Message = "Internal Server Error",
@@ -57,16 +57,31 @@ public class ExceptionHandlerMiddleware
                     StackTrace = exception.StackTrace
                 };
                 break;
-            case BadRequestException badRequestException:
+
+            case BadRequestException:
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 break;
-            case NotFoundException notFoundException:
+
+            case NotFoundException:
                 response.StatusCode = (int)HttpStatusCode.NotFound;
                 break;
+
             case CredentialNotValid:
                 response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 break;
-            case Exception ex:
+
+            case DeliverException deliverEx:
+                response = new BaseResponse<object>
+                {
+                    StatusCode = (int)deliverEx.StatusCode,
+                    Message = deliverEx.Message,
+                    Data = deliverEx.Data
+                };
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return ReturnException(context, response);
+
+            case not null:
+
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 break;
         }

@@ -23,6 +23,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
 
         services.AddScoped<IRiderTripRepository, RiderTripRepository>();
+        services.AddScoped<IDriverTripRepository, DriverTripRepository>();
 
         return services;
     }

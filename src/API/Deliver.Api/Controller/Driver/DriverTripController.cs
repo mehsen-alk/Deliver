@@ -1,4 +1,5 @@
 using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Features.Trips.Commands.DriverAcceptTrip;
 using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
 using Deliver.Application.Features.Trips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Responses;
@@ -63,5 +64,30 @@ public class DriverTripController : ControllerBase
         var response = BaseResponse<DriverCurrentTripVm>.FetchedSuccessfully(data: data);
 
         return Ok(response);
+    }
+
+    /// <response code="404">There is no Current Trip</response>
+    [HttpPut("accept")]
+    [ProducesResponseType(
+        typeof(BaseResponse<DriverAcceptTripVm>),
+        StatusCodes.Status202Accepted
+    )]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<BaseResponse<DriverAcceptTripVm>>> AcceptTrip(
+        DriverAcceptTripRequest request
+    )
+    {
+        var query = new DriverAcceptTripCommand
+        {
+            DriverId = _userContextService.GetUserId(),
+            DriverAddress = request.DriverAddress,
+            TripId = request.TripId
+        };
+
+        var data = await _mediator.Send(query);
+
+        var response = BaseResponse<DriverAcceptTripVm>.UpdatedSuccessfully(data: data);
+
+        return Accepted(response);
     }
 }

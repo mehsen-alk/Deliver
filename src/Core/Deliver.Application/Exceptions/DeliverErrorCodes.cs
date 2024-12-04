@@ -1,21 +1,27 @@
+#pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 namespace Deliver.Application.Exceptions;
 
 public enum DeliverErrorCodes
 {
-    ActiveTripExists = 1001
+    ActiveTripExists = 1001,
+    TripAcceptedByAnotherDriver = 1002,
+    TripAlreadyAccepted = 1003,
+    CannotAcceptBecauseTripStatusIsNotValid = 1004
 }
 
 public static class DeliverErrorCodesExtensions
 {
     public static string GetMessage(this DeliverErrorCodes code)
     {
-        switch (code)
+        return code switch
         {
-            case DeliverErrorCodes.ActiveTripExists:
-                return "Active Trip Exists";
+            DeliverErrorCodes.ActiveTripExists => "Active Trip Exists",
 
-            default:
-                return "Unknown Error";
-        }
+            DeliverErrorCodes.CannotAcceptBecauseTripStatusIsNotValid =>
+                "Cannot Accept Because Trip Status is not valid",
+            DeliverErrorCodes.TripAcceptedByAnotherDriver =>
+                "Trip Accepted By Another Driver",
+            DeliverErrorCodes.TripAlreadyAccepted => "Trip Already Accepted"
+        };
     }
 }

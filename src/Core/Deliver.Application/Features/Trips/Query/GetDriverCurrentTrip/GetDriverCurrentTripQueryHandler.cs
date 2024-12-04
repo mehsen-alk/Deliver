@@ -8,16 +8,16 @@ public class GetDriverCurrentTripQueryHandler
     : IRequestHandler<GetDriverCurrentTripQuery, DriverCurrentTripVm?>
 
 {
+    private readonly IDriverTripRepository _driverTripRepository;
     private readonly IMapper _mapper;
-    private readonly IRiderTripRepository _riderTripRepository;
 
     public GetDriverCurrentTripQueryHandler(
         IMapper mapper,
-        IRiderTripRepository riderTripRepository
+        IDriverTripRepository driverTripRepository
     )
     {
         _mapper = mapper;
-        _riderTripRepository = riderTripRepository;
+        _driverTripRepository = driverTripRepository;
     }
 
     public async Task<DriverCurrentTripVm?> Handle(
@@ -25,7 +25,7 @@ public class GetDriverCurrentTripQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var trip = await _riderTripRepository.GetCurrentTripAsync(request.DriverId);
+        var trip = await _driverTripRepository.GetCurrentTripAsync(request.DriverId);
 
         var vm = _mapper.Map<DriverCurrentTripVm>(trip);
 

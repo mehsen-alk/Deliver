@@ -3,6 +3,7 @@ using Deliver.Application.Dto.Address;
 using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 using Deliver.Application.Features.Trips.Common.AddressRequest;
 using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
+using Deliver.Application.Features.Trips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Features.Trips.Query.GetRiderCurrentTrip;
 using Deliver.Domain.Entities;
 
@@ -21,5 +22,7 @@ public class MappingProfile : Profile
         CreateMap<Trip, RiderCurrentTripVm>();
 
         CreateMap<Trip, TripDto>();
+
+        CreateMap<Trip, DriverCurrentTripVm>();
     }
 }

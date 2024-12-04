@@ -1,6 +1,7 @@
 using Deliver.Application.Contracts.Persistence;
 using Deliver.Application.Dto.Address;
 using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
+using Deliver.Domain.Entities;
 using Deliver.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,5 +45,18 @@ public class DriverTripRepository : IDriverTripRepository
             .ToListAsync();
 
         return trips;
+    }
+
+    public async Task<Trip?> GetCurrentTripAsync(int userId)
+    {
+        var activeTripStatus = TripStatusExtensions.GetActiveStatuses();
+
+        return await _dbContext
+            .Trips.Include(t => t.PickUpAddress)
+            .Include(t => t.DropOfAddress)
+            .FirstOrDefaultAsync(
+                t => t.DriverId == userId
+                     && TripStatusExtensions.GetActiveStatuses().Contains(t.Status)
+            );
     }
 }

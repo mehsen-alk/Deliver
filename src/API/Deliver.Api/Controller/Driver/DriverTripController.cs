@@ -1,6 +1,6 @@
-using AutoMapper;
 using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
+using Deliver.Application.Features.Trips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +14,15 @@ namespace Deliver.Api.Controller.Driver;
 public class DriverTripController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IUserContextService _userContextService;
 
     public DriverTripController(
-        IMapper mapper,
         IMediator mediator,
         IUserContextService userContextService
     )
     {
         _mediator = mediator;
+        _userContextService = userContextService;
     }
 
     [HttpGet("available")]
@@ -33,6 +34,33 @@ public class DriverTripController : ControllerBase
 
         var response =
             BaseResponse<GetDriverAvailableTripsQueryVm>.FetchedSuccessfully(data: data);
+
+        return Ok(response);
+    }
+
+    /// <response code="404">There is no Current Trip</response>
+    [HttpGet("current")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<BaseResponse<DriverCurrentTripVm>>> GetCurrentTrip()
+    {
+        var query =
+            new GetDriverCurrentTripQuery { DriverId = _userContextService.GetUserId() };
+
+        var data = await _mediator.Send(query);
+
+        if (data == null)
+        {
+            var notFoundResponse = new BaseResponse<string>
+            {
+                Message = "no current trip.",
+                StatusCode = StatusCodes.Status404NotFound
+            };
+
+            return NotFound(notFoundResponse);
+        }
+
+        var response = BaseResponse<DriverCurrentTripVm>.FetchedSuccessfully(data: data);
 
         return Ok(response);
     }

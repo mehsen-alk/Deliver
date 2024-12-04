@@ -58,12 +58,14 @@ public class ExceptionHandlerMiddleware
                 };
                 break;
 
-            case BadRequestException:
+            case BadRequestException e:
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.Message = e.Message;
                 break;
 
-            case NotFoundException:
+            case NotFoundException e:
                 response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.Message = e.Message;
                 break;
 
             case CredentialNotValid:
@@ -81,7 +83,6 @@ public class ExceptionHandlerMiddleware
                 return ReturnException(context, response);
 
             case not null:
-
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 break;
         }

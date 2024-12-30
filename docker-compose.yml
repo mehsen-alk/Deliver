@@ -20,6 +20,6 @@ services:
     ports:
       - "1400:1433"
     volumes:
-      - ./.containers/deliver-db:/var/opt/mssql/data
-      - ./.containers/deliver-db:/var/opt/mssql/log
-      - ./.containers/deliver-db:/var/opt/mssql/secrets
+      - ./.containers/deliver-db/data:/var/opt/mssql/data
+      - ./.containers/deliver-db/log:/var/opt/mssql/log
+      - ./.containers/deliver-db/secrets:/var/opt/mssql/secrets

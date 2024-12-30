@@ -15,6 +15,8 @@ public static class StartupExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.WebHost.ConfigureKestrel(options => { options.ListenAnyIP(8080); });
+
         AddSwagger(builder.Services);
 
         builder.Services.AddScoped<ILoggedInUserService, LoggedInUserService>();

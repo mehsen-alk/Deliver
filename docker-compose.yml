@@ -1,0 +1,25 @@
+services:
+  deliver.api:
+    image: ${DOCKER_REGISTRY-}deliver.api
+    container_name: deliver.api
+    depends_on:
+      - deliver.db
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+
+  deliver.db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: deliver.db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+      - MSSQL_SA_PASSWORD=12345678Dd@
+    ports:
+      - "1400:1433"
+    volumes:
+      - ./.containers/deliver-db:/var/opt/mssql/data
+      - ./.containers/deliver-db:/var/opt/mssql/log
+      - ./.containers/deliver-db:/var/opt/mssql/secrets

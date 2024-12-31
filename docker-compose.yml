@@ -2,8 +2,6 @@ services:
   deliver.api:
     image: ${DOCKER_REGISTRY-}deliver.api
     container_name: deliver.api
-    networks:
-      - deliverNetwork
     depends_on:
       - deliver.db
     build:
@@ -15,8 +13,6 @@ services:
   deliver.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: deliver.db
-    networks:
-      - deliverNetwork
     user: root
     environment:
       - ACCEPT_EULA=Y
@@ -28,7 +24,3 @@ services:
       - ./.containers/deliver-db/data:/var/opt/mssql/data
       - ./.containers/deliver-db/log:/var/opt/mssql/log
       - ./.containers/deliver-db/secrets:/var/opt/mssql/secrets
-
-networks:
-  deliverNetwork:
-    driver: bridge

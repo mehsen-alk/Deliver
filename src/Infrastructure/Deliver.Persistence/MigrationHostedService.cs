@@ -18,6 +18,8 @@ public class MigrationHostedService : IHostedService
         using var scope = _serviceProvider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<DeliverDbContext>();
 
+        Console.WriteLine($"DB {db.Database.GetDbConnection().ConnectionString}");
+
         if (!await CanEstablishConnectionWithDataBase(db, 100, 1000, cancellationToken))
             throw new Exception(
                 $"Can't establish connection with database {db.Database.GetDbConnection().Database}."
@@ -56,7 +58,7 @@ public class MigrationHostedService : IHostedService
         );
         Console.WriteLine($"DB {db.Database.GetDbConnection().ConnectionString} ");
         Console.WriteLine($"DB {db.Database.GetDbConnection().State} ");
-        
+
         return await CanEstablishConnectionWithDataBase(
             db,
             maxRetry,

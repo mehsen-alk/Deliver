@@ -13,6 +13,7 @@ services:
   deliver.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: deliver.db
+    user: root
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Express

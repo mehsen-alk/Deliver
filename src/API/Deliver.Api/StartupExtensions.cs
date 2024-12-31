@@ -63,6 +63,7 @@ public static class StartupExtensions
 
         builder.Services.AddIdentityServices(builder.Configuration);
         builder.Services.AddPersistenceServices(builder.Configuration);
+        builder.Services.AddHostedService<MigrationHostedService>();
 
         builder.Services.AddCors(
             options =>

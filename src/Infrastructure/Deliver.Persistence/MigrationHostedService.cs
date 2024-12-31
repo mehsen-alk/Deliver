@@ -54,6 +54,9 @@ public class MigrationHostedService : IHostedService
         Console.WriteLine(
             $"DB {db.Database.GetDbConnection().Database} is not ready. Retry {maxRetry} attempts."
         );
+        Console.WriteLine($"DB {db.Database.GetDbConnection().ConnectionString} ");
+        Console.WriteLine($"DB {db.Database.GetDbConnection().State} ");
+        
         return await CanEstablishConnectionWithDataBase(
             db,
             maxRetry,

@@ -17,4 +17,10 @@ newIdentityMig:
 updateIdentityDB:
 	dotnet ef database update $v --project ./src/Infrastructure/Deliver.identity --startup-project ./src/APi/Deliver.Api --context "DeliverIdentityDbContext" 
 
+reInitDocker:
+	docker-compose down
+	docker rmi deliver.api
+	docker-compose up
+
+	
 	

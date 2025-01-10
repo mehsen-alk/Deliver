@@ -70,7 +70,7 @@ public class RiderTripController : ControllerBase
                 StatusCode = StatusCodes.Status404NotFound
             };
 
-            return NotFound(notFoundResponse);
+            return Ok(notFoundResponse);
         }
 
         var response = BaseResponse<RiderCurrentTripVm>.FetchedSuccessfully(data: data);

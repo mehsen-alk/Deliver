@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/mehsen-alk/Deliver.git'
+                git branch: 'dev', url: 'https://github.com/mehsen-alk/Deliver.git'
             }
         }
 

@@ -27,6 +27,3 @@ updateProject:
 	docker-compose down
 	docker rmi deliver.api
 	docker-compose up
-
-	
-	

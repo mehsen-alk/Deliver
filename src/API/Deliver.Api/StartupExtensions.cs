@@ -78,6 +78,16 @@ public static class StartupExtensions
             }
         );
 
+        builder.WebHost.UseSentry(
+            o =>
+            {
+                o.Dsn =
+                    "https://e7cb076d9b92c3d52a47a195720c82d6@o4508568254939136.ingest.de.sentry.io/4508568257888337";
+                o.Debug = true;
+                o.TracesSampleRate = 1.0;
+            }
+        );
+
         return builder.Build();
     }
 
@@ -162,6 +172,31 @@ public static class StartupExtensions
                 c.IncludeXmlComments(xmlPath);
             }
         );
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host
+            .CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(
+                webBuilder =>
+                {
+                    // Add the following line:
+                    webBuilder.UseSentry(
+                        o =>
+                        {
+                            o.Dsn =
+                                "https://e7cb076d9b92c3d52a47a195720c82d6@o4508568254939136.ingest.de.sentry.io/4508568257888337";
+                            // When configuring for the first time, to see what the SDK is doing:
+                            o.Debug = true;
+                            // Set TracesSampleRate to 1.0 to capture 100%
+                            // of transactions for tracing.
+                            // We recommend adjusting this value in production
+                            o.TracesSampleRate = 1.0;
+                        }
+                    );
+                }
+            );
     }
 
     /// <summary>

@@ -17,6 +17,7 @@
         <Content Include=".gitignore"/>
         <Content Include="Deliver.sln.DotSettings.user"/>
         <Content Include="Dockerfile"/>
+        <Content Include="Jenkinsfile"/>
         <Content Include="Makefile"/>
     </ItemGroup>
 </Project>

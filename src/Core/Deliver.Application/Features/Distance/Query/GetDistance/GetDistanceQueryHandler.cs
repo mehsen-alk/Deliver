@@ -34,7 +34,8 @@ public class GetDistanceQueryHandler : IRequestHandler<GetDistanceQuery, Distanc
         var vm = new DistanceVm
         {
             Distance = calculatedDistance,
-            Duration = calculatedDuration
+            Duration = calculatedDuration,
+            Price = (int)calculatedDistance * 11000
         };
 
         return Task.FromResult(vm);

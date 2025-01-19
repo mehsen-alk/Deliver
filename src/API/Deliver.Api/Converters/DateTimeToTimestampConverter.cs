@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Persistence.Converters;
+namespace Deliver.Api.Converters;
 
 public class DateTimeToTimestampConverter : JsonConverter<DateTime>
 {

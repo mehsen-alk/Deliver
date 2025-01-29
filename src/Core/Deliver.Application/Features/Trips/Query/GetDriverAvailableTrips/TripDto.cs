@@ -10,4 +10,5 @@ public class TripDto
     public double? CalculatedDistance { get; init; }
     public double? CalculatedDuration { get; init; }
     public double? CaptainProfit { get; set; }
+    public DateTime CreatedAt { get; init; }
 }

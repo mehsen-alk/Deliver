@@ -2,13 +2,16 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Contracts.Persistence;
 using Deliver.Application.Exceptions;
 using Deliver.Application.Models.Authentication;
 using Deliver.Application.Models.Authentication.SignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.Response;
+using Deliver.Domain.Entities;
 using Deliver.Domain.Entities.Auth;
+using Deliver.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +21,8 @@ namespace Persistence.Services;
 
 public class AuthenticationService : IAuthenticationService
 {
+    private readonly IAsyncRepository<RiderProfile> _clientProfileRepository;
+    private readonly IAsyncRepository<DriverProfile> _driverProfileRepository;
     private readonly IdentityRepository _identityRepository;
     private readonly JwtSettings _jwtSettings;
     private readonly SignInManager<ApplicationUser> _signInManager;
@@ -27,13 +32,17 @@ public class AuthenticationService : IAuthenticationService
         UserManager<ApplicationUser> userManager,
         IOptions<JwtSettings> jwtSettings,
         SignInManager<ApplicationUser> signInManager,
-        IdentityRepository identityRepository
+        IdentityRepository identityRepository,
+        IAsyncRepository<RiderProfile> clientProfileRepository,
+        IAsyncRepository<DriverProfile> driverProfileRepository
     )
     {
         _userManager = userManager;
         _jwtSettings = jwtSettings.Value;
         _signInManager = signInManager;
         _identityRepository = identityRepository;
+        _clientProfileRepository = clientProfileRepository;
+        _driverProfileRepository = driverProfileRepository;
     }
 
     public async Task<SignInResponse> RiderSignInAsync(SignInRequest request)
@@ -131,6 +140,16 @@ public class AuthenticationService : IAuthenticationService
 
         var jwtSecurityToken = await GenerateToken(user);
 
+        var profile = new RiderProfile
+        {
+            UserId = user.Id,
+            Name = request.Name,
+            Status = ProfileStatus.Current,
+            Phone = request.Phone
+        };
+
+        await _clientProfileRepository.AddAsync(profile);
+
         return new SignUpResponse
         {
             StatusCode = 201,
@@ -148,6 +167,16 @@ public class AuthenticationService : IAuthenticationService
         var user = await SignUpAsync(request, "Driver");
 
         var jwtSecurityToken = await GenerateToken(user);
+
+        var profile = new DriverProfile
+        {
+            UserId = user.Id,
+            Name = request.Name,
+            Status = ProfileStatus.Current,
+            Phone = request.Phone
+        };
+
+        await _driverProfileRepository.AddAsync(profile);
 
         return new SignUpResponse
         {
@@ -195,7 +224,6 @@ public class AuthenticationService : IAuthenticationService
 
         var user = new ApplicationUser
         {
-            Name = request.Name,
             UserName = request.Phone,
             PhoneNumber = request.Phone
         };
@@ -226,8 +254,7 @@ public class AuthenticationService : IAuthenticationService
         var claims = new[]
             {
                 new Claim("id", user.Id.ToString()),
-                new Claim("userName", user.UserName ?? ""),
-                new Claim("name", user.Name ?? "")
+                new Claim("userName", user.UserName ?? "")
             }
             .Union(userClaims)
             .Union(roleClaims);

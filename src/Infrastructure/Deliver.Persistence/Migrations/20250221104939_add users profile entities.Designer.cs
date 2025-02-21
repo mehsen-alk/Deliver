@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -11,9 +12,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DeliverDbContext))]
-    partial class DeliverDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250221104939_add users profile entities")]
+    partial class addusersprofileentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,14 +97,14 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "2330cd41-ed54-4087-a2c5-e429e424d6bd",
+                            ConcurrencyStamp = "2b013088-857d-4115-bff2-884fea6bda45",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "a77c9db7-13de-409d-99d7-b7b1d26b8ec2",
+                            ConcurrencyStamp = "cb47a30d-b68f-4dba-886f-dd607e773d8b",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
                         });
@@ -179,14 +182,14 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e0efb5a3-66c4-4862-88d9-4f363a3d71de",
+                            ConcurrencyStamp = "ce70ba53-e9dc-4806-8352-26fa3083a2b0",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOeGtCR4+XysiIcRKhRUDMmUeGcXs8KoIhUnNIrGe9rddLNQdgd9/OuAN1TH+c4n9g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH35erDtcN/NJLWEeKOt5mf2lcD1PQjX6qcRsqeX6cejVnoWy/KgeO09X8KIPYqcZQ==",
                             PhoneNumber = "221234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "cd9457c6-d798-4613-9161-93ff99458dc9",
+                            SecurityStamp = "939b0ae5-9aa4-458d-b80b-682e48e227b5",
                             TwoFactorEnabled = false,
                             UserName = "221234"
                         },
@@ -194,14 +197,14 @@ namespace Persistence.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cf5d05d9-b67f-4705-a70c-e61860f53fe2",
+                            ConcurrencyStamp = "bf79f137-7da3-4039-9237-2df2467034ad",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA9ISfF9M7O15gmAsZX4/c7gnH81AaPnkeqnNNXPF9t7A2jDo8oIepN2oJlmZl50ig==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIlAygrPgvxG5Rj9PsLd88MDAVBJqKDtwrbXKZS27QHEfuV20jS/amgvbF8TRLE+pg==",
                             PhoneNumber = "331234",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "54df2e88-6dd1-41a3-81d3-603ce1604a7a",
+                            SecurityStamp = "05759366-01d3-4aa0-81b6-809209a68667",
                             TwoFactorEnabled = false,
                             UserName = "331234"
                         });
@@ -233,6 +236,60 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("VerificationCodes");
+                });
+
+            modelBuilder.Entity("Deliver.Domain.Entities.ClientProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientProfiles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Mohsen",
+                            Phone = "221234",
+                            ProfileImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                            Status = 0,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("Deliver.Domain.Entities.DriverProfile", b =>
@@ -285,7 +342,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("CurrentLocationId");
 
-                    b.ToTable("DriversProfile");
+                    b.ToTable("DriverProfiles");
 
                     b.HasData(
                         new
@@ -299,60 +356,6 @@ namespace Persistence.Migrations
                             Status = 0,
                             UserId = 2,
                             VehicleImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
-                        });
-                });
-
-            modelBuilder.Entity("Deliver.Domain.Entities.RiderProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfileImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RidersProfile");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Mohsen",
-                            Phone = "221234",
-                            ProfileImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
-                            Status = 0,
-                            UserId = 1
                         });
                 });
 

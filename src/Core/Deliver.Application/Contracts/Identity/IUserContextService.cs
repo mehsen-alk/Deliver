@@ -7,5 +7,4 @@ public interface IUserContextService
     int GetUserId();
     ApplicationUser GetUser();
     string GetUserNameIdentifier();
-    string GetUserName();
 }

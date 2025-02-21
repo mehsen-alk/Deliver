@@ -47,20 +47,6 @@ public class UserContextService : IUserContextService
         return userName;
     }
 
-    public string GetUserName()
-    {
-        var user = GetUserClaims();
-
-        var userName = user?.FindFirstValue("name");
-
-        if (userName == null)
-            throw new BadRequestException(
-                "the token dose not have the user name identifier."
-            );
-
-        return userName;
-    }
-
     public ApplicationUser GetUser()
     {
         var userId = GetUserId();

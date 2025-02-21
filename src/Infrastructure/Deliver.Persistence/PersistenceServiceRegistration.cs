@@ -25,6 +25,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IRiderTripRepository, RiderTripRepository>();
         services.AddScoped<IDriverTripRepository, DriverTripRepository>();
         services.AddScoped<IDriverProfileRepository, DriverProfileRepository>();
+        services.AddScoped<IRiderProfileRepository, RiderProfileRepository>();
 
         return services;
     }

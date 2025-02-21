@@ -12,24 +12,27 @@ public class UserContextService : IUserContextService
 {
     private readonly IDriverProfileRepository _driverProfileRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IRiderProfileRepository _riderProfileRepository;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public UserContextService(
         IHttpContextAccessor httpContextAccessor,
         UserManager<ApplicationUser> userManager,
-        IDriverProfileRepository driverProfileRepository
+        IDriverProfileRepository driverProfileRepository,
+        IRiderProfileRepository riderProfileRepository
     )
     {
         _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
         _driverProfileRepository = driverProfileRepository;
+        _riderProfileRepository = riderProfileRepository;
     }
 
     public int GetUserId()
     {
         var user = GetUserClaims();
 
-        var idAsString = user?.FindFirstValue("id");
+        var idAsString = user.FindFirstValue("id");
 
         if (idAsString == null)
             throw new BadRequestException("the token dose not have the user id.");
@@ -48,11 +51,22 @@ public class UserContextService : IUserContextService
         return profile.Id;
     }
 
+    public async Task<int> GetRiderProfileId()
+    {
+        var userId = GetUserId();
+        var profile = await _riderProfileRepository.GetRiderCurrentProfile(userId);
+
+        if (profile == null)
+            throw new BadRequestException("the rider has no current profile.");
+
+        return profile.Id;
+    }
+
     public string GetUserNameIdentifier()
     {
         var user = GetUserClaims();
 
-        var userName = user?.FindFirstValue("userName");
+        var userName = user.FindFirstValue("userName");
 
         if (string.IsNullOrEmpty(userName))
             throw new BadRequestException(

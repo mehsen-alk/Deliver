@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Persistence.Repositories;
 using Persistence.Services;
 
@@ -86,6 +87,11 @@ public static class IdentityServiceExtensions
                                 {
                                     StatusCode = 401,
                                     Message = "401 Not authorized."
+                                },
+                                new JsonSerializerSettings
+                                {
+                                    ContractResolver =
+                                        new CamelCasePropertyNamesContractResolver()
                                 }
                             );
 
@@ -101,6 +107,11 @@ public static class IdentityServiceExtensions
                                 {
                                     StatusCode = 403,
                                     Message = "403 Not authorized."
+                                },
+                                new JsonSerializerSettings
+                                {
+                                    ContractResolver =
+                                        new CamelCasePropertyNamesContractResolver()
                                 }
                             );
 

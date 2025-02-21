@@ -58,7 +58,7 @@ public class DriverTripController : ControllerBase
                 StatusCode = StatusCodes.Status404NotFound
             };
 
-            return NotFound(notFoundResponse);
+            return Ok(notFoundResponse);
         }
 
         var response = BaseResponse<DriverCurrentTripVm>.FetchedSuccessfully(data: data);
@@ -66,7 +66,6 @@ public class DriverTripController : ControllerBase
         return Ok(response);
     }
 
-    /// <response code="404">There is no Current Trip</response>
     [HttpPut("accept")]
     [ProducesResponseType(
         typeof(BaseResponse<DriverAcceptTripVm>),

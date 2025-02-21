@@ -39,7 +39,8 @@ public class DriverTripRepository : IDriverTripRepository
                         Longitude = t.DropOfAddress.Longitude
                     },
                     CalculatedDistance = t.CalculatedDistance,
-                    CalculatedDuration = t.CalculatedDuration
+                    CalculatedDuration = t.CalculatedDuration,
+                    CreatedAt = t.CreatedDate
                 }
             )
             .ToListAsync();

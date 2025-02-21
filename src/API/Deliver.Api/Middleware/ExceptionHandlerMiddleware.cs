@@ -69,8 +69,9 @@ public class ExceptionHandlerMiddleware
                 response.Message = e.Message;
                 break;
 
-            case CredentialNotValid:
+            case CredentialNotValid e:
                 response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                response.Message = e.Message;
                 break;
 
             case DeliverException deliverEx:
@@ -82,10 +83,6 @@ public class ExceptionHandlerMiddleware
                 };
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return ReturnException(context, response);
-
-            case not null:
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                break;
         }
 
         context.Response.StatusCode = response.StatusCode;

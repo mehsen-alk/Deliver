@@ -1,4 +1,5 @@
 using System.Reflection;
+using Deliver.Api.Converters;
 using Deliver.Api.Middleware;
 using Deliver.Api.Service;
 using Deliver.Application;
@@ -6,7 +7,6 @@ using Deliver.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Persistence;
-using Persistence.Converters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Deliver.Api;

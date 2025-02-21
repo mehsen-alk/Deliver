@@ -2,6 +2,7 @@ using Deliver.Application.Contracts;
 using Deliver.Domain.common;
 using Deliver.Domain.Entities;
 using Deliver.Domain.Entities.Auth;
+using Deliver.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         _loggedInUserService = loggedInUserService;
     }
 
+    public DbSet<DriverProfile> DriversProfile { get; set; }
+    public DbSet<RiderProfile> RidersProfile { get; set; }
     public DbSet<VerificationCode> VerificationCodes { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Trip> Trips { get; set; }
@@ -64,7 +67,6 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         var user1 = new ApplicationUser
         {
             Id = 1,
-            Name = "Mohsen",
             UserName = "221234",
             PhoneNumber = "221234",
             NormalizedUserName = "221234",
@@ -74,7 +76,6 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         var user2 = new ApplicationUser
         {
             Id = 2,
-            Name = "Mohammed",
             UserName = "331234",
             PhoneNumber = "331234",
             NormalizedUserName = "331234",
@@ -86,6 +87,40 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         user2.PasswordHash = hasher.HashPassword(user2, "123456");
 
         modelBuilder.Entity<ApplicationUser>().HasData(user1, user2);
+
+        modelBuilder
+        .Entity<RiderProfile>()
+        .HasData(
+            new RiderProfile
+            {
+                Id = 1,
+                UserId = user1.Id,
+                Name = "Mohsen",
+                Phone = user1.PhoneNumber,
+                Status = ProfileStatus.Current,
+                ProfileImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
+            }
+        );
+
+        modelBuilder
+        .Entity<DriverProfile>()
+        .HasData(
+            new DriverProfile
+            {
+                Id = 1,
+                UserId = user2.Id,
+                Name = "Mohammed",
+                Phone = user1.PhoneNumber,
+                Status = ProfileStatus.Current,
+                ProfileImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                LicenseImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                VehicleImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
+            }
+        );
 
         // seed users role
         modelBuilder
@@ -133,11 +168,11 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreatedDate = DateTime.Now;
+                    entry.Entity.CreatedDate = DateTime.UtcNow;
                     entry.Entity.CreatedBy = _loggedInUserService?.UserId;
                     break;
                 case EntityState.Modified:
-                    entry.Entity.LastModifiedDate = DateTime.Now;
+                    entry.Entity.LastModifiedDate = DateTime.UtcNow;
                     entry.Entity.LastModifiedBy = _loggedInUserService?.UserId;
                     break;
             }

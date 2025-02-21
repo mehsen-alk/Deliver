@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Contracts.Persistence;
 using Deliver.Application.Exceptions;
 using Deliver.Domain.Entities.Auth;
 using Microsoft.AspNetCore.Http;
@@ -9,16 +10,19 @@ namespace Persistence.Services;
 
 public class UserContextService : IUserContextService
 {
+    private readonly IDriverProfileRepository _driverProfileRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public UserContextService(
         IHttpContextAccessor httpContextAccessor,
-        UserManager<ApplicationUser> userManager
+        UserManager<ApplicationUser> userManager,
+        IDriverProfileRepository driverProfileRepository
     )
     {
         _httpContextAccessor = httpContextAccessor;
         _userManager = userManager;
+        _driverProfileRepository = driverProfileRepository;
     }
 
     public int GetUserId()
@@ -33,6 +37,17 @@ public class UserContextService : IUserContextService
         return int.Parse(idAsString);
     }
 
+    public async Task<int> GetDriverProfileId()
+    {
+        var userId = GetUserId();
+        var profile = await _driverProfileRepository.GetDriverCurrentProfile(userId);
+
+        if (profile == null)
+            throw new BadRequestException("the driver has no current profile.");
+
+        return profile.Id;
+    }
+
     public string GetUserNameIdentifier()
     {
         var user = GetUserClaims();
@@ -40,20 +55,6 @@ public class UserContextService : IUserContextService
         var userName = user?.FindFirstValue("userName");
 
         if (string.IsNullOrEmpty(userName))
-            throw new BadRequestException(
-                "the token dose not have the user name identifier."
-            );
-
-        return userName;
-    }
-
-    public string GetUserName()
-    {
-        var user = GetUserClaims();
-
-        var userName = user?.FindFirstValue("name");
-
-        if (userName == null)
             throw new BadRequestException(
                 "the token dose not have the user name identifier."
             );

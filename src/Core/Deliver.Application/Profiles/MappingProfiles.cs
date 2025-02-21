@@ -1,5 +1,6 @@
 using AutoMapper;
 using Deliver.Application.Dto.Address;
+using Deliver.Application.Features.DriverProfile.Common;
 using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 using Deliver.Application.Features.Trips.Common.AddressRequest;
 using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
@@ -24,5 +25,7 @@ public class MappingProfile : Profile
         CreateMap<Trip, TripDto>();
 
         CreateMap<Trip, DriverCurrentTripVm>();
+
+        CreateMap<DriverProfile, DriverProfileVm>();
     }
 }

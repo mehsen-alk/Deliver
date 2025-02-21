@@ -1,8 +1,7 @@
-namespace Deliver.Application.Features.DriverProfile.Common;
+namespace Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
 
-public class DriverProfileVm
+public class EditProfileByDriverRequest
 {
-    public int UserId { get; set; }
     public required string Name { get; set; } = string.Empty;
     public required string Phone { get; set; } = string.Empty;
     public string? VehicleImage { get; set; } = null;

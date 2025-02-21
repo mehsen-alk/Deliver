@@ -1,8 +1,11 @@
-namespace Deliver.Application.Features.DriverProfile.Common;
+using MediatR;
 
-public class DriverProfileVm
+namespace Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
+
+public class EditProfileByDriverCommand : IRequest<bool>
 {
-    public int UserId { get; set; }
+    public required int UserId { get; set; }
+    public required int ProfileId { get; set; }
     public required string Name { get; set; } = string.Empty;
     public required string Phone { get; set; } = string.Empty;
     public string? VehicleImage { get; set; } = null;

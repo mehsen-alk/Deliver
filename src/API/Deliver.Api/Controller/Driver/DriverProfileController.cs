@@ -1,5 +1,6 @@
 ﻿using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Exceptions;
+using Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
 using Deliver.Application.Features.DriverProfile.Commands.VehicleRegisterByDriver;
 using Deliver.Application.Features.DriverProfile.Common;
 using Deliver.Application.Features.DriverProfile.Query.GetDriverProfileForDriver;
@@ -49,7 +50,7 @@ public class DriverProfileController : ControllerBase
     }
 
     [HttpPut("registerVehicle")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(
         typeof(BaseResponse<string>),
         StatusCodes.Status401Unauthorized
@@ -66,7 +67,38 @@ public class DriverProfileController : ControllerBase
             VehicleImage = request.VehicleImage
         };
 
-        var profile = await _mediator.Send(query);
+        await _mediator.Send(query);
+
+        var response = BaseResponse<object>.UpdatedSuccessfully(data: "updated");
+
+        return Accepted(response);
+    }
+
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(BaseResponse<string>),
+        StatusCodes.Status401Unauthorized
+    )]
+    public async Task<ActionResult<BaseResponse<object>>> UpdateProfile(
+        [FromBody] EditProfileByDriverRequest request
+    )
+    {
+        var userId = _userContextService.GetUserId();
+        var profileId = await _userContextService.GetDriverProfileId();
+
+        var query = new EditProfileByDriverCommand
+        {
+            LicenseImage = request.LicenseImage,
+            ProfileId = profileId,
+            VehicleImage = request.VehicleImage,
+            Name = request.Name,
+            Phone = request.Phone,
+            UserId = userId,
+            ProfileImage = request.ProfileImage
+        };
+
+        await _mediator.Send(query);
 
         var response = BaseResponse<object>.UpdatedSuccessfully(data: "updated");
 

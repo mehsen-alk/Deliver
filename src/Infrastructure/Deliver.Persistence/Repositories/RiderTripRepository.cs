@@ -20,7 +20,7 @@ public class RiderTripRepository : IRiderTripRepository
 
         return await _dbContext
             .Trips.Include(t => t.PickUpAddress)
-            .Include(t => t.DropOfAddress)
+            .Include(t => t.DropOffAddress)
             .FirstOrDefaultAsync(
                 t => t.RiderId == userId
                      && TripStatusExtensions.GetActiveStatuses().Contains(t.Status)

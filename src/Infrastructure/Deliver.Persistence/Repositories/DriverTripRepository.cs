@@ -35,8 +35,8 @@ public class DriverTripRepository : IDriverTripRepository
                     },
                     DropOffAddress = new AddressDto
                     {
-                        Latitude = t.DropOfAddress.Latitude,
-                        Longitude = t.DropOfAddress.Longitude
+                        Latitude = t.DropOffAddress.Latitude,
+                        Longitude = t.DropOffAddress.Longitude
                     },
                     CalculatedDistance = t.CalculatedDistance,
                     CalculatedDuration = t.CalculatedDuration,
@@ -54,7 +54,7 @@ public class DriverTripRepository : IDriverTripRepository
 
         return await _dbContext
             .Trips.Include(t => t.PickUpAddress)
-            .Include(t => t.DropOfAddress)
+            .Include(t => t.DropOffAddress)
             .FirstOrDefaultAsync(
                 t => t.DriverId == userId
                      && TripStatusExtensions.GetActiveStatuses().Contains(t.Status)

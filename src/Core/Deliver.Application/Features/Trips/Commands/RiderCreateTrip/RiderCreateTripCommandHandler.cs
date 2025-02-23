@@ -62,8 +62,8 @@ public class RiderCreateTripCommandHandler
         var dropOff = new Address
         {
             Type = AddressType.DropOff,
-            Longitude = command.DropOfAddress.Longitude,
-            Latitude = command.DropOfAddress.Latitude,
+            Longitude = command.DropOffAddress.Longitude,
+            Latitude = command.DropOffAddress.Latitude,
             UserId = command.RiderId
         };
 
@@ -76,7 +76,7 @@ public class RiderCreateTripCommandHandler
             CalculatedDistance = command.Distance,
             Status = TripStatus.Waiting,
             PickUpAddressId = pickUp.Id,
-            DropOfAddressId = dropOff.Id
+            DropOffAddressId = dropOff.Id
         };
 
         trip = await _tripRepository.AddAsync(trip);

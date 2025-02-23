@@ -12,5 +12,4 @@ public class DriverCurrentTripVm
     public required DateTime CreatedDate { get; init; }
     public required double CalculatedDistance { get; init; }
     public required double CalculatedDuration { get; init; }
-    public required string DriverName { get; init; }
 }

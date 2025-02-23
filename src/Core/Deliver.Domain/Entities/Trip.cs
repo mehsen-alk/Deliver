@@ -12,7 +12,7 @@ public class Trip : AuditableEntity
     public int RiderId { get; set; }
     public int? DriverId { get; set; }
     public int PickUpAddressId { get; set; }
-    public int DropOfAddressId { get; set; }
+    public int DropOffAddressId { get; set; }
     public double CalculatedDistance { get; set; }
     public double CalculatedDuration { get; set; }
 
@@ -25,6 +25,6 @@ public class Trip : AuditableEntity
     [ForeignKey("PickUpAddressId")]
     public virtual Address PickUpAddress { get; set; } = default!;
 
-    [ForeignKey("DropOfAddressId")]
-    public virtual Address DropOfAddress { get; set; } = default!;
+    [ForeignKey("DropOffAddressId")]
+    public virtual Address DropOffAddress { get; set; } = default!;
 }

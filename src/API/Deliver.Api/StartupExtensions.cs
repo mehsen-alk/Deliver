@@ -3,8 +3,11 @@ using Deliver.Api.Converters;
 using Deliver.Api.Middleware;
 using Deliver.Api.Service;
 using Deliver.Application;
+using Deliver.Application.Behaviors;
 using Deliver.Application.Contracts;
-using Microsoft.AspNetCore.Mvc;
+using Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
+using FluentValidation;
+using MediatR;
 using Microsoft.OpenApi.Models;
 using Persistence;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -35,30 +38,7 @@ public static class StartupExtensions
                 }
             )
             .ConfigureApiBehaviorOptions(
-                options =>
-                {
-                    options.InvalidModelStateResponseFactory = context =>
-                    {
-                        var errors = context
-                            .ModelState.Where(x => x.Value?.Errors.Count > 0)
-                            .ToDictionary(
-                                kvp => kvp.Key,
-                                kvp => kvp
-                                    .Value?.Errors.Select(e => e.ErrorMessage)
-                                    .ToArray()
-                            );
-
-                        var errorResponse = new
-                        {
-                            statusCode = 400,
-                            message = "There are validation errors.",
-                            data = errors,
-                            traceId = context.HttpContext.TraceIdentifier
-                        };
-
-                        return new BadRequestObjectResult(errorResponse);
-                    };
-                }
+                options => { options.SuppressModelStateInvalidFilter = true; }
             );
 
         builder.Services.AddIdentityServices(builder.Configuration);
@@ -76,6 +56,14 @@ public static class StartupExtensions
                     }
                 );
             }
+        );
+
+        // add all validators from domain layer, note that  EditProfileByDriverCommandValidator located in the domain layer so AddValidatorsFromAssemblyContaining will search in the domain layer
+        builder.Services
+            .AddValidatorsFromAssemblyContaining<EditProfileByDriverCommandValidator>();
+        builder.Services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ValidationBehavior<,>)
         );
 
         builder.WebHost.UseSentry(

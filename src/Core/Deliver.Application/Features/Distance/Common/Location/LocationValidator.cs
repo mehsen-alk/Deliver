@@ -4,7 +4,7 @@ namespace Deliver.Application.Features.Distance.Common.Location;
 
 public class LocationValidator : AbstractValidator<Location>
 {
-    private LocationValidator()
+    public LocationValidator()
     {
         RuleFor(a => a.Lat).NotEmpty().WithMessage("Lat is required.");
 

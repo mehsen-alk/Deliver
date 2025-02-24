@@ -28,12 +28,6 @@ public class EditProfileByDriverCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var validator = new EditProfileByDriverCommandValidator();
-
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-        if (!validationResult.IsValid) throw new ValidationException(validationResult);
-
         var tr = await _driverProfileRepository.BeginTransactionAsync();
 
         var oldProfile = await _driverProfileRepository.GetByIdAsync(command.ProfileId);

@@ -3,7 +3,7 @@ using FluentValidation.Results;
 using MediatR;
 using ValidationException = Deliver.Application.Exceptions.ValidationException;
 
-namespace Deliver.Application.Behaviors;
+namespace Deliver.Application.Validations;
 
 public class ValidationBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull

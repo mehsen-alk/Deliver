@@ -1,3 +1,4 @@
+using Deliver.Application.Validations;
 using FluentValidation;
 
 namespace Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
@@ -7,11 +8,7 @@ public class EditProfileByDriverCommandValidator
 {
     public EditProfileByDriverCommandValidator()
     {
-        RuleFor(t => t.Name)
-            .NotEmpty()
-            .WithMessage("Name Is Required")
-            .Length(3, 20)
-            .WithMessage("Name must be between 3 and 20 characters");
+        RuleFor(t => t.Name).ValidName();
 
         RuleFor(t => t.LicenseImage).NotEmpty().WithMessage("licence image Is Required");
 

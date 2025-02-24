@@ -3,9 +3,9 @@ using Deliver.Api.Converters;
 using Deliver.Api.Middleware;
 using Deliver.Api.Service;
 using Deliver.Application;
-using Deliver.Application.Behaviors;
 using Deliver.Application.Contracts;
 using Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
+using Deliver.Application.Validations;
 using FluentValidation;
 using MediatR;
 using Microsoft.OpenApi.Models;
@@ -105,7 +105,7 @@ public static class StartupExtensions
         return app;
     }
 
-    public static void AddSwagger(this IServiceCollection services)
+    private static void AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(
             c =>
@@ -193,7 +193,7 @@ public static class StartupExtensions
     ///     https://swagger.io/docs/specification/describing-responses/)
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class FileResultContentTypeAttribute : Attribute
+    private class FileResultContentTypeAttribute : Attribute
     {
         public FileResultContentTypeAttribute(string contentType)
         {
@@ -206,7 +206,7 @@ public static class StartupExtensions
         public string ContentType { get; }
     }
 
-    public class FileResultContentTypeOperationFilter : IOperationFilter
+    private class FileResultContentTypeOperationFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {

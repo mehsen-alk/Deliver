@@ -7,7 +7,8 @@ public enum DeliverErrorCodes
     TripAcceptedByAnotherDriver = 1002,
     TripAlreadyAccepted = 1003,
     CannotAcceptBecauseTripStatusIsNotValid = 1004,
-    YouDontHaveAnActiveTrip = 1005
+    YouDontHaveAnActiveTrip = 1005,
+    YouHaveExceededTheTimeAllowedToCancelTrip = 1006
 }
 
 public static class DeliverErrorCodesExtensions
@@ -23,7 +24,9 @@ public static class DeliverErrorCodesExtensions
             DeliverErrorCodes.TripAcceptedByAnotherDriver =>
                 "Trip Accepted By Another Driver",
             DeliverErrorCodes.TripAlreadyAccepted => "Trip Already Accepted",
-            DeliverErrorCodes.YouDontHaveAnActiveTrip => "You Don't Have An Active Trip"
+            DeliverErrorCodes.YouDontHaveAnActiveTrip => "You Don't Have An Active Trip",
+            DeliverErrorCodes.YouHaveExceededTheTimeAllowedToCancelTrip =>
+                "You have exceeded the time allowed to cancel the trip."
         };
     }
 }

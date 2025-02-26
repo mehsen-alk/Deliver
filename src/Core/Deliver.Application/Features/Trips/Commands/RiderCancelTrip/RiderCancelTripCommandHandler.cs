@@ -33,6 +33,12 @@ public class RiderCancelTripCommandHandler : IRequestHandler<RiderCancelTripComm
         if (riderTrip == null)
             throw new DeliverException(DeliverErrorCodes.YouDontHaveAnActiveTrip);
 
+        if (riderTrip.Status > TripStatus.Waiting)
+            if ((DateTime.UtcNow - riderTrip.CreatedDate).TotalMinutes > 5)
+                throw new DeliverException(
+                    DeliverErrorCodes.YouHaveExceededTheTimeAllowedToCancelTrip
+                );
+
         riderTrip.Status = TripStatus.Cancelled;
 
         var cancelTripLog = new TripLog

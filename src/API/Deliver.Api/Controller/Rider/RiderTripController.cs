@@ -79,10 +79,12 @@ public class RiderTripController : ControllerBase
         return Ok(response);
     }
 
-    /// <response code="1005">user did not have active trip</response>
+    /// <response code="1005">You Don't Have An Active Trip</response>
+    /// <response code="1006">You have exceeded the time allowed to cancel the trip.</response>
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(1005)]
+    [ProducesResponseType(1006)]
     public async Task<ActionResult<BaseResponse<string>>> CancelTrip()
     {
         var command =

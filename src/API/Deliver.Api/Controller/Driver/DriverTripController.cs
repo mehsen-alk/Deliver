@@ -1,7 +1,7 @@
 using Deliver.Application.Contracts.Identity;
-using Deliver.Application.Features.Trips.Commands.DriverAcceptTrip;
-using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
-using Deliver.Application.Features.Trips.Query.GetDriverCurrentTrip;
+using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverAcceptTrip;
+using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
+using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

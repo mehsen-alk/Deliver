@@ -1,14 +1,14 @@
 using AutoMapper;
 using Deliver.Application.Dto.Address;
-using Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
-using Deliver.Application.Features.DriverProfile.Common;
-using Deliver.Application.Features.RiderProfile.Commands.EditProfileByRider;
-using Deliver.Application.Features.RiderProfile.Common;
-using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
+using Deliver.Application.Features.Profiles.DriverProfile.Commands.EditProfileByDriver;
+using Deliver.Application.Features.Profiles.DriverProfile.Common;
+using Deliver.Application.Features.Profiles.RiderProfile.Commands.EditProfileByRider;
+using Deliver.Application.Features.Profiles.RiderProfile.Common;
 using Deliver.Application.Features.Trips.Common.AddressRequest;
-using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
-using Deliver.Application.Features.Trips.Query.GetDriverCurrentTrip;
-using Deliver.Application.Features.Trips.Query.GetRiderCurrentTrip;
+using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
+using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
+using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCreateTrip;
+using Deliver.Application.Features.Trips.RiderTrips.Query.GetRiderCurrentTrip;
 using Deliver.Domain.Entities;
 
 namespace Deliver.Application.Profiles;

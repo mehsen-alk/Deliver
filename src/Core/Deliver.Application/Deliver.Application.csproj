@@ -18,4 +18,11 @@
         <ProjectReference Include="..\Deliver.Domain\Deliver.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Features\Profiles\"/>
+        <Folder Include="Features\Trips\DriverTrips\"/>
+        <Folder Include="Features\Trips\RiderTrips\Command\"/>
+        <Folder Include="Features\Trips\RiderTrips\Query\"/>
+    </ItemGroup>
+
 </Project>

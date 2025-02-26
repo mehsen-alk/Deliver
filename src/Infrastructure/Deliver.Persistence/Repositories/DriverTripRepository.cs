@@ -1,6 +1,6 @@
 using Deliver.Application.Contracts.Persistence;
 using Deliver.Application.Dto.Address;
-using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
+using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
 using Deliver.Domain.Entities;
 using Deliver.Domain.Enums;
 using Microsoft.EntityFrameworkCore;

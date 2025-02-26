@@ -4,7 +4,7 @@ using Deliver.Api.Middleware;
 using Deliver.Api.Service;
 using Deliver.Application;
 using Deliver.Application.Contracts;
-using Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
+using Deliver.Application.Features.Profiles.DriverProfile.Commands.EditProfileByDriver;
 using Deliver.Application.Validations;
 using FluentValidation;
 using MediatR;

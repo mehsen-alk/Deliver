@@ -1,8 +1,8 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
-using Deliver.Application.Features.Trips.Commands.RiderCancelTrip;
-using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
-using Deliver.Application.Features.Trips.Query.GetRiderCurrentTrip;
+using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCancelTrip;
+using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCreateTrip;
+using Deliver.Application.Features.Trips.RiderTrips.Query.GetRiderCurrentTrip;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

@@ -1,9 +1,9 @@
 ﻿using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Exceptions;
-using Deliver.Application.Features.DriverProfile.Commands.EditProfileByDriver;
-using Deliver.Application.Features.DriverProfile.Commands.VehicleRegisterByDriver;
-using Deliver.Application.Features.DriverProfile.Common;
-using Deliver.Application.Features.DriverProfile.Query.GetDriverProfileForDriver;
+using Deliver.Application.Features.Profiles.DriverProfile.Commands.EditProfileByDriver;
+using Deliver.Application.Features.Profiles.DriverProfile.Commands.VehicleRegisterByDriver;
+using Deliver.Application.Features.Profiles.DriverProfile.Common;
+using Deliver.Application.Features.Profiles.DriverProfile.Query.GetDriverProfileForDriver;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

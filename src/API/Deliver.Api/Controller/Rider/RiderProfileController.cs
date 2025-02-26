@@ -1,8 +1,8 @@
 ﻿using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Exceptions;
-using Deliver.Application.Features.RiderProfile.Commands.EditProfileByRider;
-using Deliver.Application.Features.RiderProfile.Common;
-using Deliver.Application.Features.RiderProfile.Query.GetRiderProfileForRider;
+using Deliver.Application.Features.Profiles.RiderProfile.Commands.EditProfileByRider;
+using Deliver.Application.Features.Profiles.RiderProfile.Common;
+using Deliver.Application.Features.Profiles.RiderProfile.Query.GetRiderProfileForRider;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

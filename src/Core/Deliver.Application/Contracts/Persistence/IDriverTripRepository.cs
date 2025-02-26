@@ -1,4 +1,4 @@
-using Deliver.Application.Features.Trips.Query.GetDriverAvailableTrips;
+using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
 using Deliver.Domain.Entities;
 
 namespace Deliver.Application.Contracts.Persistence;

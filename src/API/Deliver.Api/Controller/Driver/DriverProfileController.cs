@@ -71,7 +71,7 @@ public class DriverProfileController : ControllerBase
 
         var response = BaseResponse<object>.UpdatedSuccessfully(data: "updated");
 
-        return Accepted(response);
+        return Ok(response);
     }
 
     [HttpPut]
@@ -102,6 +102,6 @@ public class DriverProfileController : ControllerBase
 
         var response = BaseResponse<object>.UpdatedSuccessfully(data: "updated");
 
-        return Accepted(response);
+        return Ok(response);
     }
 }

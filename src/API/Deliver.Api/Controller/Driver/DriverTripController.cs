@@ -87,6 +87,6 @@ public class DriverTripController : ControllerBase
 
         var response = BaseResponse<DriverAcceptTripVm>.UpdatedSuccessfully(data: data);
 
-        return Accepted(response);
+        return Ok(response);
     }
 }

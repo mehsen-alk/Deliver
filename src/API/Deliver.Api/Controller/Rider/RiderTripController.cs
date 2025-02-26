@@ -92,8 +92,6 @@ public class RiderTripController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return Accepted(
-            BaseResponse<string>.DeletedSuccessfully(data: result.ToString())
-        );
+        return Ok(BaseResponse<string>.DeletedSuccessfully(data: result.ToString()));
     }
 }

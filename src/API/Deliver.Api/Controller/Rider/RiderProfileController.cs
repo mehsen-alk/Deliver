@@ -74,6 +74,6 @@ public class RiderProfileController : ControllerBase
 
         var response = BaseResponse<object>.UpdatedSuccessfully(data: "updated");
 
-        return Accepted(response);
+        return Ok(response);
     }
 }

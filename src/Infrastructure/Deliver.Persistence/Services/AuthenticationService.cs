@@ -6,7 +6,8 @@ using Deliver.Application.Contracts.Persistence;
 using Deliver.Application.Exceptions;
 using Deliver.Application.Models.Authentication;
 using Deliver.Application.Models.Authentication.SignIn;
-using Deliver.Application.Models.Authentication.SignIn.Response;
+using Deliver.Application.Models.Authentication.SignIn.Response.DriverSignIn;
+using Deliver.Application.Models.Authentication.SignIn.Response.RiderSignIn;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Domain.Entities;
@@ -22,7 +23,7 @@ namespace Persistence.Services;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IAsyncRepository<RiderProfile> _clientProfileRepository;
-    private readonly IAsyncRepository<DriverProfile> _driverProfileRepository;
+    private readonly IDriverProfileRepository _driverProfileRepository;
     private readonly IdentityRepository _identityRepository;
     private readonly JwtSettings _jwtSettings;
     private readonly SignInManager<ApplicationUser> _signInManager;
@@ -34,7 +35,7 @@ public class AuthenticationService : IAuthenticationService
         SignInManager<ApplicationUser> signInManager,
         IdentityRepository identityRepository,
         IAsyncRepository<RiderProfile> clientProfileRepository,
-        IAsyncRepository<DriverProfile> driverProfileRepository
+        IDriverProfileRepository driverProfileRepository
     )
     {
         _userManager = userManager;
@@ -45,17 +46,17 @@ public class AuthenticationService : IAuthenticationService
         _driverProfileRepository = driverProfileRepository;
     }
 
-    public async Task<SignInResponse> RiderSignInAsync(SignInRequest request)
+    public async Task<RiderSignInResponse> RiderSignInAsync(SignInRequest request)
     {
         var user = await SignInAsync(request, "Rider");
 
         var jwtSecurityToken = await GenerateToken(user);
 
-        var response = new SignInResponse
+        var response = new RiderSignInResponse
         {
             StatusCode = 200,
             Message = "fetched successfully",
-            Data = new SignInResponseData
+            Data = new RiderSignInResponseData
             {
                 Id = user.Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
@@ -66,21 +67,28 @@ public class AuthenticationService : IAuthenticationService
         return response;
     }
 
-    public async Task<SignInResponse> DriverSignInAsync(SignInRequest request)
+    public async Task<DriverSignInResponse> DriverSignInAsync(SignInRequest request)
     {
         var user = await SignInAsync(request, "Driver");
 
         var jwtSecurityToken = await GenerateToken(user);
 
-        var response = new SignInResponse
+        var driverProfile =
+            await _driverProfileRepository.GetDriverCurrentProfile(user.Id);
+
+        var isVehicleRegistered = driverProfile is
+            { LicenseImage: { Length: > 0 }, VehicleImage.Length: > 0 };
+
+        var response = new DriverSignInResponse
         {
             StatusCode = 200,
             Message = "fetched successfully",
-            Data = new SignInResponseData
+            Data = new DriverSignInResponseData
             {
                 Id = user.Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                IsPhoneNumberVerified = user.PhoneNumberConfirmed
+                IsPhoneNumberVerified = user.PhoneNumberConfirmed,
+                IsVehicleRegistered = isVehicleRegistered
             }
         };
 

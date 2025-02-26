@@ -5,13 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
 
-public class DriverProfileRepository : IDriverProfileRepository
+public class DriverProfileRepository
+    : BaseRepository<DriverProfile>, IDriverProfileRepository
 {
-    private readonly DeliverDbContext _dbContext;
-
-    public DriverProfileRepository(DeliverDbContext dbContext)
+    public DriverProfileRepository(DeliverDbContext dbContext) : base(dbContext)
     {
-        _dbContext = dbContext;
     }
 
     public async Task<DriverProfile> GetDriverCurrentProfile(int userId)

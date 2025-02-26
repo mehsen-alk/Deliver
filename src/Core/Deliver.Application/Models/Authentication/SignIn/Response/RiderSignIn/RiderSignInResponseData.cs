@@ -1,6 +1,6 @@
-namespace Deliver.Application.Models.Authentication.SignIn.Response;
+namespace Deliver.Application.Models.Authentication.SignIn.Response.RiderSignIn;
 
-public class SignInResponseData
+public class RiderSignInResponseData
 {
     public required int Id { get; set; }
     public required bool IsPhoneNumberVerified { get; set; }

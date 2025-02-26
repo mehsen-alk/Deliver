@@ -1,6 +1,6 @@
 ﻿using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Models.Authentication.SignIn;
-using Deliver.Application.Models.Authentication.SignIn.Response;
+using Deliver.Application.Models.Authentication.SignIn.Response.RiderSignIn;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Application.Responses;
@@ -39,7 +39,9 @@ public class RiderAccountController : ControllerBase
         typeof(BaseResponse<string>),
         StatusCodes.Status401Unauthorized
     )]
-    public async Task<ActionResult<SignInResponse>> SignInAsync(SignInRequest request)
+    public async Task<ActionResult<RiderSignInResponse>> SignInAsync(
+        SignInRequest request
+    )
     {
         return Ok(await _authenticationService.RiderSignInAsync(request));
     }

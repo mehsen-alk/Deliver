@@ -7,13 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
 
-public class DriverTripRepository : IDriverTripRepository
+public class DriverTripRepository : BaseRepository<Trip>, IDriverTripRepository
 {
-    private readonly DeliverDbContext _dbContext;
-
-    public DriverTripRepository(DeliverDbContext dbContext)
+    public DriverTripRepository(DeliverDbContext dbContext) : base(dbContext)
     {
-        _dbContext = dbContext;
     }
 
     public async Task<List<TripDto>> GetAvailableTrips(int page, int size)
@@ -56,8 +53,7 @@ public class DriverTripRepository : IDriverTripRepository
             .Trips.Include(t => t.PickUpAddress)
             .Include(t => t.DropOffAddress)
             .FirstOrDefaultAsync(
-                t => t.DriverId == userId
-                     && TripStatusExtensions.GetActiveStatuses().Contains(t.Status)
+                t => t.DriverId == userId && activeTripStatus.Contains(t.Status)
             );
     }
 }

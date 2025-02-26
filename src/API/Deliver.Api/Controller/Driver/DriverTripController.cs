@@ -1,5 +1,6 @@
 using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverAcceptTrip;
+using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverCancelTrip;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Responses;
@@ -71,7 +72,6 @@ public class DriverTripController : ControllerBase
         typeof(BaseResponse<DriverAcceptTripVm>),
         StatusCodes.Status202Accepted
     )]
-    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BaseResponse<DriverAcceptTripVm>>> AcceptTrip(
         DriverAcceptTripRequest request
     )
@@ -86,6 +86,25 @@ public class DriverTripController : ControllerBase
         var data = await _mediator.Send(query);
 
         var response = BaseResponse<DriverAcceptTripVm>.UpdatedSuccessfully(data: data);
+
+        return Ok(response);
+    }
+
+    /// <response code="1005">You Don't Have An Active Trip</response>
+    /// <response code="1006">You have exceeded the time allowed to cancel the trip.</response>
+    [HttpDelete]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(1005)]
+    [ProducesResponseType(1006)]
+    public async Task<ActionResult<BaseResponse<DriverAcceptTripVm>>> CancelTrip()
+    {
+        var driverId = _userContextService.GetUserId();
+
+        var command = new DriverCancelTripCommand { UserId = driverId };
+
+        var data = await _mediator.Send(command);
+
+        var response = BaseResponse<string>.DeletedSuccessfully(data: data.ToString());
 
         return Ok(response);
     }

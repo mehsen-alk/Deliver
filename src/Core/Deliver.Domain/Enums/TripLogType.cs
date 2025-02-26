@@ -4,5 +4,6 @@ public enum TripLogType
 {
     TripCreatedByRider,
     TripAcceptedByDriver,
-    TripCancelledByRider
+    TripCancelledByRider,
+    TripCancelledByDriver
 }

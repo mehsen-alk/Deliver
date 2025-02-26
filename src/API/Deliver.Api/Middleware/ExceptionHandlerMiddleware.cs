@@ -81,7 +81,7 @@ public class ExceptionHandlerMiddleware
                     Message = deliverEx.Message,
                     Data = deliverEx.Data
                 };
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.StatusCode = StatusCodes.Status200OK;
                 return ReturnException(context, response);
         }
 

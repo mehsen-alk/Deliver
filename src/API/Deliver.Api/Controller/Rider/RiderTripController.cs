@@ -1,5 +1,6 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Features.Trips.Commands.RiderCancelTrip;
 using Deliver.Application.Features.Trips.Commands.RiderCreateTrip;
 using Deliver.Application.Features.Trips.Query.GetRiderCurrentTrip;
 using Deliver.Application.Responses;
@@ -76,5 +77,21 @@ public class RiderTripController : ControllerBase
         var response = BaseResponse<RiderCurrentTripVm>.FetchedSuccessfully(data: data);
 
         return Ok(response);
+    }
+
+    /// <response code="1005">user did not have active trip</response>
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(1005)]
+    public async Task<ActionResult<BaseResponse<string>>> CancelTrip()
+    {
+        var command =
+            new RiderCancelTripCommand { UserId = _userContextService.GetUserId() };
+
+        var result = await _mediator.Send(command);
+
+        return Accepted(
+            BaseResponse<string>.DeletedSuccessfully(data: result.ToString())
+        );
     }
 }

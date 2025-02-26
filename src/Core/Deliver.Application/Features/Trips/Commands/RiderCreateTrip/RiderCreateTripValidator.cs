@@ -18,7 +18,7 @@ public class RiderCreateTripValidator : AbstractValidator<RiderCreateTripCommand
 
         RuleFor(t => t.DropOffAddress)
             .NotEmpty()
-            .WithMessage("Please specify a valid Drop Of Address")
+            .WithMessage("Please specify a valid Drop Off Address")
             .SetValidator(new AddressRequestValidator());
     }
 }

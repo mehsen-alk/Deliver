@@ -66,4 +66,18 @@ public class BaseResponse<T> where T : class?
             Data = data
         };
     }
+
+    public static BaseResponse<T> DeletedSuccessfully(
+        int statusCode = 202,
+        string message = "deleted successfully",
+        T? data = null
+    )
+    {
+        return new BaseResponse<T>
+        {
+            StatusCode = statusCode,
+            Message = message,
+            Data = data
+        };
+    }
 }

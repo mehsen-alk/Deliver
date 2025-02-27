@@ -56,4 +56,16 @@ public class DriverTripRepository : BaseRepository<Trip>, IDriverTripRepository
                 t => t.DriverId == userId && activeTripStatus.Contains(t.Status)
             );
     }
+
+    public async Task<List<Trip>> GetDriverTrips(int userId, int page, int size)
+    {
+        return await _dbContext
+            .Set<Trip>()
+            .Where(trip => trip.DriverId == userId)
+            .OrderBy(trip => trip.Id)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 }

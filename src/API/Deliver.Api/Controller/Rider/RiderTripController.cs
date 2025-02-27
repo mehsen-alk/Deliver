@@ -1,8 +1,10 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Features.Trips.Common.TripHistoryVm;
 using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCancelTrip;
 using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCreateTrip;
 using Deliver.Application.Features.Trips.RiderTrips.Query.GetRiderCurrentTrip;
+using Deliver.Application.Features.Trips.RiderTrips.Query.GetTripHistory;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -93,5 +95,24 @@ public class RiderTripController : ControllerBase
         var result = await _mediator.Send(command);
 
         return Ok(BaseResponse<string>.DeletedSuccessfully(data: result.ToString()));
+    }
+
+    [HttpGet("history")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<BaseResponse<List<TripHistoryVm>>>> GetTripHistory(
+        [FromQuery] GetRiderTripHistoryRequest request
+    )
+    {
+        var userId = _userContextService.GetUserId();
+
+        var query = new GetRiderTripHistoryQuery
+        {
+            RiderId = userId,
+            Page = request.Page
+        };
+
+        var result = await _mediator.Send(query);
+
+        return Ok(BaseResponse<List<TripHistoryVm>>.FetchedSuccessfully(data: result));
     }
 }

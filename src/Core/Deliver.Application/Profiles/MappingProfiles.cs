@@ -5,6 +5,7 @@ using Deliver.Application.Features.Profiles.DriverProfile.Common;
 using Deliver.Application.Features.Profiles.RiderProfile.Commands.EditProfileByRider;
 using Deliver.Application.Features.Profiles.RiderProfile.Common;
 using Deliver.Application.Features.Trips.Common.AddressRequest;
+using Deliver.Application.Features.Trips.Common.TripHistoryVm;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCreateTrip;
@@ -24,10 +25,9 @@ public class MappingProfile : Profile
         CreateMap<Trip, RiderCreateTripCommand>();
         CreateMap<RiderCreateTripCommand, RiderCreateTripRequest>().ReverseMap();
         CreateMap<Trip, RiderCurrentTripVm>();
-
         CreateMap<Trip, TripDto>();
-
         CreateMap<Trip, DriverCurrentTripVm>();
+        CreateMap<Trip, TripHistoryVm>();
 
         CreateMap<DriverProfile, DriverProfileVm>();
         CreateMap<EditProfileByDriverCommand, DriverProfile>();

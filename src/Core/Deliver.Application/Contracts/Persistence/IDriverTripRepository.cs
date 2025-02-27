@@ -7,4 +7,5 @@ public interface IDriverTripRepository : IAsyncRepository<Trip>
 {
     Task<List<TripDto>> GetAvailableTrips(int page, int size);
     Task<Trip?> GetCurrentTripAsync(int userId);
+    Task<List<Trip>> GetDriverTrips(int userId, int page, int size);
 }

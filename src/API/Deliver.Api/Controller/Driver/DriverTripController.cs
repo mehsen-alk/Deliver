@@ -1,8 +1,10 @@
 using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Features.Trips.Common.TripHistoryVm;
 using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverAcceptTrip;
 using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverCancelTrip;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
+using Deliver.Application.Features.Trips.DriverTrips.Query.GetTripHistory;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -107,5 +109,24 @@ public class DriverTripController : ControllerBase
         var response = BaseResponse<string>.DeletedSuccessfully(data: data.ToString());
 
         return Ok(response);
+    }
+
+    [HttpGet("history")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<BaseResponse<List<TripHistoryVm>>>> GetTripHistory(
+        [FromQuery] GetDriverTripHistoryRequest request
+    )
+    {
+        var userId = _userContextService.GetUserId();
+
+        var query = new GetDriverTripHistoryQuery
+        {
+            DriverId = userId,
+            Page = request.Page
+        };
+
+        var result = await _mediator.Send(query);
+
+        return Ok(BaseResponse<List<TripHistoryVm>>.FetchedSuccessfully(data: result));
     }
 }

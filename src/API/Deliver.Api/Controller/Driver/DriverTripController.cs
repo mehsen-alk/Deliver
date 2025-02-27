@@ -1,7 +1,9 @@
 using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Features.Trips.Common.AddressRequest;
 using Deliver.Application.Features.Trips.Common.TripHistoryVm;
 using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverAcceptTrip;
 using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverCancelTrip;
+using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverUpdateTripStatusToNext;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetTripHistory;
@@ -128,5 +130,28 @@ public class DriverTripController : ControllerBase
         var result = await _mediator.Send(query);
 
         return Ok(BaseResponse<List<TripHistoryVm>>.FetchedSuccessfully(data: result));
+    }
+
+    /// <response code="1005">You Don't Have An Active Trip</response>
+    /// <response code="1007">Trip Status Cant Be Updated To Next Status</response>
+    [HttpPut("next")]
+    [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(1005)]
+    [ProducesResponseType(1007)]
+    public async Task<ActionResult<BaseResponse<DriverAcceptTripVm>>> UpdateToNextStatus(
+        [FromBody] AddressRequest driverAddress
+    )
+    {
+        var query = new DriverUpdateTripStatusToNextCommand
+        {
+            DriverId = _userContextService.GetUserId(),
+            DriverAddress = driverAddress
+        };
+
+        var data = await _mediator.Send(query);
+
+        var response = BaseResponse<string>.UpdatedSuccessfully(data: data.ToString());
+
+        return Ok(response);
     }
 }

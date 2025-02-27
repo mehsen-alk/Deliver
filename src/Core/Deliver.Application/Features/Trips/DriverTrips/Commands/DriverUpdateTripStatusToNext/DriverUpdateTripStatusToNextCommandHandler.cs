@@ -4,15 +4,16 @@ using Deliver.Domain.Entities;
 using Deliver.Domain.Enums;
 using MediatR;
 
-namespace Deliver.Application.Features.Trips.DriverTrips.Commands.DriverCancelTrip;
+namespace Deliver.Application.Features.Trips.DriverTrips.Commands.
+    DriverUpdateTripStatusToNext;
 
-public class DriverCancelTripCommandHandler
-    : IRequestHandler<DriverCancelTripCommand, int>
+public class DriverUpdateTripStatusToNextCommandHandler
+    : IRequestHandler<DriverUpdateTripStatusToNextCommand, int>
 {
     private readonly IDriverTripRepository _driverTripRepository;
     private readonly ITripLogRepository _tripLogRepository;
 
-    public DriverCancelTripCommandHandler(
+    public DriverUpdateTripStatusToNextCommandHandler(
         IDriverTripRepository driverTripRepository,
         ITripLogRepository tripLogRepository
     )
@@ -22,36 +23,31 @@ public class DriverCancelTripCommandHandler
     }
 
     public async Task<int> Handle(
-        DriverCancelTripCommand request,
+        DriverUpdateTripStatusToNextCommand request,
         CancellationToken cancellationToken
     )
     {
-        var driverTrip = await _driverTripRepository.GetCurrentTripAsync(request.UserId);
+        var driverTrip =
+            await _driverTripRepository.GetCurrentTripAsync(request.DriverId);
 
         if (driverTrip == null)
             throw new DeliverException(DeliverErrorCodes.YouDontHaveAnActiveTrip);
 
-        if (driverTrip.Status > TripStatus.Waiting)
+        try
         {
-            var acceptTripLog =
-                await _tripLogRepository.GetAcceptedTripLogsAsync(driverTrip.Id);
-
-            if (acceptTripLog == null)
-                throw new DeliverException(DeliverErrorCodes.YouDontHaveAnActiveTrip);
-
-            if ((DateTime.UtcNow - acceptTripLog.CreatedDate).TotalMinutes > 5)
-                throw new DeliverException(
-                    DeliverErrorCodes.YouHaveExceededTheTimeAllowedToCancelTrip
-                );
+            driverTrip.Status = driverTrip.Status.NextStatus();
+        }
+        catch
+        {
+            throw new DeliverException(
+                DeliverErrorCodes.TripStatusCantBeUpdatedToNextStatus
+            );
         }
 
-        driverTrip.Status = TripStatus.Waiting;
-        driverTrip.DriverId = null;
-
-        var cancelTripLog = new TripLog
+        var log = new TripLog
         {
             Type = TripLogType.TripCancelledByDriver,
-            Note = "trip cancelled by driver",
+            Note = "trip updated by driver",
             Status = driverTrip.Status,
             TripId = driverTrip.Id
         };
@@ -60,7 +56,7 @@ public class DriverCancelTripCommandHandler
         try
         {
             await _driverTripRepository.UpdateAsync(driverTrip);
-            await _tripLogRepository.AddAsync(cancelTripLog);
+            await _tripLogRepository.AddAsync(log);
 
             await transaction.CommitAsync(cancellationToken);
         }

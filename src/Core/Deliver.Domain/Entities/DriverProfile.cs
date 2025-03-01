@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Deliver.Domain.common;
+using Deliver.Domain.Entities.Auth;
 using Deliver.Domain.Enums;
 using static System.String;
 
@@ -21,4 +22,7 @@ public class DriverProfile : AuditableEntity
 
     [ForeignKey("CurrentLocationId")]
     public virtual Address CurrentLocation { get; set; } = default!;
+
+    [ForeignKey("UserId")]
+    public virtual ApplicationUser User { get; set; } = default!;
 }

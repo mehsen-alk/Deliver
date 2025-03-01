@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Deliver.Domain.common;
+using Deliver.Domain.Entities.Auth;
 using Deliver.Domain.Enums;
 using static System.String;
 
@@ -15,4 +17,7 @@ public class RiderProfile : AuditableEntity
     public required string Phone { get; set; } = Empty;
 
     public string? ProfileImage { get; set; } = null;
+
+    [ForeignKey("UserId")]
+    public virtual ApplicationUser User { get; set; } = default!;
 }

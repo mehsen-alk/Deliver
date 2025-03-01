@@ -37,7 +37,7 @@ public class DriverTripRepository : BaseRepository<Trip>, IDriverTripRepository
                     },
                     CalculatedDistance = t.CalculatedDistance,
                     CalculatedDuration = t.CalculatedDuration,
-                    CreatedAt = t.CreatedDate
+                    CreatedDate = t.CreatedDate
                 }
             )
             .ToListAsync();

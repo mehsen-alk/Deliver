@@ -1,4 +1,5 @@
 using Deliver.Application.Contracts.Persistence;
+using Deliver.Application.Contracts.Service;
 using Deliver.Application.Exceptions;
 using Deliver.Domain.Entities;
 using Deliver.Domain.Enums;
@@ -11,15 +12,21 @@ public class DriverUpdateTripStatusToNextCommandHandler
     : IRequestHandler<DriverUpdateTripStatusToNextCommand, int>
 {
     private readonly IDriverTripRepository _driverTripRepository;
+    private readonly IAsyncRepository<Payment> _paymentRepository;
+    private readonly IProfitService _profitService;
     private readonly ITripLogRepository _tripLogRepository;
 
     public DriverUpdateTripStatusToNextCommandHandler(
         IDriverTripRepository driverTripRepository,
-        ITripLogRepository tripLogRepository
+        ITripLogRepository tripLogRepository,
+        IAsyncRepository<Payment> paymentRepository,
+        IProfitService profitService
     )
     {
         _driverTripRepository = driverTripRepository;
         _tripLogRepository = tripLogRepository;
+        _paymentRepository = paymentRepository;
+        _profitService = profitService;
     }
 
     public async Task<int> Handle(
@@ -53,6 +60,25 @@ public class DriverUpdateTripStatusToNextCommandHandler
         };
 
         var transaction = await _driverTripRepository.BeginTransactionAsync();
+
+        if (driverTrip.Status == TripStatus.Delivered)
+        {
+            var payment = new Payment
+            {
+                Type = PaymentType.Trip,
+                Note = "trip cost",
+                PaymentMethod = PaymentMethod.Cash,
+                FromUserId = driverTrip.RiderId,
+                ToUserId = (int)driverTrip.DriverId!,
+                Status = PaymentStatus.Paid,
+                TripId = driverTrip.Id,
+                CompanyCommission = _profitService.CompanyCommission(),
+                Amount = _profitService.GetTripCost(driverTrip.CalculatedDistance)
+            };
+
+            await _paymentRepository.AddAsync(payment);
+        }
+
         try
         {
             await _driverTripRepository.UpdateAsync(driverTrip);

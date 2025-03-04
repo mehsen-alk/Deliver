@@ -5,7 +5,7 @@ namespace Deliver.Application.Features.Trips.RiderTrips.Command.RiderCreateTrip;
 public class RiderCreateTripRequest
 {
     public AddressRequest PickUpAddress { get; set; } = default!;
-    public AddressRequest DropOffAddress { get; set; } = default!;
+    public AddressRequest DropOfAddress { get; set; } = default!;
     public double Distance { get; set; }
     public double Duration { get; set; }
 }

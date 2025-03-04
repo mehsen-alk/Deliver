@@ -42,6 +42,8 @@ public class RiderTripController : ControllerBase
     {
         var command = _mapper.Map<RiderCreateTripCommand>(request);
 
+        command.DropOffAddress = request.DropOfAddress;
+
         command.RiderId = _userContextService.GetUserId();
 
         var data = await _mediator.Send(command);

@@ -31,6 +31,7 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Trip> Trips { get; set; }
     public DbSet<TripLog> TripLogs { get; set; }
+    public DbSet<Payment> Payments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -157,6 +158,27 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
             .HasOne(t => t.User)
             .WithMany()
             .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder
+            .Entity<Payment>()
+            .HasOne(p => p.FromUser)
+            .WithMany()
+            .HasForeignKey(p => p.FromUserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder
+            .Entity<Payment>()
+            .HasOne(p => p.ToUser)
+            .WithMany()
+            .HasForeignKey(p => p.ToUserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder
+            .Entity<Payment>()
+            .HasOne(p => p.Trip)
+            .WithMany()
+            .HasForeignKey(p => p.TripId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 

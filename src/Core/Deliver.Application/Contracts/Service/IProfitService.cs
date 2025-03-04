@@ -2,5 +2,7 @@ namespace Deliver.Application.Contracts.Service;
 
 public interface IProfitService
 {
-    public double? GetCaptainProfitFromCalculatedDistance(double? distance);
+    public decimal GetTripCost(double? distance);
+    public decimal GetCaptainProfit(decimal tripCost);
+    public decimal CompanyCommission();
 }

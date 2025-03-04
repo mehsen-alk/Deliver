@@ -36,7 +36,9 @@ public class GetDriverCurrentTripQueryHandler
         if (vm == null) return null;
 
         vm.CaptainProfit =
-            _profitService.GetCaptainProfitFromCalculatedDistance(vm.CalculatedDistance);
+            _profitService.GetCaptainProfit(
+                _profitService.GetTripCost(vm.CalculatedDistance)
+            );
 
         return vm;
     }

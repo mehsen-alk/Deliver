@@ -9,6 +9,6 @@ public class TripDto
     public AddressDto? DropOffAddress { get; init; }
     public double? CalculatedDistance { get; init; }
     public double? CalculatedDuration { get; init; }
-    public double? CaptainProfit { get; set; }
+    public decimal? CaptainProfit { get; set; }
     public DateTime CreatedDate { get; init; }
 }

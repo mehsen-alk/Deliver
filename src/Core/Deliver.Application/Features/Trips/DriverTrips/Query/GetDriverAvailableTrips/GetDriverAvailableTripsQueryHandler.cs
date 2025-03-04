@@ -34,10 +34,9 @@ public class GetDriverAvailableTripsQueryHandler
         var tripsDto = _mapper.Map<List<TripDto>>(trip);
 
         foreach (var tripDto in tripsDto)
-            tripDto.CaptainProfit =
-                _profitService.GetCaptainProfitFromCalculatedDistance(
-                    tripDto.CalculatedDistance
-                );
+            tripDto.CaptainProfit = _profitService.GetCaptainProfit(
+                _profitService.GetTripCost(tripDto.CalculatedDistance)
+            );
 
         var vm = new GetDriverAvailableTripsQueryVm { Trips = tripsDto };
 

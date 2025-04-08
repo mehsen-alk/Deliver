@@ -26,7 +26,8 @@ public class HealthController : ControllerBase
             BaseResponse<string>.FetchedSuccessfully(data: "server is up and running")
         );
     }
-    [HttpGet("driver4")]
+    
+    [HttpGet("cicdWorked")]
     [Authorize(Roles = "Driver")]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     public ActionResult CheckServerHealthDriver3()

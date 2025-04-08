@@ -11,6 +11,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: ls
+        run: ls
+
+      - name: cd
+        run: cd ./Deliver
+
       - name: Build Docker image
         run: docker build -t deliver.api
 

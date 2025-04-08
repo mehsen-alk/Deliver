@@ -23,4 +23,4 @@ jobs:
           script: |
             docker stop deliver.api || true
             docker rm deliver.api || true
-            docker run -d --name deliver.api -p 8080:8080 deliver
+            docker run -d --name deliver.api -p 8080:8080 deliver.api

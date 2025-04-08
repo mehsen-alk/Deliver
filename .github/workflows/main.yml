@@ -33,15 +33,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/Deliver
-            echo "✅ Stopping and removing old containers..."
-            docker-compose down
 
-            echo "✅ Killing any process using port 8080, 8081 and 1400..."
-            fuser -k 8080/tcp || true
-            fuser -k 8081/tcp || true
-            fuser -k 1400/tcp || true
-
-            echo "✅ Starting containers..."
-            docker-compose up -d
-
+            ls
+            
+            make updateProject
             echo "✅ Deployment complete!"

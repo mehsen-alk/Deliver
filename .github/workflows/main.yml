@@ -30,5 +30,6 @@ jobs:
             docker stop $container_id
             docker rm $container_id
             fi
-
+            
+            fuser -k 8080/tcp || true
             docker run -d --name deliver.api -p 8080:8080 deliver.api

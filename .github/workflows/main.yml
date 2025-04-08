@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker ps
-            docker stop deliver.api || true
+            docker-compose down
             docker rm deliver.api || true
 
             container_id=$(docker ps -q --filter "publish=8080")

@@ -1,14 +1,15 @@
 services:
-  deliver.api:
-    image: ${DOCKER_REGISTRY-}deliver.api
-    container_name: deliver.api
-    depends_on:
-      - deliver.db
-    build:
-      context: .
-    ports:
-      - "8080:8080"
-      - "8081:8081"
+#  deliver.api:
+#    image: ${DOCKER_REGISTRY-}deliver.api
+#    container_name: deliver.api
+#    depends_on:
+#      - deliver.db
+#    build:
+#      context: .
+#    ports:
+#      - "8080:8080"
+#      - "8081:8081"
+#    command: ["dotnet", "Deliver.Api.dll"]
 
   deliver.db:
     image: mcr.microsoft.com/mssql/server:2019-latest

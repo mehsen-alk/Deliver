@@ -21,6 +21,14 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            docker ps
             docker stop deliver.api || true
             docker rm deliver.api || true
+
+            container_id=$(docker ps -q --filter "publish=8080")
+            if [ ! -z "$container_id" ]; then
+            docker stop $container_id
+            docker rm $container_id
+            fi
+
             docker run -d --name deliver.api -p 8080:8080 deliver.api

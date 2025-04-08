@@ -32,4 +32,5 @@ jobs:
             fi
             
             fuser -k 8080/tcp || true
-            docker run -d --name deliver.api -p 8080:8080 deliver.api
+            docker-compose down
+            docker-compose up

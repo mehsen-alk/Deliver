@@ -23,7 +23,7 @@ jobs:
           script: |
             docker ps
             docker-compose down
-            docker rm deliver.api || true
+            docker ps -a --format '{{.Names}}' | grep -q "^deliver.api$" && docker rm -f deliver.api
 
             container_id=$(docker ps -q --filter "publish=8080")
             if [ ! -z "$container_id" ]; then

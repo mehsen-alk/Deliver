@@ -1,4 +1,5 @@
 name: CI/CD Pipeline
+
 on:
   push:
     branches: [ "master" ]
@@ -7,12 +8,22 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: cicd
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t your-app-name .
+        run: docker build -t deliver.api .
+
+      - name: Copy files to VPS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "."
+          target: "~/Deliver"
 
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@master
@@ -21,6 +32,16 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker stop deliver.api || true
-            docker rm deliver.api || true
-            docker run -d --name deliver.api -p 8080:8080 deliver
+            cd ~/Deliver
+            echo "✅ Stopping and removing old containers..."
+            docker-compose down
+
+            echo "✅ Killing any process using port 8080, 8081 and 1400..."
+            fuser -k 8080/tcp || true
+            fuser -k 8081/tcp || true
+            fuser -k 1400/tcp || true
+
+            echo "✅ Starting containers..."
+            docker-compose up -d
+
+            echo "✅ Deployment complete!"

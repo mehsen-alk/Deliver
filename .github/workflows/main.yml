@@ -36,8 +36,9 @@ jobs:
             echo "✅ Stopping and removing old containers..."
             docker-compose down
 
-            echo "✅ Killing any process using port 8080..."
+            echo "✅ Killing any process using port 8080 and 1433..."
             fuser -k 8080/tcp || true
+            fuser -k 1433/tcp || true
 
             echo "✅ Starting containers..."
             docker-compose up -d

@@ -26,10 +26,10 @@ public class HealthController : ControllerBase
             BaseResponse<string>.FetchedSuccessfully(data: "server is up and running")
         );
     }
-    [HttpGet("driver2")]
+    [HttpGet("driver3")]
     [Authorize(Roles = "Driver")]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
-    public ActionResult CheckServerHealthDriver2()
+    public ActionResult CheckServerHealthDriver3()
     {
         return Ok(
             BaseResponse<string>.FetchedSuccessfully(data: "server is up and running")

@@ -27,7 +27,7 @@ public class HealthController : ControllerBase
         );
     }
     
-    [HttpGet("cicdWorked")]
+    [HttpGet("ci/cd/Worked")]
     [Authorize(Roles = "Driver")]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     public ActionResult CheckServerHealthDriver3()

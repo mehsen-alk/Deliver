@@ -33,8 +33,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/Deliver
-            echo '${{ secrets.FIREBASE_KEY_JSON }}' > ~/Deliver/FirebaseKey.json
-            chmod 600 ~/Deliver/FirebaseKey.json
-
-            make updateProject
+            docker-compose down
+            docker-compose up -d
             echo "✅ Deployment complete!"

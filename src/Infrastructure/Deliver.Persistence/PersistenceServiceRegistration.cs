@@ -36,9 +36,26 @@ public static class PersistenceServiceRegistration
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine(
-                $"Error initializing Firebase Admin SDK: {ex.Message}"
-            );
+            try
+            {
+                FirebaseApp.Create(
+                    new AppOptions
+                    {
+                        Credential =
+                            GoogleCredential.FromFile("FirebaseKey.json")
+                    }
+                );
+                Console.WriteLine("Firebase Admin SDK initialized successfully!");
+            }
+            catch (Exception exc)
+            {
+                Console.Error.WriteLine(
+                    $"Error initializing Firebase Admin SDK: {ex.Message}"
+                );
+                Console.Error.WriteLine(
+                    $"Error initializing Firebase Admin SDK: {exc.Message}"
+                );
+            }
         }
         // --- End Firebase Admin SDK initialization ---
 

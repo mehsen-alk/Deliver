@@ -29,7 +29,7 @@ public static class PersistenceServiceRegistration
             FirebaseApp.Create(
                 new AppOptions
                 {
-                    Credential = GoogleCredential.FromFile("FirebaseKey.json")
+                    Credential = GoogleCredential.FromFile("/app/FirebaseKey.json")
                 }
             );
             Console.WriteLine("Firebase Admin SDK initialized successfully!");

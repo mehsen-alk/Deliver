@@ -483,3 +483,4 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 **/.containers/
+/src/API/Deliver.Api/FirebaseKey.json

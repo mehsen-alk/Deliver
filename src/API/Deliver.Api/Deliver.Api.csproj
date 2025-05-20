@@ -31,4 +31,8 @@
         <ProjectReference Include="..\..\Infrastructure\Deliver.Persistence\Deliver.Persistence.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="FirebaseKey.json"/>
+    </ItemGroup>
+
 </Project>

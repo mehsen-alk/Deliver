@@ -1,8 +1,11 @@
 using Deliver.Application.Contracts.Persistence;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Repositories;
+using Persistence.Services;
 
 namespace Persistence;
 
@@ -20,14 +23,33 @@ public static class PersistenceServiceRegistration
             )
         );
 
-        services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
+        // --- Initialize the Firebase Admin SDK ---
+        try
+        {
+            FirebaseApp.Create(
+                new AppOptions
+                {
+                    Credential = GoogleCredential.FromFile("FirebaseKey.json")
+                }
+            );
+            Console.WriteLine("Firebase Admin SDK initialized successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(
+                $"Error initializing Firebase Admin SDK: {ex.Message}"
+            );
+        }
+        // --- End Firebase Admin SDK initialization ---
 
+        services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IRiderTripRepository, RiderTripRepository>();
         services.AddScoped<IDriverTripRepository, DriverTripRepository>();
         services.AddScoped<IDriverProfileRepository, DriverProfileRepository>();
         services.AddScoped<IRiderProfileRepository, RiderProfileRepository>();
         services.AddScoped<ITripLogRepository, TripLogRepository>();
         services.AddScoped<IDriverFinanceRepository, DriverFinanceRepository>();
+        services.AddScoped<INotificationServices, FcmServices>();
 
         return services;
     }

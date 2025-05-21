@@ -1,4 +1,4 @@
-using Deliver.Application.Contracts.Persistence;
+using Deliver.Application.Contracts.Service;
 using Deliver.Application.Models.Notification;
 using Deliver.Application.Responses;
 using Microsoft.AspNetCore.Authorization;

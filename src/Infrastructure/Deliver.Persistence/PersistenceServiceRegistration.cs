@@ -1,4 +1,5 @@
 using Deliver.Application.Contracts.Persistence;
+using Deliver.Application.Contracts.Service;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +42,7 @@ public static class PersistenceServiceRegistration
                 FirebaseApp.Create(
                     new AppOptions
                     {
-                        Credential =
-                            GoogleCredential.FromFile("FirebaseKey.json")
+                        Credential = GoogleCredential.FromFile("FirebaseKey.json")
                     }
                 );
                 Console.WriteLine("Firebase Admin SDK initialized successfully!");

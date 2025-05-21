@@ -1,6 +1,6 @@
 using Deliver.Application.Models.Notification;
 
-namespace Deliver.Application.Contracts.Persistence;
+namespace Deliver.Application.Contracts.Service;
 
 public interface INotificationServices
 {

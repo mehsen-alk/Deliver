@@ -32,6 +32,7 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
     public DbSet<Trip> Trips { get; set; }
     public DbSet<TripLog> TripLogs { get; set; }
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<NotificationToken> NotificationTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -180,6 +181,19 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
             .WithMany()
             .HasForeignKey(p => p.TripId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<NotificationToken>().HasIndex(p => p.Token).IsUnique();
+
+        modelBuilder
+            .Entity<NotificationToken>()
+            .HasIndex(
+                p => new
+                {
+                    p.UserId,
+                    p.DeviceId
+                }
+            )
+            .IsUnique();
     }
 
     public override Task<int> SaveChangesAsync(

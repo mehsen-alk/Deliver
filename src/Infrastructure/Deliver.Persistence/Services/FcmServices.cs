@@ -1,4 +1,4 @@
-using Deliver.Application.Contracts.Persistence;
+using Deliver.Application.Contracts.Service;
 using Deliver.Application.Models.Notification;
 using FirebaseAdmin;
 using FirebaseAdmin.Messaging;

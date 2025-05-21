@@ -67,6 +67,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<ITripLogRepository, TripLogRepository>();
         services.AddScoped<IDriverFinanceRepository, DriverFinanceRepository>();
         services.AddScoped<INotificationServices, FcmServices>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
 
         return services;
     }

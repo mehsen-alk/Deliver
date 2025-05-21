@@ -1,6 +1,6 @@
 namespace Deliver.Application.Models.Notification;
 
-public class NotificationRequest
+public class SendNotificationRequest
 {
     public required string Token { get; set; }
     public required string Title { get; set; }

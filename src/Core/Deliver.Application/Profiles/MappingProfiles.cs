@@ -10,6 +10,7 @@ using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTri
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCreateTrip;
 using Deliver.Application.Features.Trips.RiderTrips.Query.GetRiderCurrentTrip;
+using Deliver.Application.Models.Notification;
 using Deliver.Domain.Entities;
 
 namespace Deliver.Application.Profiles;
@@ -34,5 +35,7 @@ public class MappingProfile : Profile
 
         CreateMap<RiderProfile, RiderProfileVm>();
         CreateMap<EditProfileByRiderCommand, RiderProfile>();
+
+        CreateMap<CreateNotificationTokenRequest, NotificationToken>();
     }
 }

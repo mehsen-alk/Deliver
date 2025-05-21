@@ -4,5 +4,5 @@ namespace Deliver.Application.Contracts.Service;
 
 public interface INotificationServices
 {
-    public Task<string> SendNotificationAsync(NotificationRequest request);
+    public Task<string> SendNotificationAsync(SendNotificationRequest request);
 }

@@ -9,7 +9,7 @@ public class FcmServices : INotificationServices
 {
     private readonly FirebaseApp _firebaseApp = FirebaseApp.DefaultInstance;
 
-    public async Task<string> SendNotificationAsync(NotificationRequest request)
+    public async Task<string> SendNotificationAsync(SendNotificationRequest request)
     {
         var message = new Message
         {

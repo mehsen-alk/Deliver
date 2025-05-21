@@ -50,7 +50,7 @@ public class HealthController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status200OK)]
     public async Task<ActionResult> CheckNotificationHealth(
-        [FromBody] NotificationRequest request
+        [FromBody] SendNotificationRequest request
     )
     {
         var notificationId = await _notificationServices.SendNotificationAsync(request);

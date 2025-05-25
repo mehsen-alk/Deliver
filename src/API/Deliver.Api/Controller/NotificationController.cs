@@ -1,7 +1,7 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Contracts.Persistence;
-using Deliver.Application.Features.Notification.Command;
+using Deliver.Application.Features.Notification.Command.PostNotificationToken;
 using Deliver.Application.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

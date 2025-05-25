@@ -1,6 +1,6 @@
 using AutoMapper;
 using Deliver.Application.Dto.Address;
-using Deliver.Application.Features.Notification.Command;
+using Deliver.Application.Features.Notification.Command.PostNotificationToken;
 using Deliver.Application.Features.Profiles.DriverProfile.Commands.EditProfileByDriver;
 using Deliver.Application.Features.Profiles.DriverProfile.Common;
 using Deliver.Application.Features.Profiles.RiderProfile.Commands.EditProfileByRider;

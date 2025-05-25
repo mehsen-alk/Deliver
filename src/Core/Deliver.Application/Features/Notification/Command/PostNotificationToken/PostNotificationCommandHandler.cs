@@ -4,7 +4,7 @@ using Deliver.Application.Contracts.Persistence;
 using Deliver.Domain.Entities;
 using MediatR;
 
-namespace Deliver.Application.Features.Notification.Command;
+namespace Deliver.Application.Features.Notification.Command.PostNotificationToken;
 
 public class PostNotificationCommandHandler
     : IRequestHandler<PostNotificationTokenCommand, int>

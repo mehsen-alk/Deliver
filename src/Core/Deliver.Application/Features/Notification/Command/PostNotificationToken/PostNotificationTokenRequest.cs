@@ -1,4 +1,4 @@
-namespace Deliver.Application.Features.Notification.Command;
+namespace Deliver.Application.Features.Notification.Command.PostNotificationToken;
 
 public class PostNotificationTokenRequest
 {

@@ -15,7 +15,7 @@
     </ItemGroup>
     <ItemGroup>
         <Content Include=".gitignore"/>
-        <Content Include=".git\workflows\deploy.yml" />
+        <Content Include=".git\workflows\deploy.yml"/>
         <Content Include="Deliver.sln.DotSettings.user"/>
         <Content Include="Dockerfile"/>
         <Content Include="Makefile"/>

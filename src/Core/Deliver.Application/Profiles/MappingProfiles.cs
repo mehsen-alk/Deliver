@@ -1,5 +1,6 @@
 using AutoMapper;
 using Deliver.Application.Dto.Address;
+using Deliver.Application.Features.Notification.Command;
 using Deliver.Application.Features.Profiles.DriverProfile.Commands.EditProfileByDriver;
 using Deliver.Application.Features.Profiles.DriverProfile.Common;
 using Deliver.Application.Features.Profiles.RiderProfile.Commands.EditProfileByRider;
@@ -10,7 +11,6 @@ using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTri
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Features.Trips.RiderTrips.Command.RiderCreateTrip;
 using Deliver.Application.Features.Trips.RiderTrips.Query.GetRiderCurrentTrip;
-using Deliver.Application.Models.Notification;
 using Deliver.Domain.Entities;
 
 namespace Deliver.Application.Profiles;
@@ -36,6 +36,7 @@ public class MappingProfile : Profile
         CreateMap<RiderProfile, RiderProfileVm>();
         CreateMap<EditProfileByRiderCommand, RiderProfile>();
 
-        CreateMap<CreateNotificationTokenRequest, NotificationToken>();
+        CreateMap<PostNotificationTokenRequest, PostNotificationTokenCommand>();
+        CreateMap<PostNotificationTokenCommand, NotificationToken>();
     }
 }

@@ -1,9 +1,9 @@
 using AutoMapper;
 using Deliver.Application.Contracts.Identity;
 using Deliver.Application.Contracts.Persistence;
-using Deliver.Application.Models.Notification;
+using Deliver.Application.Features.Notification.Command;
 using Deliver.Application.Responses;
-using Deliver.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,41 +14,35 @@ namespace Deliver.Api.Controller;
 [Authorize]
 public class NotificationController : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService;
     private readonly IMapper _mapper;
-    private readonly INotificationRepository _notificationRepository;
+    private readonly IMediator _mediator;
     private readonly IUserContextService _userContextService;
 
     public NotificationController(
         IMapper mapper,
-        IAuthenticationService authenticationService,
         IUserContextService userContextService,
-        INotificationRepository notificationRepository
+        INotificationRepository notificationRepository,
+        IMediator mediator
     )
     {
         _mapper = mapper;
-        _authenticationService = authenticationService;
         _userContextService = userContextService;
-        _notificationRepository = notificationRepository;
+        _mediator = mediator;
     }
 
     [HttpPost("notification")]
     [ProducesResponseType(typeof(BaseResponse<string>), StatusCodes.Status201Created)]
     public async Task<ActionResult> AddNotificationToken(
-        [FromBody] CreateNotificationTokenRequest request
+        [FromBody] PostNotificationTokenRequest request
     )
     {
         var userId = _userContextService.GetUserId();
 
-        var notificationToken = _mapper.Map<NotificationToken>(request);
-        notificationToken.UserId = userId;
+        var command = _mapper.Map<PostNotificationTokenCommand>(request);
+        command.UserId = userId;
 
-        notificationToken = await _notificationRepository.AddAsync(notificationToken);
+        var result = await _mediator.Send(command);
 
-        return Ok(
-            BaseResponse<string>.CreatedSuccessfully(
-                data: notificationToken.Id.ToString()
-            )
-        );
+        return Ok(BaseResponse<string>.CreatedSuccessfully(data: result.ToString()));
     }
 }

@@ -69,6 +69,21 @@ public class NotificationRepository : INotificationRepository
         return tokens;
     }
 
+    public async Task<IReadOnlyList<NotificationToken>> DeleteDeviceTokens(
+        string deviceId
+    )
+    {
+        var tokens = await _dbContext
+            .NotificationTokens.Where(token => token.DeviceId == deviceId)
+            .ToListAsync();
+
+        _dbContext.NotificationTokens.RemoveRange(tokens);
+
+        await _dbContext.SaveChangesAsync();
+
+        return tokens;
+    }
+
     public async Task<IReadOnlyList<NotificationToken>> GetUserTokens(int userId)
     {
         var tokens = await _dbContext

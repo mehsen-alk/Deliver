@@ -11,7 +11,6 @@ public class PostNotificationCommandHandler
 {
     private readonly IMapper _mapper;
     private readonly INotificationRepository _notificationRepository;
-    private readonly IUserContextService _userContextService;
 
     public PostNotificationCommandHandler(
         IMapper mapper,
@@ -21,7 +20,6 @@ public class PostNotificationCommandHandler
     {
         _mapper = mapper;
         _notificationRepository = notificationRepository;
-        _userContextService = userContextService;
     }
 
     public async Task<int> Handle(

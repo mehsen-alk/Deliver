@@ -3,7 +3,8 @@ using Deliver.Application.Features.Trips.Common.AddressRequest;
 using Deliver.Application.Features.Trips.Common.TripHistoryVm;
 using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverAcceptTrip;
 using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverCancelTrip;
-using Deliver.Application.Features.Trips.DriverTrips.Commands.DriverUpdateTripStatusToNext;
+using
+    Deliver.Application.Features.Trips.DriverTrips.Commands.DriverUpdateTripStatusToNext;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverAvailableTrips;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetDriverCurrentTrip;
 using Deliver.Application.Features.Trips.DriverTrips.Query.GetTripHistory;

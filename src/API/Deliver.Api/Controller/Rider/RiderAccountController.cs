@@ -1,9 +1,13 @@
 ﻿using Deliver.Application.Contracts.Identity;
+using Deliver.Application.Features.Notification.Command.DeleteNotificationTokenByDeviceId;
 using Deliver.Application.Models.Authentication.SignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response.RiderSignIn;
+using Deliver.Application.Models.Authentication.SignOut;
+using Deliver.Application.Models.Authentication.SignOut.Response;
 using Deliver.Application.Models.Authentication.SignUp;
 using Deliver.Application.Models.Authentication.SignUp.Response;
 using Deliver.Application.Responses;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Deliver.Api.Controller.Rider;
@@ -13,10 +17,15 @@ namespace Deliver.Api.Controller.Rider;
 public class RiderAccountController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
+    private readonly IMediator _mediator;
 
-    public RiderAccountController(IAuthenticationService authenticationService)
+    public RiderAccountController(
+        IAuthenticationService authenticationService,
+        IMediator mediator
+    )
     {
         _authenticationService = authenticationService;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -66,5 +75,16 @@ public class RiderAccountController : ControllerBase
     public async Task<ActionResult<SignUpResponse>> SignUpAsync(SignUpRequest request)
     {
         return Created("", await _authenticationService.RiderSignUpAsync(request));
+    }
+
+    [HttpPost("signOut")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<SignOutResponse>> SignOutAsync(SignOutRequest request)
+    {
+        return Ok(
+            await _mediator.Send(
+                new DeleteNotificationTokenByDeviceIdCommand(request.DeviceId)
+            )
+        );
     }
 }

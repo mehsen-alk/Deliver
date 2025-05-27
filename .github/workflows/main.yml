@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to VPS via SSH
+      - name: Deploy to VPS via SSH and run Makefile command
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -23,3 +23,4 @@ jobs:
             cd ~/Deliver
             make updateProject
             echo "✅ Deployment complete!"
+            

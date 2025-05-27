@@ -24,6 +24,4 @@ reInitDocker:
 
 updateProject:
 	git pull
-	- docker-compose down
-	- docker rmi deliver.api
-	docker-compose up -d
+	docker-compose up -d --no-deps --build deliver.api

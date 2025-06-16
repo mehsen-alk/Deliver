@@ -12,16 +12,19 @@ public class GetDriverCurrentTripQueryHandler
     private readonly IDriverTripRepository _driverTripRepository;
     private readonly IMapper _mapper;
     private readonly IProfitService _profitService;
+    private readonly ITripLogRepository _tripLogRepository;
 
     public GetDriverCurrentTripQueryHandler(
         IMapper mapper,
         IDriverTripRepository driverTripRepository,
-        IProfitService profitService
+        IProfitService profitService,
+        ITripLogRepository tripLogRepository
     )
     {
         _mapper = mapper;
         _driverTripRepository = driverTripRepository;
         _profitService = profitService;
+        _tripLogRepository = tripLogRepository;
     }
 
     public async Task<DriverCurrentTripVm?> Handle(
@@ -39,6 +42,13 @@ public class GetDriverCurrentTripQueryHandler
             _profitService.GetCaptainProfit(
                 _profitService.GetTripCost(vm.CalculatedDistance)
             );
+
+        var acceptTripLog = await _tripLogRepository.GetAcceptedTripLogsAsync(vm.Id);
+
+        if (acceptTripLog != null)
+            vm.CanCancel =
+                !((DateTime.UtcNow - acceptTripLog.CreatedDate).TotalMinutes > 5);
+        else vm.CanCancel = false;
 
         return vm;
     }

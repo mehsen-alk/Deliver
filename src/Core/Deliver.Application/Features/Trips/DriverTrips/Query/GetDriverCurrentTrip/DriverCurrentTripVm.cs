@@ -13,4 +13,5 @@ public class DriverCurrentTripVm
     public required double CalculatedDistance { get; init; }
     public required double CalculatedDuration { get; init; }
     public decimal? CaptainProfit { get; set; }
+    public bool CanCancel { get; set; }
 }

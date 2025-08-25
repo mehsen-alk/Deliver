@@ -1,3 +1,4 @@
+using Deliver.Domain.Entities;
 using Deliver.Domain.Enums;
 
 namespace Deliver.Application.Features.Trips.Common.TripHistoryVm;
@@ -9,4 +10,6 @@ public class TripHistoryVm
     public double CalculatedDistance { get; set; }
     public double CalculatedDuration { get; set; }
     public DateTime CreatedDate { get; set; }
+    public Address PickUpAddress { get; set; } = default!;
+    public Address DropOffAddress { get; set; } = default!;
 }

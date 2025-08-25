@@ -62,6 +62,8 @@ public class DriverTripRepository : BaseRepository<Trip>, IDriverTripRepository
         return await _dbContext
             .Set<Trip>()
             .Where(trip => trip.DriverId == userId)
+            .Include(t => t.PickUpAddress)
+            .Include(t => t.DropOffAddress)
             .OrderBy(trip => trip.Id)
             .Skip((page - 1) * size)
             .Take(size)

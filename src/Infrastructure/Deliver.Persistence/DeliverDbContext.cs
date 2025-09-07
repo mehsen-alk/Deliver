@@ -59,6 +59,20 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
                 Name = "Driver",
                 NormalizedName = "DRIVER",
                 ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+            new ApplicationRole
+            {
+                Id = 3,
+                Name = "Admin",
+                NormalizedName = "ADMIN",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+            new ApplicationRole
+            {
+                Id = 4,
+                Name = "Super Admin",
+                NormalizedName = "SUPER ADMIN",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
             }
         );
 
@@ -69,24 +83,25 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         var user1 = new ApplicationUser
         {
             Id = 1,
-            UserName = "221234",
-            PhoneNumber = "221234",
-            NormalizedUserName = "221234",
-            PhoneNumberConfirmed = true,
-            SecurityStamp = Guid.NewGuid().ToString()
-        };
-        var user2 = new ApplicationUser
-        {
-            Id = 2,
-            UserName = "331234",
-            PhoneNumber = "331234",
-            NormalizedUserName = "331234",
+            UserName = "0931464912",
+            PhoneNumber = "0931464912",
+            NormalizedUserName = "0931464912",
             PhoneNumberConfirmed = true,
             SecurityStamp = Guid.NewGuid().ToString()
         };
 
-        user1.PasswordHash = hasher.HashPassword(user1, "123456");
-        user2.PasswordHash = hasher.HashPassword(user2, "123456");
+        var user2 = new ApplicationUser
+        {
+            Id = 2,
+            UserName = "0999999999",
+            PhoneNumber = "0999999999",
+            NormalizedUserName = "0999999999",
+            PhoneNumberConfirmed = true,
+            SecurityStamp = Guid.NewGuid().ToString()
+        };
+
+        user1.PasswordHash = hasher.HashPassword(user1, "12345678");
+        user2.PasswordHash = hasher.HashPassword(user2, "12345678");
 
         modelBuilder.Entity<ApplicationUser>().HasData(user1, user2);
 
@@ -97,7 +112,22 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
             {
                 Id = 1,
                 UserId = user1.Id,
-                Name = "Mohsen",
+                Name = "Mohsen Rider",
+                Phone = user1.PhoneNumber,
+                Status = ProfileStatus.Current,
+                ProfileImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
+            }
+        );
+
+        modelBuilder
+        .Entity<RiderProfile>()
+        .HasData(
+            new RiderProfile
+            {
+                Id = 2,
+                UserId = user2.Id,
+                Name = "Assaf Rider",
                 Phone = user1.PhoneNumber,
                 Status = ProfileStatus.Current,
                 ProfileImage =
@@ -111,8 +141,27 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
             new DriverProfile
             {
                 Id = 1,
+                UserId = user1.Id,
+                Name = "Mohsen Driver",
+                Phone = user1.PhoneNumber,
+                Status = ProfileStatus.Current,
+                ProfileImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                LicenseImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                VehicleImage =
+                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
+            }
+        );
+
+        modelBuilder
+        .Entity<DriverProfile>()
+        .HasData(
+            new DriverProfile
+            {
+                Id = 2,
                 UserId = user2.Id,
-                Name = "Mohammed",
+                Name = "Assaf Driver",
                 Phone = user1.PhoneNumber,
                 Status = ProfileStatus.Current,
                 ProfileImage =
@@ -136,6 +185,40 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
                 new IdentityUserRole<int>
                 {
                     RoleId = 2,
+                    UserId = 1
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 3,
+                    UserId = 1
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 4,
+                    UserId = 1
+                }
+            );
+        modelBuilder
+            .Entity<IdentityUserRole<int>>()
+            .HasData(
+                new IdentityUserRole<int>
+                {
+                    RoleId = 1,
+                    UserId = 2
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 2,
+                    UserId = 2
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 3,
+                    UserId = 2
+                },
+                new IdentityUserRole<int>
+                {
+                    RoleId = 4,
                     UserId = 2
                 }
             );
@@ -186,8 +269,7 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
 
         modelBuilder
             .Entity<NotificationToken>()
-            .HasIndex(
-                p => new
+            .HasIndex(p => new
                 {
                     p.UserId,
                     p.DeviceId

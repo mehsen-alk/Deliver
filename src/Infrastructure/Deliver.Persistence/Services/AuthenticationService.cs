@@ -6,6 +6,7 @@ using Deliver.Application.Contracts.Persistence;
 using Deliver.Application.Exceptions;
 using Deliver.Application.Models.Authentication;
 using Deliver.Application.Models.Authentication.SignIn;
+using Deliver.Application.Models.Authentication.SignIn.Response.AdminSignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response.DriverSignIn;
 using Deliver.Application.Models.Authentication.SignIn.Response.RiderSignIn;
 using Deliver.Application.Models.Authentication.SignUp;
@@ -89,6 +90,26 @@ public class AuthenticationService : IAuthenticationService
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 IsPhoneNumberVerified = user.PhoneNumberConfirmed,
                 IsVehicleRegistered = isVehicleRegistered
+            }
+        };
+
+        return response;
+    }
+
+    public async Task<AdminSignInResponse> AdminSignInAsync(SignInRequest request)
+    {
+        var user = await SignInAsync(request, "Admin");
+
+        var jwtSecurityToken = await GenerateToken(user);
+
+        var response = new AdminSignInResponse
+        {
+            StatusCode = 200,
+            Message = "fetched successfully",
+            Data = new AdminSignInResponseData
+            {
+                Id = user.Id,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
             }
         };
 

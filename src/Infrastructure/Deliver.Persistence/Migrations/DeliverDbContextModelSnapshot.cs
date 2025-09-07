@@ -94,16 +94,30 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "8652a290-4b4b-4ee5-ab01-79adfd0d08f2",
+                            ConcurrencyStamp = "e6e0842f-db3b-4e05-82f8-4a908513a0d4",
                             Name = "Rider",
                             NormalizedName = "RIDER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "e10c787a-8bcd-4014-aaa8-59fd8b832c25",
+                            ConcurrencyStamp = "91537a2a-7a35-4e22-abfb-e347ddf744a9",
                             Name = "Driver",
                             NormalizedName = "DRIVER"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConcurrencyStamp = "0fba4368-b4f2-40fb-8d81-69d3483914f0",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ConcurrencyStamp = "626290d6-a2f8-43e4-b950-02fc5f0bb99b",
+                            Name = "Super Admin",
+                            NormalizedName = "SUPER ADMIN"
                         });
                 });
 
@@ -179,31 +193,31 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b0f85270-830c-4f3f-9f37-368f93432e6d",
+                            ConcurrencyStamp = "338aebfe-cb68-413e-8d5d-900d89a02d22",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "221234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEY02iS8JMUAOBeTvzKkHRpSiP/g/oNqO/dg43oy0LfJKHMyJhSjlMCG+qgm9Oo3lw==",
-                            PhoneNumber = "221234",
+                            NormalizedUserName = "0931464912",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK1RiiQ7XBT1L2cZsQLYh4KVqN26Z2siRBHZjoX+2rH8KmSQFqSpWTcOWRsZTK9/Bg==",
+                            PhoneNumber = "0931464912",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "c36147e2-728d-4576-9812-f71cdc84c854",
+                            SecurityStamp = "399ba0a5-7b58-4d1b-b1f6-103292fbc443",
                             TwoFactorEnabled = false,
-                            UserName = "221234"
+                            UserName = "0931464912"
                         },
                         new
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a73ae04d-2624-4005-8e10-1ff3887d2653",
+                            ConcurrencyStamp = "70ac2bd8-99bc-47f5-ac24-b9de0970d319",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "331234",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFmqi5hWLdD/FGk7Yh29PTmOR3Eq+D96hTO6X/ItNve5Sl1NTR/27TxBdCU99S0Ncg==",
-                            PhoneNumber = "331234",
+                            NormalizedUserName = "0999999999",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE3aNNFVy1rLkGMRT8WDYGtFSAMc6rSXmjcAxc3XkXEFYx1pxg51xfX99CLDI5Td7w==",
+                            PhoneNumber = "0999999999",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "a19696a1-2857-4810-a50f-cfd206fd9ba2",
+                            SecurityStamp = "da1e41af-05e3-4ee7-a28d-6e4a23c4c0f4",
                             TwoFactorEnabled = false,
-                            UserName = "331234"
+                            UserName = "0999999999"
                         });
                 });
 
@@ -295,8 +309,20 @@ namespace Persistence.Migrations
                             Id = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LicenseImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
-                            Name = "Mohammed",
-                            Phone = "221234",
+                            Name = "Mohsen Driver",
+                            Phone = "0931464912",
+                            ProfileImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                            Status = 0,
+                            UserId = 1,
+                            VehicleImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LicenseImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                            Name = "Assaf Driver",
+                            Phone = "0931464912",
                             ProfileImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
                             Status = 0,
                             UserId = 2,
@@ -459,11 +485,21 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Mohsen",
-                            Phone = "221234",
+                            Name = "Mohsen Rider",
+                            Phone = "0931464912",
                             ProfileImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
                             Status = 0,
                             UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Assaf Rider",
+                            Phone = "0931464912",
+                            ProfileImage = "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
+                            Status = 0,
+                            UserId = 2
                         });
                 });
 
@@ -656,8 +692,38 @@ namespace Persistence.Migrations
                         },
                         new
                         {
+                            UserId = 1,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 1
+                        },
+                        new
+                        {
                             UserId = 2,
                             RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 4
                         });
                 });
 

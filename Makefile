@@ -1,8 +1,9 @@
 v ?= 
 
-# make newMig n="init"
+# make newMig n=init_hi
 newMig: 
-	dotnet ef migrations add "$n" $v --project ./src/Infrastructure/Deliver.Persistence --startup-project ./src/APi/Deliver.Api --context "DeliverDbContext"
+	dotnet ef migrations add $(newMig) $v --project ./src/Infrastructure/Deliver.Persistence --startup-project ./src/APi/Deliver.Api --context "DeliverDbContext"
+
 
 updateDB:
 	dotnet ef database update $v --project ./src/Infrastructure/Deliver.Persistence --startup-project ./src/APi/Deliver.Api --context "DeliverDbContext"

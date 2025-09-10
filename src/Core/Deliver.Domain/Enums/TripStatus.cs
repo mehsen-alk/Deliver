@@ -1,4 +1,3 @@
-#pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 namespace Deliver.Domain.Enums;
 
 public enum TripStatus
@@ -49,6 +48,23 @@ public static class TripStatusExtensions
                 tripStatus,
                 null
             )
+        };
+    }
+
+    public static TripStatus? FromInt(int? value)
+    {
+        if (!value.HasValue)
+            return null;
+
+        return value.Value switch
+        {
+            0 => TripStatus.Waiting,
+            1 => TripStatus.OnWayToPickupRider,
+            2 => TripStatus.DriverArrivedToPickupRider,
+            3 => TripStatus.Delivering,
+            4 => TripStatus.Delivered,
+            5 => TripStatus.Cancelled,
+            _ => null
         };
     }
 }

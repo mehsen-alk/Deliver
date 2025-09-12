@@ -36,13 +36,99 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DeliverDbContext).Assembly);
+        ApplyConfigurations(modelBuilder);
 
         base.OnModelCreating(modelBuilder);
 
-        //seed data, added through migrations
+        ApplySeedData(modelBuilder);
+    }
 
-        // seed roles
+    private void ApplyConfigurations(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DeliverDbContext).Assembly);
+
+        ConfigureTrips(modelBuilder);
+        ConfigureAddresses(modelBuilder);
+        ConfigurePayments(modelBuilder);
+        ConfigureNotificationTokens(modelBuilder);
+    }
+
+    private void ConfigureTrips(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .Entity<Trip>()
+            .HasOne(t => t.PickUpAddress)
+            .WithMany()
+            .HasForeignKey(t => t.PickUpAddressId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder
+            .Entity<Trip>()
+            .HasOne(t => t.DropOffAddress)
+            .WithMany()
+            .HasForeignKey(t => t.DropOffAddressId)
+            .OnDelete(DeleteBehavior.NoAction);
+    }
+
+    private void ConfigureAddresses(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .Entity<Address>()
+            .HasOne(t => t.User)
+            .WithMany()
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+    }
+
+    private void ConfigurePayments(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .Entity<Payment>()
+            .HasOne(p => p.FromUser)
+            .WithMany()
+            .HasForeignKey(p => p.FromUserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder
+            .Entity<Payment>()
+            .HasOne(p => p.ToUser)
+            .WithMany()
+            .HasForeignKey(p => p.ToUserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder
+            .Entity<Payment>()
+            .HasOne(p => p.Trip)
+            .WithMany()
+            .HasForeignKey(p => p.TripId)
+            .OnDelete(DeleteBehavior.NoAction);
+    }
+
+    private void ConfigureNotificationTokens(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<NotificationToken>().HasIndex(p => p.Token).IsUnique();
+
+        modelBuilder
+            .Entity<NotificationToken>()
+            .HasIndex(p => new
+                {
+                    p.UserId,
+                    p.DeviceId
+                }
+            )
+            .IsUnique();
+    }
+
+    private void ApplySeedData(ModelBuilder modelBuilder)
+    {
+        SeedRoles(modelBuilder);
+        SeedUsers(modelBuilder);
+        SeedProfiles(modelBuilder);
+        SeedUserRoles(modelBuilder);
+    }
+
+    private void SeedRoles(ModelBuilder modelBuilder)
+    {
         modelBuilder
         .Entity<ApplicationRole>()
         .HasData(
@@ -75,9 +161,10 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             }
         );
+    }
 
-        // seed users
-        // a hasher to hash the password before seeding the user to the db
+    private void SeedUsers(ModelBuilder modelBuilder)
+    {
         var hasher = new PasswordHasher<ApplicationUser>();
 
         var user1 = new ApplicationUser
@@ -104,178 +191,115 @@ public class DeliverDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
         user2.PasswordHash = hasher.HashPassword(user2, "12345678");
 
         modelBuilder.Entity<ApplicationUser>().HasData(user1, user2);
+    }
 
+    private void SeedProfiles(ModelBuilder modelBuilder)
+    {
+        const string defaultImageUrl =
+            "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg";
+
+        // Rider Profiles
         modelBuilder
         .Entity<RiderProfile>()
         .HasData(
             new RiderProfile
             {
                 Id = 1,
-                UserId = user1.Id,
+                UserId = 1,
                 Name = "Mohsen Rider",
-                Phone = user1.PhoneNumber,
+                Phone = "0931464912",
                 Status = ProfileStatus.Current,
-                ProfileImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
-            }
-        );
-
-        modelBuilder
-        .Entity<RiderProfile>()
-        .HasData(
+                ProfileImage = defaultImageUrl
+            },
             new RiderProfile
             {
                 Id = 2,
-                UserId = user2.Id,
+                UserId = 2,
                 Name = "Assaf Rider",
-                Phone = user1.PhoneNumber,
+                Phone = "0999999999",
                 Status = ProfileStatus.Current,
-                ProfileImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
+                ProfileImage = defaultImageUrl
             }
         );
 
+        // Driver Profiles
         modelBuilder
         .Entity<DriverProfile>()
         .HasData(
             new DriverProfile
             {
                 Id = 1,
-                UserId = user1.Id,
+                UserId = 1,
                 Name = "Mohsen Driver",
-                Phone = user1.PhoneNumber,
+                Phone = "0931464912",
                 Status = ProfileStatus.Current,
-                ProfileImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
-                LicenseImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
-                VehicleImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
-            }
-        );
-
-        modelBuilder
-        .Entity<DriverProfile>()
-        .HasData(
+                ProfileImage = defaultImageUrl,
+                LicenseImage = defaultImageUrl,
+                VehicleImage = defaultImageUrl
+            },
             new DriverProfile
             {
                 Id = 2,
-                UserId = user2.Id,
+                UserId = 2,
                 Name = "Assaf Driver",
-                Phone = user1.PhoneNumber,
+                Phone = "0999999999",
                 Status = ProfileStatus.Current,
-                ProfileImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
-                LicenseImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg",
-                VehicleImage =
-                    "https://c4d-media.s3.eu-central-1.amazonaws.com/upload/image/original-image/2023-01-29_20-32-24/scaled-image-picker8315132317025791363-63de775a3982c.jpg"
+                ProfileImage = defaultImageUrl,
+                LicenseImage = defaultImageUrl,
+                VehicleImage = defaultImageUrl
             }
         );
+    }
 
-        // seed users role
+    private void SeedUserRoles(ModelBuilder modelBuilder)
+    {
         modelBuilder
             .Entity<IdentityUserRole<int>>()
             .HasData(
+                // User 1 roles
                 new IdentityUserRole<int>
                 {
-                    RoleId = 1,
-                    UserId = 1
+                    UserId = 1,
+                    RoleId = 1
                 },
                 new IdentityUserRole<int>
                 {
-                    RoleId = 2,
-                    UserId = 1
+                    UserId = 1,
+                    RoleId = 2
                 },
                 new IdentityUserRole<int>
                 {
-                    RoleId = 3,
-                    UserId = 1
+                    UserId = 1,
+                    RoleId = 3
                 },
                 new IdentityUserRole<int>
                 {
-                    RoleId = 4,
-                    UserId = 1
+                    UserId = 1,
+                    RoleId = 4
+                },
+
+                // User 2 roles
+                new IdentityUserRole<int>
+                {
+                    UserId = 2,
+                    RoleId = 1
+                },
+                new IdentityUserRole<int>
+                {
+                    UserId = 2,
+                    RoleId = 2
+                },
+                new IdentityUserRole<int>
+                {
+                    UserId = 2,
+                    RoleId = 3
+                },
+                new IdentityUserRole<int>
+                {
+                    UserId = 2,
+                    RoleId = 4
                 }
             );
-        modelBuilder
-            .Entity<IdentityUserRole<int>>()
-            .HasData(
-                new IdentityUserRole<int>
-                {
-                    RoleId = 1,
-                    UserId = 2
-                },
-                new IdentityUserRole<int>
-                {
-                    RoleId = 2,
-                    UserId = 2
-                },
-                new IdentityUserRole<int>
-                {
-                    RoleId = 3,
-                    UserId = 2
-                },
-                new IdentityUserRole<int>
-                {
-                    RoleId = 4,
-                    UserId = 2
-                }
-            );
-
-        modelBuilder
-            .Entity<Trip>()
-            .HasOne(t => t.PickUpAddress)
-            .WithMany()
-            .HasForeignKey(t => t.PickUpAddressId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder
-            .Entity<Trip>()
-            .HasOne(t => t.PickUpAddress)
-            .WithMany()
-            .HasForeignKey(t => t.PickUpAddressId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder
-            .Entity<Address>()
-            .HasOne(t => t.User)
-            .WithMany()
-            .HasForeignKey(t => t.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder
-            .Entity<Payment>()
-            .HasOne(p => p.FromUser)
-            .WithMany()
-            .HasForeignKey(p => p.FromUserId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder
-            .Entity<Payment>()
-            .HasOne(p => p.ToUser)
-            .WithMany()
-            .HasForeignKey(p => p.ToUserId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder
-            .Entity<Payment>()
-            .HasOne(p => p.Trip)
-            .WithMany()
-            .HasForeignKey(p => p.TripId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder.Entity<NotificationToken>().HasIndex(p => p.Token).IsUnique();
-
-        modelBuilder
-            .Entity<NotificationToken>()
-            .HasIndex(p => new
-                {
-                    p.UserId,
-                    p.DeviceId
-                }
-            )
-            .IsUnique();
     }
 
     public override Task<int> SaveChangesAsync(

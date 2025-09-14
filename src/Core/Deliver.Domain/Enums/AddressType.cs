@@ -4,5 +4,7 @@ public enum AddressType
 {
     PickUp,
     DropOff,
-    DriverLocationWhenAcceptOrder
+    DriverLocationWhenAcceptOrder,
+    DriverLocationWhenArriveToPickUp,
+    DriverLocationWhenArriveToDropOff
 }
